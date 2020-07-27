@@ -161,6 +161,7 @@ h3 {
 .reviews {
     display: flex;
     justify-content: space-around;
+    margin-bottom: 30px;
 }
 
 .review {
@@ -188,6 +189,25 @@ h3 {
 .review p sub,
 .review p b {
     font-size: 22px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    height: 70px;
+    align-items: flex-end;
+}
+
+.control {
+    border-radius: 50%;
+    width: 17px;
+    background: #E5E5E5;
+    height: 17px;
+    margin: 5px;
+}
+
+.controls .active {
+    background: #C4C4C4;
 }
 
 

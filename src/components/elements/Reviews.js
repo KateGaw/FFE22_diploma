@@ -35,7 +35,13 @@ const Rewiews = () => {
           </div>
         </div>
       </div>
-      {/* DOTS!!! */}
+      <div class="controls">
+        <div class="control active" />
+        <div class="control" />
+        <div class="control" />
+        <div class="control" />
+        <div class="control" />
+      </div>
     </div>
   );
 };
