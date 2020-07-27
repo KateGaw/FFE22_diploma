@@ -1,2 +1,0 @@
-# FFE22_diploma
- 

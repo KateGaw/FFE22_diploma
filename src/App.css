@@ -1,0 +1,258 @@
+* {
+    font-family: "Roboto";
+    font-style: normal;
+}
+
+button {
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    background-color: transparent;
+    color: #ffffff;
+    line-height: 28px;
+    text-align: center;
+    padding: 7px 35px;
+}
+
+
+/* MAIN HEADER */
+
+.main_header {
+    background: url("/assets/main_header.png") no-repeat;
+    background-size: cover;
+    background-color: #9b6909;
+    height: 100vh;
+    margin-bottom: 6%;
+    border-bottom: 5px solid #ffa800;
+}
+
+.logo {
+    color: #e5e5e5;
+    font-weight: 900;
+    font-size: 36px;
+    line-height: 42px;
+}
+
+.main_header .logo {
+    padding-left: 185px;
+    height: 49px;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.header_menu {
+    width: 100%;
+    height: 70px;
+    background-color: #292929;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding-left: 12%;
+}
+
+.header_menu a {
+    font-weight: 300;
+    font-size: 21px;
+    line-height: 30px;
+    margin: 21px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.header_menu a:hover {
+    text-decoration: none;
+}
+
+.header_text {
+    font-weight: 200;
+    font-size: 52px;
+    line-height: 58px;
+    color: #ffffff;
+    position: absolute;
+    top: 61%;
+    left: 17%;
+}
+
+.header_tickets {
+    width: 449px;
+    height: 356px;
+    background: rgba(41, 41, 41, 0.8);
+    position: absolute;
+    bottom: 5px;
+    right: 16%;
+}
+
+
+/* ABOUT */
+
+.main_about {
+    margin: 7% 20%;
+}
+
+h3 {
+    text-transform: uppercase;
+    padding-bottom: 15px;
+}
+
+.about_block {
+    border-left: 5px solid #ffa800;
+    padding-left: 20px;
+}
+
+
+/* HOW IT WORKS */
+
+.main_how {
+    background: url("/assets/how_it_works.png") no-repeat;
+    background-size: cover;
+    background-color: #ffa800;
+    margin-bottom: 4%;
+}
+
+.how_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4% 12% 3% 12%;
+}
+
+.main_how h3 {
+    color: #ffffff;
+}
+
+.how_blocks {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 4%;
+}
+
+.how__block {
+    text-align: center;
+    width: 150px;
+}
+
+.how__block:nth-child(even) {
+    margin: 0 8%;
+}
+
+.how__block img {
+    width: 100px;
+    height: 100px;
+}
+
+.how__block p {
+    color: #e5e5e5;
+    font-size: 16px;
+    line-height: 28px;
+    text-align: center;
+}
+
+
+/* REVIEWS */
+
+.main_reviews {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 3%;
+}
+
+.main_reviews h3 {
+    padding-bottom: 45px;
+}
+
+.reviews {
+    display: flex;
+    justify-content: space-around;
+}
+
+.review {
+    width: 40%;
+    display: flex;
+    align-items: center;
+}
+
+.review img {
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+}
+
+.review_text {
+    margin-left: 20px;
+}
+
+.review p {
+    color: gray;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.review p sub,
+.review p b {
+    font-size: 22px;
+}
+
+
+/* FOOTER */
+
+.footer {
+    background: #2d2b2f;
+    color: #ffffff;
+}
+
+.footer h5 {
+    margin-bottom: 15px;
+}
+
+.contacts {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px;
+}
+
+.contact {
+    width: 170px;
+    display: flex;
+    align-items: baseline;
+}
+
+.contact p {
+    font-size: 16px;
+}
+
+.contact img {
+    width: 17px;
+    margin-right: 16px;
+}
+
+.subscription_form p {
+    margin-bottom: 5px;
+}
+
+.subscription_form input {
+    width: 250px;
+    height: 40px;
+    margin-right: 15px;
+}
+
+.subscription_form button {
+    padding: 5px 35px;
+}
+
+.subscription_social {
+    margin-top: 30px;
+}
+
+.social_icons img:nth-child(even) {
+    margin: 0 30px;
+}
+
+.footer_bottom {
+    border-top: 1px solid #E5E5E5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1% 12%;
+}
+
+.footer_bottom img {
+    cursor: pointer;
+}
