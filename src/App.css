@@ -32,7 +32,8 @@ button {
     line-height: 42px;
 }
 
-.main_header .logo {
+.main_header .logo,
+.ticket_header .logo {
     padding-left: 185px;
     height: 49px;
     background: rgba(0, 0, 0, 0.6);
@@ -307,7 +308,7 @@ h3 {
     padding: 13px;
     width: 195px;
     border: none;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 3px;
 }
 
@@ -332,11 +333,11 @@ h3 {
 }
 
 .react-datepicker-popper {
-    top: 200px!important;
+    top: 200px !important;
 }
 
 .react-datepicker__triangle {
-    display: none!important;
+    display: none !important;
 }
 
 .findTickets {
@@ -374,4 +375,117 @@ h3 {
 .button_orange:active,
 .button_orange:focus {
     outline: none;
+}
+
+
+/* TICKET PAGE */
+
+.ticket_header {
+    background: url("/assets/ticket_header.png") no-repeat;
+    height: 415px;
+    background-size: cover;
+    margin-bottom: 6%;
+}
+
+.ticket_header .header_tickets {
+    width: 70%;
+    height: 230px;
+    top: 160px;
+    left: 15%;
+    padding-top: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ticket_header .autocomplete_city_names {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 25px 35px 25px;
+}
+
+.ticket_header .datePicker_tickets_date {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0 10px 35px 10px;
+}
+
+.ticket_header .react-datepicker-wrapper {
+    margin-right: 20px;
+}
+
+.ticket_header .autocomplete_city_names div {
+    margin: 0 5px;
+}
+
+.ticket_header .header_tickets h2 {
+    margin: 25px 0 8px 31px;
+}
+
+.ticket_header .header_tickets .date {
+    margin-left: 13px;
+}
+
+.ticket_header .findTickets {
+    margin-left: 74.7%;
+    margin-bottom: 20px;
+}
+
+.ticket_header .react-datepicker-popper {
+    top: -6px !important;
+}
+
+
+/* TICKET CREATE LINE */
+
+.ticket_line {
+    display: flex;
+    background-color: #3e3c41;
+    color: white;
+    justify-content: space-around;
+    height: 80px;
+    align-items: center;
+}
+
+.ticket_line__block {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.done {
+    background: #ffa800;
+}
+
+.line_number {
+    margin-right: 15px;
+}
+
+.line_arrow {
+    position: absolute;
+    right: -60px;
+    height: 80px;
+}
+
+.ticket_line__block p {
+    margin: 0;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+.first {
+    z-index: 0;
+}
+
+.second {
+    z-index: 10;
+}
+
+.third {
+    z-index: 20;
+}
+
+.fourth {
+    z-index: 30;
 }

@@ -77,66 +77,70 @@ const HeaderTickets = (props) => {
 
   return (
     <div className="header_tickets">
-      <h2>Направление</h2>
-      <div className="autocomplete_city_names">
-        <Autocomplete
-          inputProps={{ placeholder: "Откуда" }}
-          getItemValue={(item) => item.name}
-          items={cityNamesFrom}
-          renderItem={(item) => <div key={item.id}>{item.name}</div>}
-          value={nameFrom}
-          onChange={(event) => setNameFrom(event.target.value)}
-          onSelect={onSelectFromHandler}
-        />
+      <div>
+        <h2 className='direction'>Направление</h2>
+        <div className="autocomplete_city_names">
+          <Autocomplete
+            inputProps={{ placeholder: "Откуда" }}
+            getItemValue={(item) => item.name}
+            items={cityNamesFrom}
+            renderItem={(item) => <div key={item.id}>{item.name}</div>}
+            value={nameFrom}
+            onChange={(event) => setNameFrom(event.target.value)}
+            onSelect={onSelectFromHandler}
+          />
 
-        <span
-          role="img"
-          aria-label="reverse"
-          className="changeCity"
-          onClick={reverseClickHandler}
-        >
-          🔄
-        </span>
+          <span
+            role="img"
+            aria-label="reverse"
+            className="changeCity"
+            onClick={reverseClickHandler}
+          >
+            🔄
+          </span>
 
-        <Autocomplete
-          inputProps={{ placeholder: "Куда" }}
-          getItemValue={(item) => item.name}
-          items={cityNamesIn}
-          renderItem={(item) => <div key={item.id}>{item.name}</div>}
-          value={nameIn}
-          onChange={(event) => setNameIn(event.target.value)}
-          onSelect={onSelectInHandler}
-        />
+          <Autocomplete
+            inputProps={{ placeholder: "Куда" }}
+            getItemValue={(item) => item.name}
+            items={cityNamesIn}
+            renderItem={(item) => <div key={item.id}>{item.name}</div>}
+            value={nameIn}
+            onChange={(event) => setNameIn(event.target.value)}
+            onSelect={onSelectInHandler}
+          />
+        </div>
       </div>
 
-      <h2>Дата</h2>
-      <div className="datePicker_tickets_date">
-        <DatePicker
-          locale={ru}
-          placeholderText="ДД.ММ.ГГГГ"
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          closeOnScroll={(e) => e.target === document}
-          selectsStart
-          startDate={startDate}
-          endDate={endDate}
-          minDate={new Date()}
-          dateFormat="dd.MM.yyyy"
-        />
-        <DatePicker
-          locale={ru}
-          placeholderText="ДД.ММ.ГГГГ"
-          selected={endDate}
-          onChange={(date) => setEndDate(date)}
-          closeOnScroll={(e) => e.target === document}
-          selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
-          dateFormat="dd.MM.yyyy"
-        />
+      <div>
+        <h2 className='date'>Дата</h2>
+        <div className="datePicker_tickets_date">
+          <DatePicker
+            locale={ru}
+            placeholderText="ДД.ММ.ГГГГ"
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            closeOnScroll={(e) => e.target === document}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            minDate={new Date()}
+            dateFormat="dd.MM.yyyy"
+          />
+          <DatePicker
+            locale={ru}
+            placeholderText="ДД.ММ.ГГГГ"
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            closeOnScroll={(e) => e.target === document}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            dateFormat="dd.MM.yyyy"
+          />
+        </div>
       </div>
-
+      
       <button className="findTickets button_orange" onClick={findClickHandler}>
         Найти билеты
       </button>
