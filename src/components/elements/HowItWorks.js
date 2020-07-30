@@ -2,7 +2,7 @@ import React from "react";
 
 const HowItWorks = () => {
   return (
-    <div className="main_how">
+    <div className="main_how" id="how_it_works">
       <div className='how_header'>
         <h3>как это работает</h3>
         <button className='how__more_btn'>Узнать больше</button>

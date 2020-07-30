@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="footer">
+    <div className="footer" id="contacts">
       <div className="contacts">
         <div className="contact_us">
           <h5>Свяжитесь с нами</h5>
@@ -47,7 +47,9 @@ const Footer = () => {
       </div>
       <div className="footer_bottom">
         <div className="logo">Лого</div>
-        <img src="/assets/up.png" alt="up" />
+        <a href="#header">
+          <img src="/assets/up.png" alt="up" />
+        </a>
         <div>2018 WEB</div>
       </div>
     </div>

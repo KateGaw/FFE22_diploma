@@ -71,15 +71,6 @@ button {
     left: 17%;
 }
 
-.header_tickets {
-    width: 449px;
-    height: 356px;
-    background: rgba(41, 41, 41, 0.8);
-    position: absolute;
-    bottom: 5px;
-    right: 16%;
-}
-
 
 /* ABOUT */
 
@@ -201,13 +192,13 @@ h3 {
 .control {
     border-radius: 50%;
     width: 17px;
-    background: #E5E5E5;
+    background: #e5e5e5;
     height: 17px;
     margin: 5px;
 }
 
 .controls .active {
-    background: #C4C4C4;
+    background: #c4c4c4;
 }
 
 
@@ -266,7 +257,7 @@ h3 {
 }
 
 .footer_bottom {
-    border-top: 1px solid #E5E5E5;
+    border-top: 1px solid #e5e5e5;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -275,4 +266,112 @@ h3 {
 
 .footer_bottom img {
     cursor: pointer;
+}
+
+
+/* CHOOSE TICKETS (MAIN PAGE) */
+
+.header_tickets {
+    /* width: 449px;
+    height: 356px; */
+    width: 485px;
+    height: 411px;
+    background: rgba(41, 41, 41, 0.8);
+    position: absolute;
+    bottom: 5px;
+    right: 16%;
+    padding-top: 40px;
+}
+
+.header_tickets h2 {
+    font-weight: 200;
+    font-size: 24px;
+    color: #ffffff;
+    margin: 25px 0 8px 25px;
+}
+
+.autocomplete_city_names,
+.datePicker_tickets_date {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 0 35px 0;
+}
+
+.autocomplete_city_names {
+    margin: 0 16px 35px 16px;
+}
+
+.autocomplete_city_names div input,
+.datePicker_tickets_date div div input {
+    padding: 13px;
+    width: 195px;
+    border: none;
+    background: #FFFFFF;
+    border-radius: 3px;
+}
+
+.autocomplete_city_names div input:focus,
+.datePicker_tickets_date div div input:focus {
+    outline: none;
+}
+
+.autocomplete_city_names div {
+    max-height: 200px !important;
+}
+
+.autocomplete_city_names div div {
+    z-index: 100;
+    background-color: white;
+    font-size: 16px;
+}
+
+.changeCity {
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.react-datepicker-popper {
+    top: 200px!important;
+}
+
+.react-datepicker__triangle {
+    display: none!important;
+}
+
+.findTickets {
+    float: right;
+    margin-right: 24px;
+    padding: 17px 36px;
+}
+
+.button_orange {
+    background: #ffa800;
+    border-radius: 5px;
+    color: #292929;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 21px;
+    text-transform: uppercase;
+    border: none;
+}
+
+.button_orange:hover {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.button_orange:active {
+    background: #e5e5e5;
+    color: #ffa800;
+    border: 1px solid #ffa800;
+    box-sizing: border-box;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.button_orange:hover,
+.button_orange:active,
+.button_orange:focus {
+    outline: none;
 }

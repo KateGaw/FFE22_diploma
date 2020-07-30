@@ -2,7 +2,7 @@ import React from "react";
 
 const Rewiews = () => {
   return (
-    <div className="main_reviews">
+    <div className="main_reviews" id="rewiews">
       <h3>отзывы</h3>
       <div className="reviews">
         <div className="review">
@@ -35,12 +35,12 @@ const Rewiews = () => {
           </div>
         </div>
       </div>
-      <div class="controls">
-        <div class="control active" />
-        <div class="control" />
-        <div class="control" />
-        <div class="control" />
-        <div class="control" />
+      <div className="controls">
+        <div className="control active" />
+        <div className="control" />
+        <div className="control" />
+        <div className="control" />
+        <div className="control" />
       </div>
     </div>
   );
