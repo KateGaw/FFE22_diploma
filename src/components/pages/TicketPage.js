@@ -2,6 +2,7 @@ import React from "react";
 import HeaderMenu from "../elements/HeaderMenu";
 import HeaderTickets from "../elements/HeaderTickets";
 import TicketsFilter from '../elements/TicketPage/TicketsFilter';
+import TicketCards from '../elements/TicketPage/TicketCards';
 
 import { withRouter } from "react-router-dom";
 
@@ -63,9 +64,11 @@ const TicketPage = (props) => {
         </div>
       </div>
 
-      <div className="ticket_main">
+      <div className="tickets_main">
         <TicketsFilter/>
-        <div className="ticket_cards"></div>
+        <div className="ticket_cards">
+          <TicketCards />
+        </div>
         <div className="ticket_last-tickets"></div>
       </div>
     </>

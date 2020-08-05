@@ -610,17 +610,17 @@ h3 {
 
 .rangeClass {
     height: 19px;
-    background: #3E3C41;
+    background: #3e3c41;
     border-radius: 8px;
     width: 240px;
-    border: 1px solid #C4C4C4;
+    border: 1px solid #c4c4c4;
 }
 
 .rangeClass__handles {
     width: 24px;
     height: 24px;
     border-radius: 100%;
-    background: #FFFFFF;
+    background: #ffffff;
 }
 
 .filter_cost,
@@ -666,4 +666,138 @@ h3 {
 
 .departure {
     margin-bottom: 25px;
+}
+
+
+/* TICKET CARD */
+
+.tickets_main {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ticket_card {
+    background: #ffffff;
+    border: 1px solid #c4c4c4;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    width: 830px;
+    height: 300px;
+    display: flex;
+}
+
+.ticket_left {
+    background: #e4e0e9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 25%;
+    padding: 25px;
+}
+
+.ticket_main {
+    width: 50%;
+    padding: 20px 10px;
+}
+
+.ticket_right {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-around;
+    border-left: 1px dashed #e5e5e5;
+    padding: 10px;
+}
+
+.train_number {
+    color: #3e3c41;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    margin: 8px;
+}
+
+.train_start_city {
+    color: #928f94;
+    font-size: 15px;
+}
+
+.train_path {
+    font-size: 15px;
+}
+
+.train_there,
+.train_back {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 10px;
+}
+
+.train_back {}
+
+.train_start {}
+
+.train__end {}
+
+.train__time {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+.train__city {}
+
+.train__station {
+    color: #928f94;
+    font-size: 15px;
+}
+
+.train__arrow {
+    text-align: center;
+}
+
+.arrow_time {
+    color: #c4c4c4;
+    font-size: 16px;
+    line-height: 21px;
+}
+
+.ticket_seat_variants {
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    justify-items: self-end;
+    width: 100%;
+}
+
+.seat_type {
+    margin-right: 10px;
+}
+
+.seat_quantity {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #ffa800;
+}
+
+.seat_price {
+    display: flex;
+    align-items: baseline;
+}
+
+.seat_price p {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    color: #2d2b2f;
+    margin: 0;
+}
+
+.chooseSeat {
+    font-size: 14px;
+    line-height: 28px;
+    color: #FFFFFF;
 }
