@@ -13,6 +13,10 @@ button {
     padding: 7px 35px;
 }
 
+.hidden {
+    display: none;
+}
+
 
 /* MAIN HEADER */
 
@@ -384,7 +388,6 @@ h3 {
     background: url("/assets/ticket_header.png") no-repeat;
     height: 415px;
     background-size: cover;
-    margin-bottom: 6%;
 }
 
 .ticket_header .header_tickets {
@@ -444,14 +447,9 @@ h3 {
     background-color: #3e3c41;
     color: white;
     justify-content: space-around;
-    height: 80px;
+    height: 82px;
     align-items: center;
-}
-
-.ticket_line__block {
-    display: flex;
-    align-items: center;
-    position: relative;
+    margin-bottom: 95px;
 }
 
 .done {
@@ -462,10 +460,14 @@ h3 {
     margin-right: 15px;
 }
 
-.line_arrow {
-    position: absolute;
-    right: -60px;
-    height: 80px;
+.ticket_line__block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: calc(100% / 4);
+    height: 100%;
+    /* cursor: pointer; */
 }
 
 .ticket_line__block p {
@@ -474,18 +476,194 @@ h3 {
     font-size: 26px;
 }
 
-.first {
-    z-index: 0;
-}
-
-.second {
-    z-index: 10;
-}
-
+.second,
 .third {
-    z-index: 20;
+    margin-right: -15px;
+}
+
+.second,
+.third,
+.fourth {
+    margin-left: 30px;
 }
 
 .fourth {
-    z-index: 30;
+    margin-right: 70px;
+}
+
+
+/* ARROW */
+
+.ticket_line__block::after {
+    content: "";
+    position: absolute;
+    border: 41px solid;
+    border-color: transparent transparent transparent #3e3c41;
+    top: 0;
+    left: 99.5%;
+}
+
+.third::after {
+    left: 97.5%;
+}
+
+.done::after {
+    border-color: transparent transparent transparent #ffa800;
+}
+
+.fourth::after {
+    border: none;
+}
+
+.arrow-2 {
+    height: 41px;
+    width: 0;
+    position: relative;
+    margin: 20px 0;
+}
+
+.arrow-2-top,
+.arrow-2-bottom {
+    height: 1px;
+    left: 52px;
+    position: absolute;
+    top: 20px;
+    width: 57px;
+}
+
+.arrow-2-top {
+    top: 19px;
+}
+
+.arrow-2-top {
+    transform: rotate(45deg);
+    transform-origin: bottom right;
+}
+
+.arrow-2-bottom {
+    transform: rotate(-45deg);
+    transform-origin: top right;
+}
+
+.arrow-2-top::after,
+.arrow-2-bottom::after {
+    background: #ffffff;
+    content: "";
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+
+/* TICKETS_FILTERS */
+
+.ticket_filter {
+    background-color: #3e3c41;
+    width: 300px;
+    color: #ffffff;
+    margin-left: 100px;
+}
+
+.filter_block {
+    border-bottom: 1px solid white;
+    padding: 40px 30px 25px 30px;
+}
+
+.ticket_filter__date div div input {
+    width: 230px;
+}
+
+.ticket_filter__date div:nth-child(odd) {
+    margin-bottom: 30px;
+}
+
+.ticket_filter h4 {
+    font-weight: normal;
+    font-size: 22px;
+}
+
+.ticket_filter__filters .switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.filter__text {
+    display: flex;
+}
+
+.ticket_filter__filters .switch p {
+    font-size: 18px;
+    line-height: 30px;
+    margin: 0 17px;
+}
+
+.ticket_filter__filters .switch img {
+    width: 18px;
+}
+
+
+/* RangeSlider */
+
+.rangeClass {
+    height: 19px;
+    background: #3E3C41;
+    border-radius: 8px;
+    width: 240px;
+    border: 1px solid #C4C4C4;
+}
+
+.rangeClass__handles {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    background: #FFFFFF;
+}
+
+.filter_cost,
+.current {
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter_cost p,
+.current p {
+    margin: 3px 0;
+}
+
+
+/* Destination filter */
+
+.ticket_filter_header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ticket_filter_header .text {
+    display: flex;
+    align-items: flex-start;
+}
+
+.text h4 {
+    margin-left: 10px;
+}
+
+.expand {
+    cursor: pointer;
+}
+
+.ticket_filter_main {
+    margin: 35px 0 15px;
+}
+
+.arrival_time {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.departure {
+    margin-bottom: 25px;
 }

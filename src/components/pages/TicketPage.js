@@ -1,11 +1,21 @@
 import React from "react";
 import HeaderMenu from "../elements/HeaderMenu";
 import HeaderTickets from "../elements/HeaderTickets";
+import TicketsFilter from '../elements/TicketPage/TicketsFilter';
 
 import { withRouter } from "react-router-dom";
 
+const ArrowBlock = () => {
+  return (
+    <div className="arrow-2">
+      <div className="arrow-2-top"></div>
+      <div className="arrow-2-bottom"></div>
+    </div>
+  );
+};
+
 const TicketPage = (props) => {
-  console.log(props.history.location.state.data);
+  // console.log(props.history.location.state.data);
 
   return (
     <>
@@ -16,26 +26,45 @@ const TicketPage = (props) => {
       </div>
       <div className="ticket_line">
         <div className="ticket_line__block first done">
-          <img src='/assets/line_assets/one.png' alt='one' className='line_number' />
+          <img
+            src="/assets/line_assets/one.png"
+            alt="one"
+            className="line_number"
+          />
           <p>Билеты</p>
-          <img src='/assets/line_assets/arrow.png' alt='arrow' className='line_arrow' />
+          <ArrowBlock />
         </div>
         <div className="ticket_line__block second">
-          <img src='/assets/line_assets/two.png' alt='two' className='line_number' />
+          <img
+            src="/assets/line_assets/two.png"
+            alt="two"
+            className="line_number"
+          />
           <p>Пассажиры</p>
+
+          <ArrowBlock />
         </div>
         <div className="ticket_line__block third">
-          <img src='/assets/line_assets/three.png' alt='three' className='line_number' />
+          <img
+            src="/assets/line_assets/three.png"
+            alt="three"
+            className="line_number"
+          />
           <p>Оплата</p>
+          <ArrowBlock />
         </div>
         <div className="ticket_line__block fourth">
-          <img src='/assets/line_assets/four.png' alt='four' className='line_number' />
-          <p>Провека</p>
+          <img
+            src="/assets/line_assets/four.png"
+            alt="four"
+            className="line_number"
+          />
+          <p>Проверка</p>
         </div>
       </div>
 
       <div className="ticket_main">
-        <div className="ticket_filter"></div>
+        <TicketsFilter/>
         <div className="ticket_cards"></div>
         <div className="ticket_last-tickets"></div>
       </div>
