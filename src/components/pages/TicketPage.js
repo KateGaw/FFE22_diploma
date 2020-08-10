@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TicketsFilter from "../elements/TicketPage/TicketsFilter";
 import TicketCard from "../elements/TicketPage/TicketCard";
+import Preloader from "../elements/Preloader";
 
 import { withRouter } from "react-router-dom";
 import api from "../../utils/api";
@@ -41,7 +42,7 @@ const TicketPage = (props) => {
     price_from: 500,
     price_to: 7000,
     limit: 5,
-    sort: 'date',
+    sort: "date",
   });
 
   // Получаем карточки поездов
@@ -91,22 +92,25 @@ const TicketPage = (props) => {
         </div>
       </div>
 
-      <div className="tickets_main">
-        <TicketsFilter info={info} setInfo={setInfo} />
+      {results === [] ? (
+        <Preloader />
+      ) : (
+        <div className="tickets_main">
+          <TicketsFilter info={info} setInfo={setInfo} />
+          {results.total_count > 0 ? (
+            <div className="ticket_cards">
+              <div>Найдено: {results.total_count}</div>
+              {results.items.map((item, index) => (
+                <TicketCard key={index} data={item} />
+              ))}
+            </div>
+          ) : (
+            <div>NotFound</div>
+          )}
 
-        {results.total_count > 0 ? (
-          <div className="ticket_cards">
-            <div>Найдено: {results.total_count}</div>
-            {results.items.map((item, index) => (
-              <TicketCard key={index} data={item} />
-            ))}
-          </div>
-        ) : (
-          <div>NotFound</div>
-        )}
-
-        <div className="ticket_last-tickets"></div>
-      </div>
+          <div className="ticket_last-tickets"></div>
+        </div>
+      )}
     </>
   );
 };

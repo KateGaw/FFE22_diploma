@@ -184,8 +184,8 @@ const TicketFilter = ({ info, setInfo }) => {
     }
   };
 
-  let date_start = new Date(info.date_start);
-  let date_end = new Date(info.date_end);
+  let date_start = info.date_start !== '' ? new Date(info.date_start) : '';
+  let date_end = info.date_end !== '' ? new Date(info.date_end) : '';
 
   return (
     <div className="ticket_filter">

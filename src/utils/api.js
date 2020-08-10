@@ -15,13 +15,16 @@ export default {
   },
 
   getRoutes: (info, setResults) => {
-    const start_date = moment.utc(info.date_start).format("YYYY-MM-DD");
-    const end_date = moment.utc(info.date_end).format("YYYY-MM-DD");
-
     let a = `from_city_id=${info.from_city_id}`,
       b = `&to_city_id=${info.to_city_id}`,
-      c = `&date_start=${start_date}`,
-      d = `&date_end=${end_date}`,
+      c =
+        info.date_start !== ""
+          ? `&date_start=${moment.utc(info.date_start).format("YYYY-MM-DD")}`
+          : "",
+      d =
+        info.date_end !== ""
+          ? `&date_end=${moment.utc(info.date_end).format("YYYY-MM-DD")}`
+          : "",
       e = `&start_departure_hour_from=${info.start_departure_hour_from}`,
       f = `&start_departure_hour_to=${info.start_departure_hour_to}`,
       g = `&start_arrival_hour_from=${info.start_arrival_hour_from}`,

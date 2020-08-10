@@ -55,22 +55,23 @@ const HeaderTickets = (props) => {
 
   // кнопка "найти билеты"
   const findClickHandler = () => {
-    if (
-      nameFrom !== "" &&
-      nameIn !== "" &&
-      startDate !== "" &&
-      endDate !== ""
-    ) {
+    if (nameFrom !== "" && nameIn !== "") {
       props.history.push({
         pathname: routePaths.TicketPage,
         state: {
           data: {
             name_from: nameFrom,
             name_in: nameIn,
-            date_from: moment.utc(startDate).add(1, 'day').format('YYYY-MM-DD'),
-            date_in: moment.utc(endDate).add(1, 'day').format('YYYY-MM-DD'),
+            date_from:
+              startDate !== ""
+                ? moment.utc(startDate).add(1, "day").format("YYYY-MM-DD")
+                : "",
+            date_in:
+              endDate !== ""
+                ? moment.utc(endDate).add(1, "day").format("YYYY-MM-DD")
+                : "",
             from_id: cityNamesFrom[0]._id,
-            in_id: cityNamesIn[0]._id
+            in_id: cityNamesIn[0]._id,
           },
         },
       });
@@ -125,7 +126,7 @@ const HeaderTickets = (props) => {
             selectsStart
             startDate={startDate}
             endDate={endDate}
-            maxDate={new Date('2018-12-31')}
+            maxDate={new Date("2018-12-31")}
             dateFormat="dd.MM.yyyy"
           />
           <DatePicker
