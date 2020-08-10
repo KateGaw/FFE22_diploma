@@ -7,10 +7,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru";
 
-import api from "../../utils/api";
+import api from "../../../utils/api";
 import Autocomplete from "react-autocomplete";
 
-import { routePaths } from "../../routePaths";
+import { routePaths } from "../../../routePaths";
 import { withRouter } from "react-router-dom";
 
 const HeaderTickets = (props) => {
@@ -69,6 +69,8 @@ const HeaderTickets = (props) => {
             name_in: nameIn,
             date_from: moment(startDate).format("DD.MM.YYYY"),
             date_in: moment(endDate).format("DD.MM.YYYY"),
+            from_id: cityNamesFrom[0]._id,
+            in_id: cityNamesIn[0]._id
           },
         },
       });
@@ -78,7 +80,7 @@ const HeaderTickets = (props) => {
   return (
     <div className="header_tickets">
       <div>
-        <h2 className='direction'>Направление</h2>
+        <h2 className="direction">Направление</h2>
         <div className="autocomplete_city_names">
           <Autocomplete
             inputProps={{ placeholder: "Откуда" }}
@@ -112,7 +114,7 @@ const HeaderTickets = (props) => {
       </div>
 
       <div>
-        <h2 className='date'>Дата</h2>
+        <h2 className="date">Дата</h2>
         <div className="datePicker_tickets_date">
           <DatePicker
             locale={ru}
@@ -140,7 +142,7 @@ const HeaderTickets = (props) => {
           />
         </div>
       </div>
-      
+
       <button className="findTickets button_orange" onClick={findClickHandler}>
         Найти билеты
       </button>

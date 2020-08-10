@@ -152,9 +152,9 @@ const DirectionTimes = (props) => {
   );
 };
 
-const TicketFilter = () => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+const TicketFilter = (props) => {  
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const [currentPriceRange, setCurrentPriceRange] = useState([500, 7000]);
 

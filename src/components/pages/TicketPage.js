@@ -1,10 +1,9 @@
-import React from "react";
-import HeaderMenu from "../elements/HeaderMenu";
-import HeaderTickets from "../elements/HeaderTickets";
-import TicketsFilter from '../elements/TicketPage/TicketsFilter';
-import TicketCards from '../elements/TicketPage/TicketCards';
+import React, { useEffect, useState } from "react";
+import TicketsFilter from "../elements/TicketPage/TicketsFilter";
+import TicketCard from "../elements/TicketPage/TicketCard";
 
 import { withRouter } from "react-router-dom";
+import api from "../../utils/api";
 
 const ArrowBlock = () => {
   return (
@@ -16,15 +15,20 @@ const ArrowBlock = () => {
 };
 
 const TicketPage = (props) => {
-  // console.log(props.history.location.state.data);
+  // console.log(props.history.location.state);
+  const [results, setResults] = useState([]);
+  const id = {
+    id_from: props.history.location.state.data.from_id,
+    id_to: props.history.location.state.data.in_id,
+  };
+
+  // Получаем карточки поездов
+  useEffect(() => {
+    api.getRoutes(id.id_from, id.id_to, setResults);
+  }, [id]);
 
   return (
     <>
-      <div className="ticket_header">
-        <div className="logo">Лого</div>
-        <HeaderMenu />
-        <HeaderTickets />
-      </div>
       <div className="ticket_line">
         <div className="ticket_line__block first done">
           <img
@@ -65,10 +69,19 @@ const TicketPage = (props) => {
       </div>
 
       <div className="tickets_main">
-        <TicketsFilter/>
-        <div className="ticket_cards">
-          <TicketCards />
-        </div>
+        <TicketsFilter />
+
+        {results.total_count > 0 ? (
+          <div className="ticket_cards">
+            <div>Найдено: {results.total_count}</div>
+            {results.items.map((item, index) => (
+              <TicketCard key={index} data={item} />
+            ))}
+          </div>
+        ) : (
+          <div>NotFound</div>
+        )}
+
         <div className="ticket_last-tickets"></div>
       </div>
     </>
