@@ -16,6 +16,7 @@ const SwitchButton = (props) => {
     switch_filters.map((item) => {
       if (item.id === props.id) {
         item.value = value;
+        props.output(item.id, value);
       }
     });
   };
@@ -152,16 +153,39 @@ const DirectionTimes = (props) => {
   );
 };
 
-const TicketFilter = (props) => {  
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+const TicketFilter = ({ info, setInfo }) => {
+  const setSwitchValue = (id, value) => {
+    switch (id) {
+      case "lux": {
+        setInfo({ ...info, have_first_class: value });
+        break;
+      }
+      case "stateroom": {
+        setInfo({ ...info, have_second_class: value });
+        break;
+      }
+      case "reservedseat": {
+        setInfo({ ...info, have_third_class: value });
+        break;
+      }
+      case "sedentary": {
+        setInfo({ ...info, have_fourth_class: value });
+        break;
+      }
+      case "wifi": {
+        setInfo({ ...info, have_wifi: value });
+        break;
+      }
+      case "express": {
+        setInfo({ ...info, have_express: value });
+        break;
+      }
+      default: break;
+    }
+  };
 
-  const [currentPriceRange, setCurrentPriceRange] = useState([500, 7000]);
-
-  const [arrivalTimeThere, setArrivalTimeThere] = useState([0, 24]);
-  const [departureTimeThere, setDepartureTimeThere] = useState([0, 24]);
-  const [arrivalTimeBack, setArrivalTimeBack] = useState([0, 24]);
-  const [departureTimeBack, setDepartureTimeBack] = useState([0, 24]);
+  let date_start = new Date(info.date_start);
+  let date_end = new Date(info.date_end);
 
   return (
     <div className="ticket_filter">
@@ -170,13 +194,13 @@ const TicketFilter = (props) => {
         <DatePicker
           locale={ru}
           placeholderText="ДД.ММ.ГГГГ"
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
+          selected={date_start}
+          onChange={(date) => setInfo({ ...info, date_start: date })}
           closeOnScroll={(e) => e.target === document}
           selectsStart
-          startDate={startDate}
-          endDate={endDate}
-          minDate={new Date()}
+          startDate={date_start}
+          endDate={date_end}
+          maxDate={new Date('2018-12-31')}
           dateFormat="dd.MM.yyyy"
         />
 
@@ -184,13 +208,13 @@ const TicketFilter = (props) => {
         <DatePicker
           locale={ru}
           placeholderText="ДД.ММ.ГГГГ"
-          selected={endDate}
-          onChange={(date) => setEndDate(date)}
+          selected={date_end}
+          onChange={(date) => setInfo({ ...info, date_end: date })}
           closeOnScroll={(e) => e.target === document}
           selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
+          startDate={date_start}
+          endDate={date_end}
+          minDate={date_start}
           dateFormat="dd.MM.yyyy"
         />
       </div>
@@ -201,7 +225,7 @@ const TicketFilter = (props) => {
               <img src={`assets/filters_icons/${item.id}.svg`} alt={item.id} />
               <p>{item.name}</p>
             </div>
-            <SwitchButton id={item.id} value={item.value} />
+            <SwitchButton id={item.id} value={item.value} output={setSwitchValue} />
           </div>
         ))}
       </div>
@@ -215,33 +239,65 @@ const TicketFilter = (props) => {
         <RangeSlider
           min={500}
           max={7000}
-          current={currentPriceRange}
-          changeCurrent={setCurrentPriceRange}
+          current={[info.price_from, info.price_to]}
+          changeCurrent={(item) =>
+            setInfo({ ...info, price_from: item[0], price_to: item[1] })
+          }
           step={100}
         />
 
         <div className="current">
-          <p className="from">{currentPriceRange[0]}</p>
-          <p className="to">{currentPriceRange[1]}</p>
+          <p className="from">{info.price_from}</p>
+          <p className="to">{info.price_to}</p>
         </div>
       </div>
 
       <DirectionTimes
         id="there"
         name="Туда"
-        departureTime={departureTimeThere}
-        setDepartureTime={setDepartureTimeThere}
-        arrivalTime={arrivalTimeThere}
-        setArrivalTime={setArrivalTimeThere}
+        departureTime={[
+          info.start_departure_hour_from,
+          info.start_departure_hour_to,
+        ]}
+        setDepartureTime={(item) =>
+          setInfo({
+            ...info,
+            start_departure_hour_from: item[0],
+            start_departure_hour_to: item[1],
+          })
+        }
+        arrivalTime={[info.start_arrival_hour_from, info.start_arrival_hour_to]}
+        setArrivalTime={(item) =>
+          setInfo({
+            ...info,
+            start_arrival_hour_from: item[0],
+            start_arrival_hour_to: item[1],
+          })
+        }
       />
 
       <DirectionTimes
         id="back"
         name="Обратно"
-        departureTime={departureTimeBack}
-        setDepartureTime={setDepartureTimeBack}
-        arrivalTime={arrivalTimeBack}
-        setArrivalTime={setArrivalTimeBack}
+        departureTime={[
+          info.end_departure_hour_from,
+          info.end_departure_hour_to,
+        ]}
+        setDepartureTime={(item) =>
+          setInfo({
+            ...info,
+            end_departure_hour_from: item[0],
+            end_departure_hour_to: item[1],
+          })
+        }
+        arrivalTime={[info.end_arrival_hour_from, info.end_arrival_hour_to]}
+        setArrivalTime={(item) =>
+          setInfo({
+            ...info,
+            end_arrival_hour_from: item[0],
+            end_arrival_hour_to: item[1],
+          })
+        }
       />
     </div>
   );

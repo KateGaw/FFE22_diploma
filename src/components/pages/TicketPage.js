@@ -15,17 +15,40 @@ const ArrowBlock = () => {
 };
 
 const TicketPage = (props) => {
-  // console.log(props.history.location.state);
   const [results, setResults] = useState([]);
-  const id = {
-    id_from: props.history.location.state.data.from_id,
-    id_to: props.history.location.state.data.in_id,
-  };
+
+  console.log(props.history.location.state.data.date_from);
+
+  const [info, setInfo] = useState({
+    from_city_id: props.history.location.state.data.from_id,
+    to_city_id: props.history.location.state.data.in_id,
+    date_start: props.history.location.state.data.date_from,
+    date_end: props.history.location.state.data.date_in,
+    start_departure_hour_from: 0,
+    start_departure_hour_to: 23,
+    start_arrival_hour_from: 0,
+    start_arrival_hour_to: 23,
+    end_departure_hour_from: 0,
+    end_departure_hour_to: 23,
+    end_arrival_hour_from: 0,
+    end_arrival_hour_to: 0,
+    have_first_class: false,
+    have_second_class: false,
+    have_third_class: false,
+    have_fourth_class: false,
+    have_wifi: false,
+    have_express: false,
+    price_from: 500,
+    price_to: 7000,
+    limit: 5,
+    sort: 'date',
+  });
 
   // Получаем карточки поездов
   useEffect(() => {
-    api.getRoutes(id.id_from, id.id_to, setResults);
-  }, [id]);
+    // console.log(info);
+    api.getRoutes(info, setResults);
+  }, [info]);
 
   return (
     <>
@@ -69,7 +92,7 @@ const TicketPage = (props) => {
       </div>
 
       <div className="tickets_main">
-        <TicketsFilter />
+        <TicketsFilter info={info} setInfo={setInfo} />
 
         {results.total_count > 0 ? (
           <div className="ticket_cards">

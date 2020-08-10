@@ -67,8 +67,8 @@ const HeaderTickets = (props) => {
           data: {
             name_from: nameFrom,
             name_in: nameIn,
-            date_from: moment(startDate).format("DD.MM.YYYY"),
-            date_in: moment(endDate).format("DD.MM.YYYY"),
+            date_from: moment.utc(startDate).add(1, 'day').format('YYYY-MM-DD'),
+            date_in: moment.utc(endDate).add(1, 'day').format('YYYY-MM-DD'),
             from_id: cityNamesFrom[0]._id,
             in_id: cityNamesIn[0]._id
           },
@@ -125,7 +125,7 @@ const HeaderTickets = (props) => {
             selectsStart
             startDate={startDate}
             endDate={endDate}
-            minDate={new Date()}
+            maxDate={new Date('2018-12-31')}
             dateFormat="dd.MM.yyyy"
           />
           <DatePicker
