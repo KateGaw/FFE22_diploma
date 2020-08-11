@@ -11,8 +11,6 @@ const TicketCard = (props) => {
     .duration(moment(date_to).diff(moment(date_from)))
     .asMilliseconds();
 
-  console.log(props.data);
-
   return (
     <div className="ticket_card">
       <div className="ticket_left">

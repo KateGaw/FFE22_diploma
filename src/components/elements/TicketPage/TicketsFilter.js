@@ -204,7 +204,7 @@ const TicketFilter = ({ info, setInfo }) => {
           dateFormat="dd.MM.yyyy"
         />
 
-        <h4>Дата возвращения</h4>
+        <h4 className='date_h4'>Дата возвращения</h4>
         <DatePicker
           locale={ru}
           placeholderText="ДД.ММ.ГГГГ"

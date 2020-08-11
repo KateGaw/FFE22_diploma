@@ -17,9 +17,6 @@ const ArrowBlock = () => {
 
 const TicketPage = (props) => {
   const [results, setResults] = useState([]);
-
-  console.log(props.history.location.state.data.date_from);
-
   const [info, setInfo] = useState({
     from_city_id: props.history.location.state.data.from_id,
     to_city_id: props.history.location.state.data.in_id,
@@ -32,7 +29,7 @@ const TicketPage = (props) => {
     end_departure_hour_from: 0,
     end_departure_hour_to: 23,
     end_arrival_hour_from: 0,
-    end_arrival_hour_to: 0,
+    end_arrival_hour_to: 23,
     have_first_class: false,
     have_second_class: false,
     have_third_class: false,
@@ -45,11 +42,36 @@ const TicketPage = (props) => {
     sort: "date",
   });
 
+  const sortValues = [
+    { id: "date", value: "дате" },
+    { id: "price_min", value: "цене" },
+    { id: "duration", value: "продолжительности" },
+  ];
+
+  const [choosenLimit, setChoosenLimit] = useState(5);
+  const limits = [{ value: 5 }, { value: 10 }, { value: 15 }];
+
   // Получаем карточки поездов
   useEffect(() => {
     // console.log(info);
     api.getRoutes(info, setResults);
   }, [info]);
+
+  const handleChange = (event) => {
+    console.log(event.target.value);
+    setInfo({
+      ...info,
+      sort: event.target.value,
+    });
+  };
+
+  const handleClickNumber = (event) => {
+    setChoosenLimit(event.target.id);
+    setInfo({
+      ...info,
+      limit: event.target.id,
+    });
+  };
 
   return (
     <>
@@ -99,7 +121,38 @@ const TicketPage = (props) => {
           <TicketsFilter info={info} setInfo={setInfo} />
           {results.total_count > 0 ? (
             <div className="ticket_cards">
-              <div>Найдено: {results.total_count}</div>
+              <div className="tickets_top_filters">
+                <div className="find_items">найдено {results.total_count}</div>
+                <div className="filters_top_right">
+                  <div className="sort_items">
+                    сортировать по:
+                    <select value={info.sort} onChange={handleChange}>
+                      {sortValues.map((item) => (
+                        <option value={item.id} key={item.id}>
+                          {item.value}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="show_items">
+                    <p>показывать по:</p>
+                    {limits.map((item) => (
+                      <p
+                        key={item.value}
+                        id={item.value}
+                        className={
+                          Number(choosenLimit) === item.value
+                            ? "show_items__number active"
+                            : "show_items__number"
+                        }
+                        onClick={handleClickNumber}
+                      >
+                        {item.value}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </div>
               {results.items.map((item, index) => (
                 <TicketCard key={index} data={item} />
               ))}

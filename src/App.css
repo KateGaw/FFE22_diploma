@@ -3,6 +3,12 @@
     font-style: normal;
 }
 
+*,
+*:hover,
+*:active {
+    outline: none;
+}
+
 button {
     border: 1px solid #ffffff;
     border-radius: 5px;
@@ -15,6 +21,15 @@ button {
 
 .hidden {
     display: none;
+}
+
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
+    background-color: rgba(255, 168, 0, 0.31)!important;
+    color: black!important;
+    border: 2px solid #ffa800;
 }
 
 
@@ -336,7 +351,7 @@ h3 {
     cursor: pointer;
 }
 
-.react-datepicker-popper {
+.header_tickets .react-datepicker-popper {
     top: 200px !important;
 }
 
@@ -562,6 +577,7 @@ h3 {
 .ticket_filter {
     background-color: #3e3c41;
     width: 300px;
+    height: 100%;
     color: #ffffff;
     margin-left: 100px;
 }
@@ -575,8 +591,8 @@ h3 {
     width: 230px;
 }
 
-.ticket_filter__date div:nth-child(odd) {
-    margin-bottom: 30px;
+.ticket_filter__date .date_h4 {
+    margin-top: 30px;
 }
 
 .ticket_filter h4 {
@@ -684,6 +700,7 @@ h3 {
     width: 830px;
     height: 300px;
     display: flex;
+    margin: 30px 0;
 }
 
 .ticket_left {
@@ -735,19 +752,11 @@ h3 {
     margin: 30px 10px;
 }
 
-.train_back {}
-
-.train_start {}
-
-.train__end {}
-
 .train__time {
     font-weight: bold;
     font-size: 24px;
     line-height: 28px;
 }
-
-.train__city {}
 
 .train__station {
     color: #928f94;
@@ -799,5 +808,42 @@ h3 {
 .chooseSeat {
     font-size: 14px;
     line-height: 28px;
-    color: #FFFFFF;
+    color: #ffffff;
+}
+
+
+/* tickets_top_filters */
+
+.tickets_top_filters {
+    color: #928f94;
+}
+
+.find_items {
+    float: left;
+}
+
+.filters_top_right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sort_items select {
+    border: none;
+    outline: none;
+}
+
+.show_items {
+    display: contents;
+}
+
+.show_items .show_items__number {
+    cursor: pointer;
+}
+
+.show_items p {
+    margin: 0 4px;
+}
+
+.active {
+    color: black;
 }
