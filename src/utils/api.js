@@ -14,7 +14,7 @@ export default {
       });
   },
 
-  getRoutes: (info, setResults) => {
+  getRoutes: (info, setResults, setIsLoading) => {
     let a = `from_city_id=${info.from_city_id}`,
       b = `&to_city_id=${info.to_city_id}`,
       c =
@@ -55,18 +55,22 @@ export default {
       s = `&price_from=${info.price_from}`,
       t = `&price_to=${info.price_to}`,
       u = `&limit=${info.limit}`,
-      v = `&sort=${info.sort}`;
+      v = `&sort=${info.sort}`,
+      w = `&offset=${info.offset}`;
+
+    setIsLoading(true);
 
     return axios
       .get(
-        `/routes?${a}${b}${c}${d}${e}${f}${g}${h}${i}${j}${k}${l}${m}${n}${o}${p}${q}${r}${s}${t}${u}${v}`
+        `/routes?${a}${b}${c}${d}${e}${f}${g}${h}${i}${j}${k}${l}${m}${n}${o}${p}${q}${r}${s}${t}${u}${v}${w}`
       )
       .then((response) => {
         setResults(response.data);
-        // console.log(response);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setIsLoading(false);
       });
   },
 };

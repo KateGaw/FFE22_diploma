@@ -11,6 +11,12 @@ const TicketCard = (props) => {
     .duration(moment(date_to).diff(moment(date_from)))
     .asMilliseconds();
 
+  const chooseSeatClickHandler = (event) => {
+    console.log(event.target.id);
+    console.log(props.data);
+    props.setStep(2);
+  };
+
   return (
     <div className="ticket_card">
       <div className="ticket_left">
@@ -81,60 +87,66 @@ const TicketCard = (props) => {
         </div>
       </div>
       <div className="ticket_right">
-          {props.data.departure.have_first_class && (
-            <div className="ticket_seat_variants">
-              <div className="seat_type">Люкс</div>
-              <div className="seat_quantity">
-                {props.data.departure.available_seats_info.first}
-              </div>
-              <div className="seat_price">
-                от &nbsp;
-                <p>{props.data.departure.price_info.first.top_price}</p>&nbsp;
-                <img src="assets/train_cards/price.svg" alt="price" />
-              </div>
+        {props.data.departure.have_first_class && (
+          <div className="ticket_seat_variants">
+            <div className="seat_type">Люкс</div>
+            <div className="seat_quantity">
+              {props.data.departure.available_seats_info.first}
             </div>
-          )}
-          {props.data.departure.have_second_class && (
-            <div className="ticket_seat_variants">
-              <div className="seat_type">Купе</div>
-              <div className="seat_quantity">
-                {props.data.departure.available_seats_info.second}
-              </div>
-              <div className="seat_price">
-                от &nbsp;
-                <p>{props.data.departure.price_info.second.top_price}</p>&nbsp;
-                <img src="assets/train_cards/price.svg" alt="price" />
-              </div>
+            <div className="seat_price">
+              от &nbsp;
+              <p>{props.data.departure.price_info.first.top_price}</p>&nbsp;
+              <img src="assets/train_cards/price.svg" alt="price" />
             </div>
-          )}
-          {props.data.departure.have_third_class && (
-            <div className="ticket_seat_variants">
-              <div className="seat_type">Плацкарт</div>
-              <div className="seat_quantity">
-                {props.data.departure.available_seats_info.third}
-              </div>
-              <div className="seat_price">
-                от &nbsp;
-                <p>{props.data.departure.price_info.third.top_price}</p>&nbsp;
-                <img src="assets/train_cards/price.svg" alt="price" />
-              </div>
+          </div>
+        )}
+        {props.data.departure.have_second_class && (
+          <div className="ticket_seat_variants">
+            <div className="seat_type">Купе</div>
+            <div className="seat_quantity">
+              {props.data.departure.available_seats_info.second}
             </div>
-          )}
-          {props.data.departure.have_fourth_class && (
-            <div className="ticket_seat_variants">
-              <div className="seat_type">Сидячий</div>
-              <div className="seat_quantity">
-                {props.data.departure.available_seats_info.fourth}
-              </div>
-              <div className="seat_price">
-                от &nbsp;
-                <p>{props.data.departure.price_info.fourth.top_price}</p>&nbsp;
-                <img src="assets/train_cards/price.svg" alt="price" />
-              </div>
+            <div className="seat_price">
+              от &nbsp;
+              <p>{props.data.departure.price_info.second.top_price}</p>&nbsp;
+              <img src="assets/train_cards/price.svg" alt="price" />
             </div>
-          )}
+          </div>
+        )}
+        {props.data.departure.have_third_class && (
+          <div className="ticket_seat_variants">
+            <div className="seat_type">Плацкарт</div>
+            <div className="seat_quantity">
+              {props.data.departure.available_seats_info.third}
+            </div>
+            <div className="seat_price">
+              от &nbsp;
+              <p>{props.data.departure.price_info.third.top_price}</p>&nbsp;
+              <img src="assets/train_cards/price.svg" alt="price" />
+            </div>
+          </div>
+        )}
+        {props.data.departure.have_fourth_class && (
+          <div className="ticket_seat_variants">
+            <div className="seat_type">Сидячий</div>
+            <div className="seat_quantity">
+              {props.data.departure.available_seats_info.fourth}
+            </div>
+            <div className="seat_price">
+              от &nbsp;
+              <p>{props.data.departure.price_info.fourth.top_price}</p>&nbsp;
+              <img src="assets/train_cards/price.svg" alt="price" />
+            </div>
+          </div>
+        )}
         <img src="assets/train_cards/icons.png" alt="icons" />
-        <button className="chooseSeat button_orange">Выбрать места</button>
+        <button
+          className="chooseSeat button_orange"
+          onClick={chooseSeatClickHandler}
+          id={props.data.departure._id}
+        >
+          Выбрать места
+        </button>
       </div>
     </div>
   );

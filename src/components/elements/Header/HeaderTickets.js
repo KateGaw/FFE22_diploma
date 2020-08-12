@@ -16,11 +16,30 @@ import { withRouter } from "react-router-dom";
 const HeaderTickets = (props) => {
   const [cityNamesFrom, setCityNamesFrom] = useState([]);
   const [cityNamesIn, setCityNamesIn] = useState([]);
-  const [nameFrom, setNameFrom] = useState("");
-  const [nameIn, setNameIn] = useState("");
+  const [nameFrom, setNameFrom] = useState(
+    props.history.location.state
+      ? props.history.location.state.data.name_from
+      : ""
+  );
+  const [nameIn, setNameIn] = useState(
+    props.history.location.state
+      ? props.history.location.state.data.name_in
+      : ""
+  );
 
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  let date_start = props.history.location.state
+    ? props.history.location.state.data.date_from
+    : "";
+  let date_end = props.history.location.state
+    ? props.history.location.state.data.date_in
+    : "";
+
+  const [startDate, setStartDate] = useState(
+    date_start !== "" ? new Date(date_start) : ""
+  );
+  const [endDate, setEndDate] = useState(
+    date_end !== "" ? new Date(date_end) : ""
+  );
 
   // Получаем списки городов в зависимости от набранного слова
   useEffect(() => {
@@ -64,12 +83,10 @@ const HeaderTickets = (props) => {
             name_in: nameIn,
             date_from:
               startDate !== ""
-                ? moment.utc(startDate).add(1, "day").format("YYYY-MM-DD")
+                ? moment.utc(startDate).format("YYYY-MM-DD")
                 : "",
             date_in:
-              endDate !== ""
-                ? moment.utc(endDate).add(1, "day").format("YYYY-MM-DD")
-                : "",
+              endDate !== "" ? moment.utc(endDate).format("YYYY-MM-DD") : "",
             from_id: cityNamesFrom[0]._id,
             in_id: cityNamesIn[0]._id,
           },

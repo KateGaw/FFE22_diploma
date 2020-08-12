@@ -27,9 +27,15 @@ button {
 .react-datepicker__month-text--keyboard-selected,
 .react-datepicker__quarter-text--keyboard-selected,
 .react-datepicker__year-text--keyboard-selected {
-    background-color: rgba(255, 168, 0, 0.31)!important;
-    color: black!important;
+    background-color: rgba(255, 168, 0, 0.31) !important;
+    color: black !important;
     border: 2px solid #ffa800;
+}
+
+.preloader {
+    display: flex;
+    background-color: #3e3c41;
+    justify-content: center;
 }
 
 
@@ -464,7 +470,6 @@ h3 {
     justify-content: space-around;
     height: 82px;
     align-items: center;
-    margin-bottom: 95px;
 }
 
 .done {
@@ -580,6 +585,7 @@ h3 {
     height: 100%;
     color: #ffffff;
     margin-left: 100px;
+    margin-bottom: 50px;
 }
 
 .filter_block {
@@ -690,6 +696,11 @@ h3 {
 .tickets_main {
     display: flex;
     justify-content: space-between;
+    margin-top: 95px;
+}
+
+.ticket_cards {
+    max-width: 830px;
 }
 
 .ticket_card {
@@ -829,7 +840,18 @@ h3 {
 
 .sort_items select {
     border: none;
+    background-color: rgb(251, 249, 249);
     outline: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+.sort_items select:hover {
+    cursor: pointer;
+}
+
+.sort_items .select::-ms-expand {
+    display: none;
 }
 
 .show_items {
@@ -847,3 +869,86 @@ h3 {
 .active {
     color: black;
 }
+
+
+/* PAGINATION */
+
+.pagination_block {
+    margin: 10px 0 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn {
+    border: 2px solid #c4c4c4;
+    border-radius: 5px;
+    width: 60px;
+    height: 50px;
+    padding: 10px;
+    margin: 0 5px;
+}
+
+.button_page:hover {
+    border: 2px solid #FFA800;
+    color: #FFA800;
+}
+
+.button_page {
+    color: #928f94;
+}
+
+.active_btn,
+.active_btn:hover {
+    color: #ffffff;
+    background: #ffa800;
+    border-color: #ffa800;
+}
+
+
+/* TRAIN TICKET */
+
+.ticket_info_block {}
+
+.train_ticket {}
+
+.ticket_top-buttons {}
+
+.chooseOther {}
+
+.ticket_top-info {}
+
+.info_train {}
+
+.info_time {}
+
+.ticket_count {}
+
+.ticket_count-blocks {}
+
+.ticket_count-block {}
+
+.ticket_type {}
+
+.ticekt_type-blocks {}
+
+.type_block {}
+
+.type_block-text {}
+
+.ticket_footer {}
+
+.ticket_footer-head {}
+
+.ticket_footer-main {}
+
+.chosen_block {}
+
+.seats {}
+
+.cost {}
+
+.services {}
+
+.image_p {}
+
+.train_picture {}
