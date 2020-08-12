@@ -8,6 +8,8 @@ import Switch from "react-switch";
 import { useRanger } from "react-ranger";
 import styled from "styled-components";
 
+import { addItem, getItemsArray } from "../../../utils/localStorage";
+
 const SwitchButton = (props) => {
   const [checked, setChecked] = useState(props.value);
   const handleChange = (value) => {
@@ -153,39 +155,48 @@ const DirectionTimes = (props) => {
   );
 };
 
-const TicketFilter = ({ info, setInfo }) => {
+const TicketFilter = (props) => {
+  const [info, setInfo] = useState(getItemsArray());
+
   const setSwitchValue = (id, value) => {
     switch (id) {
       case "lux": {
-        setInfo({ ...info, have_first_class: value });
+        changeItem("have_first_class", value);
         break;
       }
       case "stateroom": {
-        setInfo({ ...info, have_second_class: value });
+        changeItem("have_second_class", value);
         break;
       }
       case "reservedseat": {
-        setInfo({ ...info, have_third_class: value });
+        changeItem("have_third_class", value);
         break;
       }
       case "sedentary": {
-        setInfo({ ...info, have_fourth_class: value });
+        changeItem("have_fourth_class", value);
         break;
       }
       case "wifi": {
-        setInfo({ ...info, have_wifi: value });
+        changeItem("have_wifi", value);
         break;
       }
       case "express": {
-        setInfo({ ...info, have_express: value });
+        changeItem("have_express", value);
         break;
       }
-      default: break;
+      default:
+        break;
     }
   };
 
-  let date_start = info.date_start !== '' ? new Date(info.date_start) : '';
-  let date_end = info.date_end !== '' ? new Date(info.date_end) : '';
+  const changeItem = (key, value) => {
+    addItem(key, value);
+    setInfo(getItemsArray());
+    props.setInfoPage(getItemsArray());
+  };
+
+  let date_start = info.date_start !== "" ? new Date(info.date_start) : "";
+  let date_end = info.date_end !== "" ? new Date(info.date_end) : "";
 
   return (
     <div className="ticket_filter">
@@ -195,21 +206,21 @@ const TicketFilter = ({ info, setInfo }) => {
           locale={ru}
           placeholderText="ДД.ММ.ГГГГ"
           selected={date_start}
-          onChange={(date) => setInfo({ ...info, date_start: date })}
+          onChange={(date) => changeItem("date_start", date)}
           closeOnScroll={(e) => e.target === document}
           selectsStart
           startDate={date_start}
           endDate={date_end}
-          maxDate={new Date('2018-12-31')}
+          maxDate={new Date("2018-12-31")}
           dateFormat="dd.MM.yyyy"
         />
 
-        <h4 className='date_h4'>Дата возвращения</h4>
+        <h4 className="date_h4">Дата возвращения</h4>
         <DatePicker
           locale={ru}
           placeholderText="ДД.ММ.ГГГГ"
           selected={date_end}
-          onChange={(date) => setInfo({ ...info, date_end: date })}
+          onChange={(date) => changeItem("date_end", date)}
           closeOnScroll={(e) => e.target === document}
           selectsEnd
           startDate={date_start}
@@ -225,7 +236,11 @@ const TicketFilter = ({ info, setInfo }) => {
               <img src={`assets/filters_icons/${item.id}.svg`} alt={item.id} />
               <p>{item.name}</p>
             </div>
-            <SwitchButton id={item.id} value={item.value} output={setSwitchValue} />
+            <SwitchButton
+              id={item.id}
+              value={item.value}
+              output={setSwitchValue}
+            />
           </div>
         ))}
       </div>
@@ -240,9 +255,10 @@ const TicketFilter = ({ info, setInfo }) => {
           min={500}
           max={7000}
           current={[info.price_from, info.price_to]}
-          changeCurrent={(item) =>
-            setInfo({ ...info, price_from: item[0], price_to: item[1] })
-          }
+          changeCurrent={(item) => {
+            changeItem("price_from", item[0]);
+            changeItem("price_to", item[1]);
+          }}
           step={100}
         />
 
@@ -259,21 +275,15 @@ const TicketFilter = ({ info, setInfo }) => {
           info.start_departure_hour_from,
           info.start_departure_hour_to,
         ]}
-        setDepartureTime={(item) =>
-          setInfo({
-            ...info,
-            start_departure_hour_from: item[0],
-            start_departure_hour_to: item[1],
-          })
-        }
+        setDepartureTime={(item) => {
+          changeItem("start_departure_hour_from", item[0]);
+          changeItem("start_departure_hour_to", item[1]);
+        }}
         arrivalTime={[info.start_arrival_hour_from, info.start_arrival_hour_to]}
-        setArrivalTime={(item) =>
-          setInfo({
-            ...info,
-            start_arrival_hour_from: item[0],
-            start_arrival_hour_to: item[1],
-          })
-        }
+        setArrivalTime={(item) => {
+          changeItem("start_arrival_hour_from", item[0]);
+          changeItem("start_arrival_hour_to", item[1]);
+        }}
       />
 
       <DirectionTimes
@@ -283,21 +293,15 @@ const TicketFilter = ({ info, setInfo }) => {
           info.end_departure_hour_from,
           info.end_departure_hour_to,
         ]}
-        setDepartureTime={(item) =>
-          setInfo({
-            ...info,
-            end_departure_hour_from: item[0],
-            end_departure_hour_to: item[1],
-          })
-        }
+        setDepartureTime={(item) => {
+          changeItem("end_departure_hour_from", item[0]);
+          changeItem("end_departure_hour_to", item[1]);
+        }}
         arrivalTime={[info.end_arrival_hour_from, info.end_arrival_hour_to]}
-        setArrivalTime={(item) =>
-          setInfo({
-            ...info,
-            end_arrival_hour_from: item[0],
-            end_arrival_hour_to: item[1],
-          })
-        }
+        setArrivalTime={(item) => {
+          changeItem("end_arrival_hour_from", item[0]);
+          changeItem("end_arrival_hour_to", item[1]);
+        }}
       />
     </div>
   );

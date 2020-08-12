@@ -13,33 +13,15 @@ import Autocomplete from "react-autocomplete";
 import { routePaths } from "../../../routePaths";
 import { withRouter } from "react-router-dom";
 
+import { addItem } from "../../../utils/localStorage";
+
 const HeaderTickets = (props) => {
   const [cityNamesFrom, setCityNamesFrom] = useState([]);
   const [cityNamesIn, setCityNamesIn] = useState([]);
-  const [nameFrom, setNameFrom] = useState(
-    props.history.location.state
-      ? props.history.location.state.data.name_from
-      : ""
-  );
-  const [nameIn, setNameIn] = useState(
-    props.history.location.state
-      ? props.history.location.state.data.name_in
-      : ""
-  );
-
-  let date_start = props.history.location.state
-    ? props.history.location.state.data.date_from
-    : "";
-  let date_end = props.history.location.state
-    ? props.history.location.state.data.date_in
-    : "";
-
-  const [startDate, setStartDate] = useState(
-    date_start !== "" ? new Date(date_start) : ""
-  );
-  const [endDate, setEndDate] = useState(
-    date_end !== "" ? new Date(date_end) : ""
-  );
+  const [nameFrom, setNameFrom] = useState("");
+  const [nameIn, setNameIn] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   // Получаем списки городов в зависимости от набранного слова
   useEffect(() => {
@@ -75,23 +57,43 @@ const HeaderTickets = (props) => {
   // кнопка "найти билеты"
   const findClickHandler = () => {
     if (nameFrom !== "" && nameIn !== "") {
-      props.history.push({
-        pathname: routePaths.TicketPage,
-        state: {
-          data: {
-            name_from: nameFrom,
-            name_in: nameIn,
-            date_from:
-              startDate !== ""
-                ? moment.utc(startDate).format("YYYY-MM-DD")
-                : "",
-            date_in:
-              endDate !== "" ? moment.utc(endDate).format("YYYY-MM-DD") : "",
-            from_id: cityNamesFrom[0]._id,
-            in_id: cityNamesIn[0]._id,
-          },
-        },
-      });
+      addItem("name_from", nameFrom);
+      addItem("name_in", nameIn);
+      addItem(
+        "date_start",
+        startDate !== ""
+          ? moment.utc(startDate).add(1, "day").format("YYYY-MM-DD")
+          : ""
+      );
+      addItem(
+        "date_end",
+        endDate !== ""
+          ? moment.utc(endDate).add(1, "day").format("YYYY-MM-DD")
+          : ""
+      );
+      addItem("from_city_id", cityNamesFrom[0]._id);
+      addItem("to_city_id", cityNamesIn[0]._id);
+      addItem("start_departure_hour_from", 0);
+      addItem("start_departure_hour_to", 23);
+      addItem("start_arrival_hour_from", 0);
+      addItem("start_arrival_hour_to", 23);
+      addItem("end_departure_hour_from", 0);
+      addItem("end_departure_hour_to", 23);
+      addItem("end_arrival_hour_from", 0);
+      addItem("end_arrival_hour_to", 23);
+      addItem("have_first_class", false);
+      addItem("have_second_class", false);
+      addItem("have_third_class", false);
+      addItem("have_fourth_class", false);
+      addItem("have_wifi", false);
+      addItem("have_express", false);
+      addItem("price_from", 500);
+      addItem("price_to", 7000);
+      addItem("limit", 5);
+      addItem("sort", "date");
+      addItem("offset", 0);
+
+      props.history.push(routePaths.TicketPage);
     }
   };
 

@@ -1,6 +1,9 @@
 import React from "react";
 import moment from "moment";
 
+import { routePaths } from "../../../routePaths";
+import { withRouter } from "react-router-dom";
+
 const TicketCard = (props) => {
   const date_from = moment
     .unix(props.data.departure.from.datetime)
@@ -12,9 +15,12 @@ const TicketCard = (props) => {
     .asMilliseconds();
 
   const chooseSeatClickHandler = (event) => {
-    console.log(event.target.id);
-    console.log(props.data);
-    props.setStep(2);
+    // console.log(event.target.id);
+    // console.log(props.data);
+    props.history.push({
+      pathname: routePaths.TicketPage,
+      hash: "seats",
+    });
   };
 
   return (
@@ -152,4 +158,4 @@ const TicketCard = (props) => {
   );
 };
 
-export default TicketCard;
+export default withRouter(TicketCard);
