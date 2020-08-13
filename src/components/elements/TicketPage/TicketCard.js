@@ -4,6 +4,8 @@ import moment from "moment";
 import { routePaths } from "../../../routePaths";
 import { withRouter } from "react-router-dom";
 
+import { addItem } from "../../../utils/localStorage";
+
 const TicketCard = (props) => {
   const date_from = moment
     .unix(props.data.departure.from.datetime)
@@ -14,13 +16,9 @@ const TicketCard = (props) => {
     .duration(moment(date_to).diff(moment(date_from)))
     .asMilliseconds();
 
-  const chooseSeatClickHandler = (event) => {
-    // console.log(event.target.id);
-    // console.log(props.data);
-    props.history.push({
-      pathname: routePaths.TicketPage,
-      hash: "seats",
-    });
+  const chooseSeatClickHandler = () => {
+    addItem('ticket_data', JSON.stringify(props.data));
+    props.history.push(routePaths.SeatsPage);
   };
 
   return (

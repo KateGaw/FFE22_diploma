@@ -15,7 +15,7 @@ const SwitchButton = (props) => {
   const handleChange = (value) => {
     setChecked(value);
     // eslint-disable-next-line
-    switch_filters.map((item) => {
+    props.switch_filters.map((item) => {
       if (item.id === props.id) {
         item.value = value;
         props.output(item.id, value);
@@ -81,15 +81,6 @@ const RangeSlider = (props) => {
     </>
   );
 };
-
-const switch_filters = [
-  { id: "stateroom", name: "Купе", value: false },
-  { id: "reservedseat", name: "Плацкарт", value: false },
-  { id: "sedentary", name: "Сидячий", value: false },
-  { id: "lux", name: "Люкс", value: false },
-  { id: "wifi", name: "Wi-Fi", value: false },
-  { id: "express", name: "Экспресс", value: false },
-];
 
 const DirectionTimes = (props) => {
   const [expandSrc, setExpandSrc] = useState("assets/filters_icons/expand.svg");
@@ -158,29 +149,38 @@ const DirectionTimes = (props) => {
 const TicketFilter = (props) => {
   const [info, setInfo] = useState(getItemsArray());
 
+  const switch_filters = [
+    { id: "have_second_class", name: "Купе", value: info.have_second_class === 'true' ? true : false },
+    { id: "have_third_class", name: "Плацкарт", value: info.have_third_class === 'true' ? true : false },
+    { id: "have_fourth_class", name: "Сидячий", value: info.have_fourth_class === 'true' ? true : false },
+    { id: "have_first_class", name: "Люкс", value: info.have_first_class === 'true' ? true : false },
+    { id: "have_wifi", name: "Wi-Fi", value: info.have_wifi === 'true' ? true : false },
+    { id: "have_express", name: "Экспресс", value: info.have_express === 'true' ? true : false },
+  ];
+
   const setSwitchValue = (id, value) => {
     switch (id) {
-      case "lux": {
+      case "have_first_class": {
         changeItem("have_first_class", value);
         break;
       }
-      case "stateroom": {
+      case "have_second_class": {
         changeItem("have_second_class", value);
         break;
       }
-      case "reservedseat": {
+      case "have_third_class": {
         changeItem("have_third_class", value);
         break;
       }
-      case "sedentary": {
+      case "have_fourth_class": {
         changeItem("have_fourth_class", value);
         break;
       }
-      case "wifi": {
+      case "have_wifi": {
         changeItem("have_wifi", value);
         break;
       }
-      case "express": {
+      case "have_express": {
         changeItem("have_express", value);
         break;
       }
@@ -240,6 +240,7 @@ const TicketFilter = (props) => {
               id={item.id}
               value={item.value}
               output={setSwitchValue}
+              switch_filters={switch_filters}
             />
           </div>
         ))}

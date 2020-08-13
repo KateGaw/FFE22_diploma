@@ -5,7 +5,10 @@
 
 *,
 *:hover,
-*:active {
+*:active,
+*:focus,
+*:active:focus,
+button:focus {
     outline: none;
 }
 
@@ -36,6 +39,16 @@ button {
     display: flex;
     background-color: #3e3c41;
     justify-content: center;
+}
+
+select {
+    outline: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+p {
+    margin: 0;
 }
 
 
@@ -754,6 +767,7 @@ h3 {
 
 .train_path {
     font-size: 15px;
+    text-transform: capitalize;
 }
 
 .train_there,
@@ -761,6 +775,7 @@ h3 {
     display: flex;
     justify-content: space-between;
     margin: 30px 10px;
+    text-transform: capitalize;
 }
 
 .train__time {
@@ -772,6 +787,7 @@ h3 {
 .train__station {
     color: #928f94;
     font-size: 15px;
+    text-transform: initial;
 }
 
 .train__arrow {
@@ -841,9 +857,6 @@ h3 {
 .sort_items select {
     border: none;
     background-color: rgb(251, 249, 249);
-    outline: none;
-    -moz-appearance: none;
-    -webkit-appearance: none;
 }
 
 .sort_items select:hover {
@@ -889,8 +902,8 @@ h3 {
 }
 
 .button_page:hover {
-    border: 2px solid #FFA800;
-    color: #FFA800;
+    border: 2px solid #ffa800;
+    color: #ffa800;
 }
 
 .button_page {
@@ -907,48 +920,302 @@ h3 {
 
 /* TRAIN TICKET */
 
-.ticket_info_block {}
+.ticket_top-buttons {
+    display: flex;
+    margin-bottom: 30px;
+}
 
-.train_ticket {}
+.ticket_top-buttons img {
+    margin-right: 10px;
+}
 
-.ticket_top-buttons {}
+.chooseOther {
+    border: 1px solid #292929;
+    color: #292929;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 7px 20px;
+}
 
-.chooseOther {}
+.ticket_top-info {
+    background: #f7f6f6;
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+}
 
-.ticket_top-info {}
+.ticket_top-info .train_icon {
+    padding: 0 10px;
+}
 
-.info_train {}
+.info_train {
+    padding: 0 20px;
+}
 
-.info_time {}
+.ticket_top-info .train_there {
+    padding: 0 35px;
+}
 
-.ticket_count {}
+.info_train .train_number {
+    margin: 8px 0;
+    text-align: left;
+}
 
-.ticket_count-blocks {}
+.ticket_top-info .train_start,
+.ticket_top-info .train__end {
+    padding: 0 25px;
+}
 
-.ticket_count-block {}
+.ticket_top-info .train__arrow {
+    padding: 24px 40px;
+}
 
-.ticket_type {}
+.info_time {
+    display: flex;
+    align-items: center;
+    width: 120px;
+}
 
-.ticekt_type-blocks {}
+.info_time p {
+    margin: 0 10px;
+}
 
-.type_block {}
+.ticket_count h4 {
+    padding: 20px 0;
+}
 
-.type_block-text {}
+.ticket_count-blocks {
+    display: flex;
+}
 
-.ticket_footer {}
+.ticket_count-block {
+    width: 33%;
+    padding: 20px;
+}
 
-.ticket_footer-head {}
+.ticket_count-block:nth-child(1) {
+    background: #f7f6f6;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+}
 
-.ticket_footer-main {}
+.ticket_count-block:nth-child(2) {
+    border: 1px solid rgba(255, 168, 0, 0.79);
+}
 
-.chosen_block {}
+.ticket_count-block select {
+    padding: 10px;
+    background: #ffffff;
+    border: 1px solid #928f94;
+    box-sizing: border-box;
+    border-radius: 5px;
+    width: 100%;
+}
 
-.seats {}
+.ticket_count-block:nth-child(1) p {
+    margin: 28px 20px 0 0;
+    color: #000000;
+}
 
-.cost {}
+.ticket_count-block:nth-child(2) p {
+    margin: 28px 20px 0 0;
+    color: #928f94;
+}
 
-.services {}
+.ticket_type {
+    margin: 28px 0;
+    border-top: 1px dashed #c4c4c4;
+}
 
-.image_p {}
+.ticket_type h4 {
+    margin: 30px 20px;
+}
 
-.train_picture {}
+.ticekt_type-blocks {
+    display: flex;
+    justify-content: space-around;
+}
+
+.type_block div svg {
+    width: 100px;
+    height: 75px;
+}
+
+.type_block-text {
+    cursor: pointer;
+    text-align: center;
+    color: #928f94;
+    font-size: 21px;
+    margin: 10px 0;
+}
+
+.type_block:hover .type_block-text,
+.ticekt_type-blocks .active .type_block-text {
+    color: #ffa800;
+}
+
+.type_block:hover div svg path,
+.ticekt_type-blocks .active div svg path {
+    fill: #ffa800;
+}
+
+.ticket_footer-head {
+    background: rgba(255, 168, 0, 0.44);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10px;
+}
+
+.ticket_footer-head div {
+    display: flex;
+}
+
+.ticket_footer-head div .active {
+    color: white;
+    font-weight: bold;
+}
+
+.ticket_footer-head div .non-active {
+    color: black;
+    font-weight: bold;
+}
+
+.ticket_footer-head div p {
+    margin: 0 5px;
+}
+
+.ticket_footer-main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chosen_block {
+    width: 17%;
+    background: #FFD98F;
+    padding: 20px;
+    line-height: 28px;
+    color: #292929;
+    font-size: 24px;
+}
+
+.chosen_block p:nth-child(1) {
+    font-weight: bold;
+    font-size: 72px;
+    line-height: 84px;
+}
+
+.seats_and_cost {
+    display: contents;
+}
+
+.seats {
+    padding: 40px;
+    width: 200px;
+}
+
+.head {
+    color: #928F94;
+}
+
+.seat {
+    font-size: 20px;
+}
+
+.place_total {
+    margin-left: 8px;
+    color: black;
+}
+
+.place_count {
+    margin-left: 8px;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.place_count img {
+    margin-left: 7px;
+}
+
+.seats div,
+.prices div {
+    display: flex;
+    margin: 10px 0;
+}
+
+.prices {
+    padding: 40px;
+}
+
+.services {
+    padding: 40px;
+}
+
+.services p {
+    color: #928F94;
+    margin: 0 12px 15px;
+}
+
+.services_icons {
+    display: flex;
+}
+
+.services_icons button {
+    margin: 0 8px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.services_icons button svg {
+    border: 1px solid #292929;
+    border-radius: 5px;
+    padding: 4px;
+    width: 30px;
+    height: 30px;
+}
+
+.services_icons button:hover svg {
+    background: #FFA800;
+}
+
+.services_icons .choosen svg {
+    border: none;
+    background: #FDB935;
+}
+
+.services_icons .choosen svg path {
+    fill: white;
+}
+
+.services_icons .non-active {
+    cursor: auto;
+}
+
+.services_icons .non-active:hover svg {
+    background: #FCDC9D;
+}
+
+.services_icons .non-active svg {
+    background: #FCDC9D;
+    border: none;
+}
+
+.services_icons .non-active svg path {
+    fill: #928F94;
+}
+
+.image_p {
+    width: 200px;
+    background: #F3F3F3;
+    border-radius: 5px;
+    text-align: center;
+    margin-left: 75%;
+    padding: 10px;
+}
+
+.train_picture {
+    width: 830px;
+    height: 200px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
