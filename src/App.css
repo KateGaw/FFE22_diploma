@@ -477,117 +477,78 @@ h3 {
 
 /* TICKET CREATE LINE */
 
-.ticket_line {
+.progress {
+    background: #3e3c41;
+    color: #ffffff;
     display: flex;
-    background-color: #3e3c41;
-    color: white;
+    align-items: center;
     justify-content: space-around;
-    height: 82px;
-    align-items: center;
-}
-
-.done {
-    background: #ffa800;
-}
-
-.line_number {
-    margin-right: 15px;
-}
-
-.ticket_line__block {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: relative;
-    width: calc(100% / 4);
-    height: 100%;
-    /* cursor: pointer; */
+    height: 75px;
 }
 
-.ticket_line__block p {
-    margin: 0;
-    font-weight: bold;
-    font-size: 26px;
+.number {
+    display: inline-block;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    font-size: 31px;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    margin: 13px;
 }
 
-.second,
-.third {
-    margin-right: -15px;
+.progress__text {
+    z-index: 5;
 }
 
-.second,
-.third,
-.fourth {
-    margin-left: 30px;
-}
-
-.fourth {
-    margin-right: 70px;
-}
-
-
-/* ARROW */
-
-.ticket_line__block::after {
-    content: "";
-    position: absolute;
-    border: 41px solid;
-    border-color: transparent transparent transparent #3e3c41;
-    top: 0;
-    left: 99.5%;
-}
-
-.third::after {
-    left: 97.5%;
-}
-
-.done::after {
-    border-color: transparent transparent transparent #ffa800;
-}
-
-.fourth::after {
-    border: none;
-}
-
-.arrow-2 {
-    height: 41px;
-    width: 0;
+.progress__step {
+    font-size: 23px;
     position: relative;
-    margin: 20px 0;
+    box-sizing: border-box;
+    z-index: 0;
+    flex: 1 1;
+    text-align: center;
 }
 
-.arrow-2-top,
-.arrow-2-bottom {
-    height: 1px;
-    left: 52px;
+.progress__arrow {
     position: absolute;
-    top: 20px;
-    width: 57px;
-}
-
-.arrow-2-top {
-    top: 19px;
-}
-
-.arrow-2-top {
-    transform: rotate(45deg);
-    transform-origin: bottom right;
-}
-
-.arrow-2-bottom {
-    transform: rotate(-45deg);
-    transform-origin: top right;
-}
-
-.arrow-2-top::after,
-.arrow-2-bottom::after {
-    background: #ffffff;
-    content: "";
     height: 100%;
-    position: absolute;
+    left: 100%;
     top: 0;
-    left: 0;
-    right: 0;
+    transition: linear 1.3s;
+}
+
+.progress__arrow::before,
+.progress__arrow::after {
+    content: "";
+    display: block;
+    position: relative;
+    left: -6px;
+    z-index: 2;
+    background-color: transparent;
+    height: 55%;
+    padding-left: 15px;
+    z-index: 10;
+    border-right: 1px solid #fff;
+}
+
+.progress__arrow::before {
+    transform: rotate(-25deg);
+    top: 1.5px;
+    z-index: 1;
+}
+
+.progress__arrow::after {
+    transform: rotate(25deg);
+    top: -9px;
+    z-index: 2;
+}
+
+.progress__step-current,
+.progress__arrow-current::before,
+.progress__arrow-current::after {
+    background-color: #ffa800;
 }
 
 

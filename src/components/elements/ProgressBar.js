@@ -1,55 +1,56 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 
-const ArrowBlock = () => {
+const ProgressBar = (props) => {
+  const current = props.location.pathname;
+  const steps = [
+    {
+      step: "/tickets/seats",
+      title: "Билеты",
+    },
+    {
+      step: "/passengers",
+      title: "Пассажиры",
+    },
+    {
+      step: "/payment",
+      title: "Оплата",
+    },
+    {
+      step: "/confirm",
+      title: "Проверка",
+    },
+  ];
+
+  const isCurrent = (item, index) => {
+    return (
+      item.step.match(current) ||
+      index <= steps.findIndex((item) => item.step === current)
+    );
+  };
+
   return (
-    <div className="arrow-2">
-      <div className="arrow-2-top"></div>
-      <div className="arrow-2-bottom"></div>
-    </div>
+    <section className="progress">
+      {steps.map((item, index) => (
+        <div
+          key={item.title}
+          className={`progress__step ${
+            isCurrent(item, index) ? "progress__step-current" : ""
+          }`}
+        >
+          <span className="number">{index + 1}</span>
+          <span className="progress__text">{item.title}</span>
+          {index === 3 ? null : (
+            <div
+              className={`progress__arrow ${
+                isCurrent(item, index) ? "progress__arrow-current" : ""
+              }`}
+            ></div>
+          )}
+        </div>
+      ))}
+    </section>
   );
 };
 
-const ProgressBar = () => {
-  return (
-    <div className="ticket_line">
-      <div className="ticket_line__block first done">
-        <img
-          src="/assets/line_assets/one.png"
-          alt="one"
-          className="line_number"
-        />
-        <p>Билеты</p>
-        <ArrowBlock />
-      </div>
-      <div className="ticket_line__block second">
-        <img
-          src="/assets/line_assets/two.png"
-          alt="two"
-          className="line_number"
-        />
-        <p>Пассажиры</p>
-
-        <ArrowBlock />
-      </div>
-      <div className="ticket_line__block third">
-        <img
-          src="/assets/line_assets/three.png"
-          alt="three"
-          className="line_number"
-        />
-        <p>Оплата</p>
-        <ArrowBlock />
-      </div>
-      <div className="ticket_line__block fourth">
-        <img
-          src="/assets/line_assets/four.png"
-          alt="four"
-          className="line_number"
-        />
-        <p>Проверка</p>
-      </div>
-    </div>
-  );
-};
-
-export default ProgressBar;
+export default withRouter(ProgressBar);
