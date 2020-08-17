@@ -13,15 +13,34 @@ import Autocomplete from "react-autocomplete";
 import { routePaths } from "../../../routePaths";
 import { withRouter } from "react-router-dom";
 
-import { addItem } from "../../../utils/localStorage";
+import {
+  addItem,
+  countItems,
+  getItemsArray,
+} from "../../../utils/localStorage";
 
 const HeaderTickets = (props) => {
+  const storageLength = countItems();
+  const storageArray = storageLength > 0 ? getItemsArray() : null;
   const [cityNamesFrom, setCityNamesFrom] = useState([]);
   const [cityNamesIn, setCityNamesIn] = useState([]);
-  const [nameFrom, setNameFrom] = useState("");
-  const [nameIn, setNameIn] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [nameFrom, setNameFrom] = useState(
+    storageArray !== null ? storageArray.name_from : ""
+  );
+  const [nameIn, setNameIn] = useState(
+    storageArray !== null ? storageArray.name_in : ""
+  );
+
+  const [startDate, setStartDate] = useState(
+    storageArray !== null && storageArray.date_start !== ''
+      ? moment.utc(storageArray.date_start, "YYYY-MM-DD")._d
+      : ""
+  );
+  const [endDate, setEndDate] = useState(
+    storageArray !== null && storageArray.date_end !== ''
+      ? moment.utc(storageArray.date_end, "YYYY-MM-DD")._d
+      : ""
+  );
 
   // Получаем списки городов в зависимости от набранного слова
   useEffect(() => {
