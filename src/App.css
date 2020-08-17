@@ -1592,3 +1592,86 @@ input[type="number"] {
     color: white;
     padding: 12px 35px;
 }
+
+
+/* CONFIRM_PAGE */
+
+.confirm_card {
+    margin-bottom: 40px;
+}
+
+.confirm_ticket .ticket_card {
+    margin: 0;
+    border: none;
+    width: auto;
+}
+
+.confirm_ticket_button {
+    border: 1px solid #292929;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #292929;
+    padding: 5px 35px;
+}
+
+.confirm_passengers {
+    padding: 30px;
+    position: relative;
+}
+
+.confirm__passenger_card {
+    display: flex;
+    margin-bottom: 40px;
+}
+
+.confirm__passenger_card-left {
+    display: grid;
+    text-align: center;
+}
+
+.confirm__passenger_card-right {
+    margin-left: 40px;
+}
+
+.full_name {
+    margin-bottom: 13px;
+}
+
+.confirn_passenger_data {
+    color: #928f94;
+}
+
+.confirm_passengers_price {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+
+.price {
+    font-size: 24px;
+    line-height: 40px;
+    color: #292929;
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+
+.price img {
+    margin-left: 5px;
+}
+
+.confirm__payment p {
+    font-size: 21px;
+    padding: 45px 20px 10px;
+}
+
+.confirm__payment .confirm_ticket_button {
+    margin-left: 79%;
+    margin-bottom: 17px;
+}
+
+.confirm_button {
+    color: white;
+    float: right;
+    margin: 0 50px 50px;
+}

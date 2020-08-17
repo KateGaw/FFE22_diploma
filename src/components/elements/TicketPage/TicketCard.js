@@ -144,13 +144,19 @@ const TicketCard = (props) => {
           </div>
         )}
         <img src="assets/train_cards/icons.png" alt="icons" />
-        <button
-          className="chooseSeat button_orange"
-          onClick={chooseSeatClickHandler}
-          id={props.data.departure._id}
-        >
-          Выбрать места
-        </button>
+        {props.button ? (
+          <button className="confirm_ticket_button" onClick={props.click}>
+            Изменить
+          </button>
+        ) : (
+          <button
+            className="chooseSeat button_orange"
+            onClick={chooseSeatClickHandler}
+            id={props.data.departure._id}
+          >
+            Выбрать места
+          </button>
+        )}
       </div>
     </div>
   );
