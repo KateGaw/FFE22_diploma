@@ -1,6 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import api from "../../utils/api";
+
+const Loader = () => {
+  return (
+    <div className="loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  );
+};
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [valid, setValid] = useState(true);
+  const [result, setResult] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [messageText, setMessageText] = useState("");
+  const subscriptionClickHandler = (event) => {
+    event.preventDefault();
+    setValid(true);
+    const emailRegExp = /^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/;
+    if (emailRegExp.test(email)) {
+      setLoader(true);
+      api.setEmail(email, setResult, setLoader);
+      setEmail("");
+    } else {
+      setValid(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!loader && result.status !== undefined) {
+      if (result.status) {
+        setMessageText("Подписка оформлена!");
+      } else {
+        setMessageText("Произошла ошибка, попробуйте позже.");
+      }
+    }
+  }, [result, loader]);
+
   return (
     <div className="footer" id="contacts">
       <div className="contacts">
@@ -30,8 +70,23 @@ const Footer = () => {
           <h5>Подписка</h5>
           <form className="subscription_form">
             <p>Будьте в курсе событий</p>
-            <input type="email" placeholder="e-mail" />
-            <button type="submit">Отправить</button>
+            {loader ? (
+              <Loader />
+            ) : (
+              <>
+                <input
+                  className={valid ? "" : "error_output"}
+                  type="text"
+                  placeholder="e-mail"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+                <button type="submit" onClick={subscriptionClickHandler}>
+                  Отправить
+                </button>
+                {result.status !== undefined && <span>{messageText}</span>}
+              </>
+            )}
           </form>
           <div className="subscription_social">
             <h5>Подписывайтесь на нас</h5>
