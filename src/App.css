@@ -682,6 +682,11 @@ h3 {
     align-items: flex-start;
 }
 
+.toggleImg,
+.closeButton {
+    cursor: pointer;
+}
+
 .text h4 {
     margin-left: 10px;
 }
@@ -1218,4 +1223,313 @@ h3 {
     height: 200px;
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+
+/* PASSENGERS */
+
+
+/* PASSENGERS_SIDEBAR */
+
+.passengers_sidebar h3 {
+    padding: 0;
+    text-align: center;
+    font-size: 25px;
+}
+
+.passengers_sidebar .filter_block {
+    padding: 25px 15px 20px 15px;
+}
+
+.passengers_sidebar .text p {
+    margin: 3px 17px 0;
+}
+
+.train_table_block {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.train_table_block tr {
+    height: 35px;
+}
+
+.train_table_block td:nth-child(odd) {
+    float: left;
+}
+
+.train_table_block td:nth-child(even) {
+    float: right;
+    text-align: right;
+    font-weight: bold;
+    line-height: 19px;
+}
+
+.train_table_block .train_number_td {
+    font-size: 19px;
+}
+
+.train_table_block .train_name_td {
+    font-size: 14px;
+}
+
+.arrow_time {
+    text-align: center;
+}
+
+.time_block {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+.date_block {
+    display: flex;
+    justify-content: space-between;
+    color: #928f94;
+    margin-bottom: 25px;
+}
+
+.place_block__city {
+    display: flex;
+    justify-content: space-between;
+}
+
+.place_block__station {
+    display: flex;
+    justify-content: space-between;
+}
+
+.place_block__station p {
+    width: 120px;
+    color: #928f94;
+}
+
+.place_block__station p:nth-child(odd) {
+    text-align: left;
+}
+
+.place_block__station p:nth-child(even) {
+    text-align: right;
+}
+
+.train_number_td img {
+    margin-left: 5px;
+    margin-bottom: 4px;
+}
+
+.passengers_sidebar__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total_price {
+    font-weight: bold;
+    font-size: 32px;
+    color: #ffa800;
+    margin-bottom: 0.5rem;
+}
+
+.total_price img {
+    margin-left: 5px;
+    margin-bottom: 4px;
+    width: 20px;
+}
+
+
+/* PASSENGERS_CARD */
+
+.passenger_card {
+    margin-right: 50px;
+    display: block;
+    width: 830px;
+    height: fit-content;
+    background: #ffffff;
+    border: 1px solid #c4c4c4;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.passenger_card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+    height: 75px;
+    padding: 20px;
+    border-bottom: 1px dashed #928f94;
+}
+
+.passenger_card__header-left {
+    display: flex;
+    align-items: center;
+}
+
+.passenger_card__header-left p {
+    margin-right: 8px;
+}
+
+.passenger_title {
+    font-size: 27px;
+    line-height: 30px;
+    color: #292929;
+}
+
+.passenger_card__main-person,
+.passenger_card__main-passport {
+    padding: 20px;
+}
+
+.top_bottom_border {
+    border-top: 1px dashed #928f94;
+    border-bottom: 1px dashed #928f94;
+}
+
+.passenger_type {
+    -moz-appearance: auto;
+    -webkit-appearance: auto;
+    padding: 6px 10px;
+    font-size: 18px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+.label_gray p {
+    font-size: 14px;
+    line-height: 19px;
+    color: #928f94;
+    margin-bottom: 5px;
+}
+
+.label_output {
+    background: #ffffff;
+    border: 1px solid #928f94;
+    font-size: 18px;
+    border-radius: 5px;
+    padding: 5px 15px;
+    color: black;
+}
+
+.error_output {
+    border-color: rgba(255, 61, 0, 0.8);
+    color: rgba(255, 61, 0, 0.8);
+}
+
+.person_fullname {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.person_gender_date label {
+    margin-right: 30px;
+}
+
+.gender {
+    background: #ffffff;
+    border: 1px solid #928f94;
+    box-sizing: border-box;
+    border-radius: 5px;
+    color: black;
+}
+
+.gender:nth-child(odd) {
+    border-radius: 0 5px 5px 0;
+}
+
+.gender:nth-child(even) {
+    border-radius: 5px 0px 0px 5px;
+}
+
+.person_gender_date .active {
+    background: #ffa800;
+}
+
+.mobility {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+}
+
+.mobility p {
+    margin-left: 15px;
+}
+
+.mobility input {
+    width: 20px;
+    height: 20px;
+}
+
+.passport_data label {
+    margin-right: 12px;
+}
+
+.passenger_card__footer {
+    height: 95px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.passenger_card__footer input {
+    border: 1px solid #292929;
+    border-radius: 5px;
+    height: 45px;
+    width: 210px;
+    font-weight: bold;
+    margin: 20px;
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Firefox */
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.message_field {
+    width: 100%;
+    padding: 0 20px;
+    height: 95px;
+    display: flex;
+    align-items: center;
+}
+
+.error_field {
+    background-color: lightcoral;
+}
+
+.success_field {
+    background-color: lightgreen;
+}
+
+.message_field button {
+    border: none;
+    padding: 0;
+}
+
+.message_text {
+    margin-left: 30px;
+    font-size: 14px;
+}
+
+.success_text {
+    color: white;
+    font-size: 16px;
+}
+
+.passengers_next_btn {
+    float: right;
+    margin: 50px;
+    color: white;
+    padding: 15px 37px;
 }
