@@ -5,24 +5,27 @@ import HeaderMenu from "./HeaderMenu";
 import HeaderTickets from "./HeaderTickets";
 
 const Header = (props) => {
-  return (
-    <>
-      <div
-        className={
-          props.location.pathname === "/" ? "main_header" : "ticket_header"
-        }
-        id="header"
-      >
-        <div className="logo">Лого</div>
-        <HeaderMenu />
-        {props.location.pathname === "/" && (
-          <h2 className="header_text">
-            Вся жизнь - <br /> <b>путешествие!</b>
-          </h2>
-        )}
-        <HeaderTickets />
-      </div>
-    </>
+  return props.location.pathname === "/success" ? (
+    <div className="success_header">
+      <div className="logo">Лого</div>
+      <HeaderMenu />
+    </div>
+  ) : (
+    <div
+      className={
+        props.location.pathname === "/" ? "main_header" : "ticket_header"
+      }
+      id="header"
+    >
+      <div className="logo">Лого</div>
+      <HeaderMenu />
+      {props.location.pathname === "/" && (
+        <h2 className="header_text">
+          Вся жизнь - <br /> <b>путешествие!</b>
+        </h2>
+      )}
+      <HeaderTickets />
+    </div>
   );
 };
 
