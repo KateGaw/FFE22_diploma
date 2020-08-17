@@ -5,6 +5,7 @@ import { routePaths } from "../../../routePaths";
 import { withRouter } from "react-router-dom";
 
 import { addItem } from "../../../utils/localStorage";
+import { express, wifi, food } from "../../consts/consts";
 
 const TicketCard = (props) => {
   const date_from = moment
@@ -17,9 +18,32 @@ const TicketCard = (props) => {
     .asMilliseconds();
 
   const chooseSeatClickHandler = () => {
-    addItem('ticket_data', JSON.stringify(props.data));
+    addItem("ticket_data", JSON.stringify(props.data));
     props.history.push(routePaths.SeatsPage);
   };
+
+  const seatsTypes = [
+    props.data.departure.have_first_class && {
+      name: "Люкс",
+      quantity: props.data.departure.available_seats_info.first,
+      price: props.data.departure.price_info.first.top_price,
+    },
+    props.data.departure.have_second_class && {
+      name: "Купе",
+      quantity: props.data.departure.available_seats_info.second,
+      price: props.data.departure.price_info.second.top_price,
+    },
+    props.data.departure.have_third_class && {
+      name: "Плацкарт",
+      quantity: props.data.departure.available_seats_info.third,
+      price: props.data.departure.price_info.third.top_price,
+    },
+    props.data.departure.have_fourth_class && {
+      name: "Сидячий",
+      quantity: props.data.departure.available_seats_info.fourth,
+      price: props.data.departure.price_info.fourth.top_price,
+    },
+  ];
 
   return (
     <div className="ticket_card">
@@ -91,59 +115,32 @@ const TicketCard = (props) => {
         </div>
       </div>
       <div className="ticket_right">
-        {props.data.departure.have_first_class && (
-          <div className="ticket_seat_variants">
-            <div className="seat_type">Люкс</div>
-            <div className="seat_quantity">
-              {props.data.departure.available_seats_info.first}
-            </div>
-            <div className="seat_price">
-              от &nbsp;
-              <p>{props.data.departure.price_info.first.top_price}</p>&nbsp;
-              <img src="assets/train_cards/price.svg" alt="price" />
-            </div>
-          </div>
-        )}
-        {props.data.departure.have_second_class && (
-          <div className="ticket_seat_variants">
-            <div className="seat_type">Купе</div>
-            <div className="seat_quantity">
-              {props.data.departure.available_seats_info.second}
-            </div>
-            <div className="seat_price">
-              от &nbsp;
-              <p>{props.data.departure.price_info.second.top_price}</p>&nbsp;
-              <img src="assets/train_cards/price.svg" alt="price" />
-            </div>
-          </div>
-        )}
-        {props.data.departure.have_third_class && (
-          <div className="ticket_seat_variants">
-            <div className="seat_type">Плацкарт</div>
-            <div className="seat_quantity">
-              {props.data.departure.available_seats_info.third}
-            </div>
-            <div className="seat_price">
-              от &nbsp;
-              <p>{props.data.departure.price_info.third.top_price}</p>&nbsp;
-              <img src="assets/train_cards/price.svg" alt="price" />
-            </div>
-          </div>
-        )}
-        {props.data.departure.have_fourth_class && (
-          <div className="ticket_seat_variants">
-            <div className="seat_type">Сидячий</div>
-            <div className="seat_quantity">
-              {props.data.departure.available_seats_info.fourth}
-            </div>
-            <div className="seat_price">
-              от &nbsp;
-              <p>{props.data.departure.price_info.fourth.top_price}</p>&nbsp;
-              <img src="assets/train_cards/price.svg" alt="price" />
-            </div>
-          </div>
-        )}
-        <img src="assets/train_cards/icons.png" alt="icons" />
+        <div className="ticket_right__seats">
+          <table>
+            <tbody>
+              {seatsTypes.map(
+                (item, index) =>
+                  item && (
+                    <tr key={index} className="ticket_seat_variants">
+                      <td className="seat_type">{item.name}</td>
+                      <td className="seat_quantity">{item.quantity}</td>
+                      <td className="seat_price">
+                        от &nbsp; <p>{item.price}</p>
+                        &nbsp;
+                        <img src="assets/train_cards/price.svg" alt="price" />
+                      </td>
+                    </tr>
+                  )
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="card_bottom-left">
+          {props.data.departure.is_express && express}
+          {props.data.departure.have_wifi && wifi}
+          {food}
+        </div>
+
         {props.button ? (
           <button className="confirm_ticket_button" onClick={props.click}>
             Изменить
