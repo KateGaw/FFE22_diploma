@@ -596,7 +596,7 @@ h3 {
 .ticket_filter {
     background-color: #3e3c41;
     width: 300px;
-    height: 100%;
+    height: max-content;
     color: #ffffff;
     margin-left: 100px;
     margin-bottom: 50px;
@@ -707,6 +707,81 @@ h3 {
 
 .departure {
     margin-bottom: 25px;
+}
+
+
+/* LAST_TICKETS */
+
+.last_tickets {
+    width: 300px;
+    margin-left: 100px;
+    margin-bottom: 50px;
+}
+
+.last_tickets h3 {
+    color: black;
+    font-size: 26px;
+}
+
+.last_ticket__card {
+    border: 1px solid #c4c4c4;
+    box-shadow: 0px 2px 2px rgba(62, 60, 65, 0.25);
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.last_ticket__card-top {
+    text-transform: capitalize;
+}
+
+.last_ticket__card-top,
+.last_ticket__card-bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.last_ticket__card-bottom {
+    margin-top: 10px;
+}
+
+.card_top-right,
+.card_bottom-right {
+    text-align: right;
+}
+
+.card_top-right p,
+.card_top-left p {
+    font-size: 15px;
+    line-height: 19px;
+    color: #928f94;
+    width: 100px;
+    text-transform: initial;
+}
+
+.card_bottom-right {
+    display: flex;
+    align-items: baseline;
+    color: #928f94;
+}
+
+.card_bottom-left {
+    display: flex;
+    align-items: center;
+}
+
+.card_bottom-left svg {
+    margin-right: 10px;
+}
+
+.card_bottom-left svg path {
+    fill: #928f94;
+}
+
+.card_bottom-right p {
+    font-size: 28px;
+    line-height: 39px;
+    color: #ffa800;
+    margin: 0 5px;
 }
 
 
@@ -926,9 +1001,16 @@ h3 {
 
 /* TRAIN TICKET */
 
+.train_ticket {
+    background: #ffffff;
+    border: 1px solid #c4c4c4;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
 .ticket_top-buttons {
     display: flex;
     margin-bottom: 30px;
+    padding: 20px;
 }
 
 .ticket_top-buttons img {
@@ -947,7 +1029,7 @@ h3 {
     background: #f7f6f6;
     display: flex;
     align-items: center;
-    padding: 20px 0;
+    padding: 20px;
 }
 
 .ticket_top-info .train_icon {
@@ -984,6 +1066,10 @@ h3 {
 
 .info_time p {
     margin: 0 10px;
+}
+
+.ticket_count {
+    padding: 20px;
 }
 
 .ticket_count h4 {
@@ -1030,6 +1116,7 @@ h3 {
 .ticket_type {
     margin: 28px 0;
     border-top: 1px dashed #c4c4c4;
+    padding: 20px;
 }
 
 .ticket_type h4 {
@@ -1062,6 +1149,10 @@ h3 {
 .type_block:hover div svg path,
 .ticekt_type-blocks .active div svg path {
     fill: #ffa800;
+}
+
+.ticket_footer {
+    padding: 20px;
 }
 
 .ticket_footer-head {
@@ -1219,9 +1310,8 @@ h3 {
     padding: 10px;
 }
 
-.train_picture {
-    width: 830px;
-    height: 200px;
+.train_picture img {
+    width: 782px;
     background-repeat: no-repeat;
     background-size: contain;
 }

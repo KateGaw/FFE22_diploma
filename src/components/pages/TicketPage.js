@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TicketsFilter from "../elements/TicketPage/TicketsFilter";
+import LastTickets from "../elements/LastTickets";
 import Preloader from "../elements/Preloader";
 import TicketsList from "../elements/TicketPage/TicketsList";
 
@@ -32,7 +33,10 @@ const TicketPage = (props) => {
     <>
       <ProgressBar />
       <div className="tickets_main">
-        <TicketsFilter setInfoPage={setInfo} />
+      <div>
+          <TicketsFilter setInfoPage={setInfo} />
+          <LastTickets />
+        </div>
         <TicketsList info={info} setInfo={setInfo} results={results} />
         <div className="ticket_last-tickets"></div>
       </div>

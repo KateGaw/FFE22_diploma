@@ -15,7 +15,7 @@ import {
 } from "../../consts/consts";
 
 const ServicesButtons = (props) => {
-  console.log(props);
+  // console.log(props);
   return (
     <button
       id={props.id}
@@ -29,7 +29,7 @@ const ServicesButtons = (props) => {
 };
 
 const TrainTicket = ({ result, anotherTrainClickHandler }) => {
-  console.log(result);
+  // console.log(result);
   const start_date = moment
     .unix(result.departure.from.datetime)
     .utc()
@@ -157,6 +157,10 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
         break;
     };
   };
+  
+  const nextPageClickHandler = () => {
+    console.log('next page');
+  }
 
   return (
     <div className="ticket_info_block ticket_cards">
@@ -368,9 +372,12 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
           </div>
         </div>
       </div>
-      <div>
-        <button>Далее</button>
-      </div>
+      <button
+        className="button_orange passengers_next_btn"
+        onClick={nextPageClickHandler}
+      >
+        Далее
+      </button>
     </div>
   );
 };

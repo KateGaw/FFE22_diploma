@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import TicketsFilter from "../elements/TicketPage/TicketsFilter";
+import LastTickets from "../elements/LastTickets";
 
 import { withRouter } from "react-router-dom";
 import { routePaths } from "../../routePaths";
@@ -19,7 +20,10 @@ const TicketPage = (props) => {
     <>
       <ProgressBar />
       <div className="tickets_main">
-        <TicketsFilter setInfoPage={setInfo} />
+      <div>
+          <TicketsFilter setInfoPage={setInfo} />
+          <LastTickets />
+        </div>
         <TrainTicket result={result} anotherTrainClickHandler={anotherTrain}/>
         <div className="ticket_last-tickets"></div>
       </div>
