@@ -112,6 +112,9 @@ const HeaderTickets = (props) => {
       addItem("sort", "date");
       addItem("offset", 0);
 
+      if (props.history.location.pathname === "/ticket") {
+        window.location.reload();
+      }
       props.history.push(routePaths.TicketPage);
     }
   };
