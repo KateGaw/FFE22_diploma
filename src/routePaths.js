@@ -3,4 +3,5 @@ export const routePaths = {
     TicketPage: '/ticket',
     SeatsPage: '/seats',
     PassengersPage: '/passengers',
+    PaymentPage: '/payment',
 };

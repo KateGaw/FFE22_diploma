@@ -8,6 +8,7 @@ import MainPage from "./components/pages/MainPage";
 import TicketPage from "./components/pages/TicketPage";
 import SeatsPage from './components/pages/SeatsPage';
 import PassengersPage from './components/pages/PassengersPage';
+import PaymentPage from './components/pages/PaymentPage';
 import ErrorPage from "./components/pages/ErrorPage";
 import Footer from "./components/elements/Footer";
 
@@ -20,6 +21,7 @@ function App() {
         <Route path={routePaths.TicketPage} component={TicketPage} />
         <Route path={routePaths.SeatsPage} component={SeatsPage} />
         <Route path={routePaths.PassengersPage} component={PassengersPage} />
+        <Route path={routePaths.PaymentPage} component={PaymentPage} />
         <Route component={ErrorPage} />
       </Switch>
       <Footer />

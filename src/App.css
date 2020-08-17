@@ -1533,3 +1533,62 @@ input[type="number"] {
     color: white;
     padding: 15px 37px;
 }
+
+
+/* PAYMENT_CARD */
+
+.payment_card {
+    display: flex;
+    flex-direction: column;
+}
+
+.phone_email {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.phone_email label {
+    margin-bottom: 30px;
+}
+
+.payment_type {
+    border-bottom: 1px dashed #928f94;
+}
+
+.payment {
+    display: flex;
+    align-items: baseline;
+    color: #928f94;
+    font-size: 18px;
+}
+
+.payment input {
+    margin-right: 10px;
+}
+
+.payment__online {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 20px;
+    color: #292929;
+    padding: 0;
+    margin-right: 33px;
+    width: 160px;
+    text-align: left;
+}
+
+.payment_type .active {
+    border: 1px solid #ffa800;
+    padding: 7px;
+}
+
+.payment_button {
+    margin: 50px;
+}
+
+.payment_button button {
+    float: right;
+    color: white;
+    padding: 12px 35px;
+}
