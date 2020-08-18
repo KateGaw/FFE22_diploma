@@ -2,39 +2,39 @@
 /*eslint-disable eqeqeq*/
 
 export const addItem = (key, value) => {
-    localStorage.setItem(key, value);
+    sessionStorage.setItem(key, value);
 };
 
 export const getItem = (key) => {
-    localStorage.getItem(key);
+    sessionStorage.getItem(key);
 };
 
 export const deleteItem = (key) => {
-    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
 };
 
 export const clearStorage = () => {
-    localStorage.clear();
+    sessionStorage.clear();
 };
 
 export const countItems = () => {
-    return localStorage.length;
+    return sessionStorage.length;
 };
 
 export const getItemsArray = () => {
     let output = {},
-        keys = Object.keys(localStorage),
+        keys = Object.keys(sessionStorage),
         i = keys.length;
 
     while (i--) {
-        output[keys[i]] = localStorage.getItem(keys[i]);
+        output[keys[i]] = sessionStorage.getItem(keys[i]);
     }
 
     return output;
 };
 
 export const findKeyById = (id) => {
-    let keys = Object.keys(localStorage);
+    let keys = Object.keys(sessionStorage);
     let output = null;
     let outputValue;
     const items = getItemsArray();
@@ -45,7 +45,7 @@ export const findKeyById = (id) => {
     });
 
     for (let key of keys) {
-        if (outputValue === localStorage.getItem(key)) {
+        if (outputValue === sessionStorage.getItem(key)) {
             output = key;
         }
     }
