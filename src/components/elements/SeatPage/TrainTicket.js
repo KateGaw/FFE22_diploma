@@ -1,7 +1,8 @@
 /* eslint-disable array-callback-return */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
+import api from "../../../utils/api";
 
 import {
   have_first_class,
@@ -15,7 +16,6 @@ import {
 } from "../../consts/consts";
 
 const ServicesButtons = (props) => {
-  // console.log(props);
   return (
     <button
       id={props.id}
@@ -29,9 +29,14 @@ const ServicesButtons = (props) => {
 };
 
 const TrainTicket = ({ result, anotherTrainClickHandler }) => {
+  const [seatsInfo, setSeatsInfo] = useState([]);
+  // время отбытия
   const start_date = moment.unix(result.departure.from.datetime).utc().format();
+
+  //время прибытия
   const end_date = moment.unix(result.departure.to.datetime).utc().format();
 
+  //часов в дороге
   const period_ms = moment.duration(
     moment(end_date).diff(moment(start_date), "milliseconds", true),
     "milliseconds"
@@ -39,84 +44,37 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
   const period_hours = Math.floor(period_ms.asHours());
   const period_minutes = Math.floor(period_ms.asMinutes()) - period_hours * 60;
 
-  const have_classes = [
-    {
-      id: "have_first_class",
-      name: "Люкс",
-      value: result.departure.have_first_class,
-      alt: "first",
-      image: have_first_class,
-    },
-    {
-      id: "have_second_class",
-      name: "Купе",
-      value: result.departure.have_second_class,
-      alt: "second",
-      image: have_second_class,
-    },
-    {
-      id: "have_third_class",
-      name: "Плацкарт",
-      value: result.departure.have_third_class,
-      alt: "third",
-      image: have_third_class,
-    },
-    {
-      id: "have_fourth_class",
-      name: "Сидячий",
-      value: result.departure.have_fourth_class,
-      alt: "fourth",
-      image: have_fourth_class,
-    },
-  ];
-
+  // верхние, средние и нижние места и цены на них
   const seats = [
-    result.departure.available_seats_info.first && {
-      id: "first",
-      seats: result.departure.available_seats_info.first,
-      top_price: result.departure.price_info.first.top_price,
-      bottom_price: result.departure.price_info.first.bottom_price,
+    {
+      id: 1,
+      name: "Верхние",
+      counter: 3,
+      price: "top_price",
     },
-    result.departure.available_seats_info.second && {
-      id: "second",
-      seats: result.departure.available_seats_info.second,
-      top_price: result.departure.price_info.second.top_price,
-      bottom_price: result.departure.price_info.second.bottom_price,
+    {
+      id: 2,
+      name: "Боковые",
+      counter: 5,
+      price: "side_price",
     },
-    result.departure.available_seats_info.third && {
-      id: "third",
-      seats: result.departure.available_seats_info.third,
-      top_price: result.departure.price_info.third.top_price,
-      bottom_price: result.departure.price_info.third.bottom_price,
-    },
-    result.departure.available_seats_info.fourth && {
-      id: "fourth",
-      seats: result.departure.available_seats_info.fourth,
-      top_price: result.departure.price_info.fourth.top_price,
-      bottom_price: result.departure.price_info.fourth.bottom_price,
+    {
+      id: 3,
+      name: "Нижние",
+      counter: 7,
+      price: "bottom_price",
     },
   ];
 
+  // услуги
   const [services, setServices] = useState({
-    conditioner: result.departure.have_air_conditioning ? "able" : "non-active",
-    wifi: result.departure.have_wifi ? "able" : "non-active",
+    conditioner: result.departure.have_air_conditioning ? "able" : "unable",
+    wifi: result.departure.have_wifi ? "able" : "unable",
     linens: "able",
     food: "able",
   });
 
-  const [showClass, setShowClass] = useState(
-    result.departure.have_first_class
-      ? "first"
-      : result.departure.have_second_class
-      ? "second"
-      : result.departure.have_third_class
-      ? "third"
-      : "fourth"
-  );
-  const classChooseClickHandler = (event) => {
-    setShowClass(event.target.id);
-  };
-
+  // выбор дополнительных услуг
   const serviceClickHandler = (event) => {
     const id = event.target.closest("button").getAttribute("id");
     switch (id) {
@@ -154,6 +112,74 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
     }
   };
 
+  // какие классы доступны в поезде
+  const have_classes = [
+    {
+      id: "have_first_class",
+      name: "Люкс",
+      value: result.departure.have_first_class,
+      alt: "first",
+      image: have_first_class,
+    },
+    {
+      id: "have_second_class",
+      name: "Купе",
+      value: result.departure.have_second_class,
+      alt: "second",
+      image: have_second_class,
+    },
+    {
+      id: "have_third_class",
+      name: "Плацкарт",
+      value: result.departure.have_third_class,
+      alt: "third",
+      image: have_third_class,
+    },
+    {
+      id: "have_fourth_class",
+      name: "Сидячий",
+      value: result.departure.have_fourth_class,
+      alt: "fourth",
+      image: have_fourth_class,
+    },
+  ];
+  // какой класс отобразить на странице
+  const [showClass, setShowClass] = useState(
+    result.departure.have_first_class
+      ? "first"
+      : result.departure.have_second_class
+      ? "second"
+      : result.departure.have_third_class
+      ? "third"
+      : "fourth"
+  );
+
+  // какой класс "развернуть"
+  const classChooseClickHandler = (event) => {
+    setShowClass(event.target.id);
+  };
+
+  // Получаем данные по местам и вагонам в выбранном поезде
+  useEffect(() => {
+    api.getRoutesSeats(result.departure._id, setSeatsInfo);
+  }, [result]);
+
+  const [choosenTypeInfo, setChoosenTypeInfo] = useState(null); //массив данных по выбранному классу
+  useEffect(() => {
+    if (seatsInfo.length > 0) {
+      seatsInfo.map((item) => {
+        if (item.coach.class_type === showClass) {
+          setChoosenTypeInfo(item);
+          setServices({
+            ...services,
+            linens: item.coach.is_linens_included ? "non-active" : "able",
+          });
+        }
+      });
+    } // eslint-disable-next-line
+  }, [seatsInfo, showClass]);
+
+  // на следующую страницу
   const nextPageClickHandler = () => {
     console.log("next page");
   };
@@ -300,43 +326,40 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
               <p>07</p>
               <p>вагон</p>
             </div>
-            {seats.map((item) => {
-              if (item !== undefined && item.id === showClass) {
-                return (
-                  <div className="seats_and_cost" key={item.id}>
-                    <div className="seats">
-                      <div className="head">
-                        Места
-                        <p className="place_total">{item.seats}</p>
-                      </div>
-                      <div className="seat">
-                        Верхние{" "}
-                        <p className="place_count">
-                          {Math.floor(item.seats / 2)}
-                        </p>
-                      </div>
-                      <div className="seat">
-                        Нижние{" "}
-                        <p className="place_count">
-                          {Math.floor(item.seats / 2)}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="prices">
-                      <div className="head">Стоимость</div>
-                      <div className="place_count">
-                        {item.top_price}
-                        <img src="assets/train_cards/price.svg" alt="price" />
-                      </div>
-                      <div className="place_count">
-                        {item.bottom_price}
-                        <img src="assets/train_cards/price.svg" alt="price" />
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-            })}
+
+            {choosenTypeInfo !== null && (
+              <table className="seats_and_cost">
+                <tbody>
+                  <tr>
+                    <th className="head h_place">
+                      Места
+                      <p className="place_total">
+                        {choosenTypeInfo.coach.available_seats}
+                      </p>
+                    </th>
+                    <th className="head h_cost">Стоимость</th>
+                  </tr>
+                  {seats.map(
+                    (item) =>
+                      choosenTypeInfo.coach[item.price] !== 0 && (
+                        <tr key={item.id}>
+                          <th className="seat">
+                            {item.name}
+                            <p className="place_count">{item.counter}</p>
+                          </th>
+                          <th className="place_count t_price">
+                            {choosenTypeInfo.coach[item.price]}
+                            <img
+                              src="assets/train_cards/price.svg"
+                              alt="price"
+                            />
+                          </th>
+                        </tr>
+                      )
+                  )}
+                </tbody>
+              </table>
+            )}
 
             <div className="services">
               <p>Обслуживание ФПК</p>

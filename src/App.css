@@ -1171,7 +1171,14 @@ h3 {
 }
 
 .seats_and_cost {
-    display: contents;
+    width: 35%;
+    margin: 31px 62px;
+}
+
+.seats_and_cost tr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .seats {
@@ -1183,8 +1190,13 @@ h3 {
     color: #928f94;
 }
 
+.h_place {
+    display: flex;
+}
+
 .seat {
     font-size: 20px;
+    display: flex;
 }
 
 .place_total {
@@ -1197,6 +1209,10 @@ h3 {
     color: black;
     font-weight: bold;
     font-size: 20px;
+}
+
+.t_price {
+    margin-right: 5%
 }
 
 .place_count img {
@@ -1251,6 +1267,10 @@ h3 {
 
 .services_icons .choosen svg path {
     fill: white;
+}
+
+.services_icons .unable {
+    display: none;
 }
 
 .services_icons .non-active {
