@@ -13,9 +13,19 @@ const TicketCard = (props) => {
     .utc()
     .format();
   const date_to = moment.unix(props.data.departure.to.datetime).utc().format();
-  const period = moment
-    .duration(moment(date_to).diff(moment(date_from)))
-    .asMilliseconds();
+  const period_ms = moment.duration(
+    moment(date_to).diff(moment(date_from), "milliseconds", true),
+    "milliseconds"
+  );
+  const period_hours = Math.floor(period_ms.asHours());
+  const period_minutes = Math.floor(period_ms.asMinutes()) - period_hours * 60;
+
+  const date_start_arrival = props.data.arrival
+    ? moment.unix(props.data.arrival.from.datetime).utc().format()
+    : "";
+  const date_end_arrival = props.data.arrival
+    ? moment.unix(props.data.arrival.to.datetime).utc().format()
+    : "";
 
   const chooseSeatClickHandler = () => {
     addItem("ticket_data", JSON.stringify(props.data));
@@ -74,7 +84,7 @@ const TicketCard = (props) => {
             </div>
           </div>
           <div className="train__arrow">
-            <div className="arrow_time">{moment(period).format("HH:mm")}</div>
+            <div className="arrow_time">{period_hours} : {period_minutes}</div>
             <img src="assets/train_cards/orange_arrow.svg" alt="arrow" />
           </div>
           <div className="train__end">
@@ -87,32 +97,37 @@ const TicketCard = (props) => {
             </div>
           </div>
         </div>
-        <div className="train_back">
-          <div className="train_start">
-            <div className="train__time">
-              {moment(date_from).format("HH:mm")}
+
+        {props.data.arrival && (
+          <div className="train_back">
+            <div className="train_start">
+              <div className="train__time">
+                {moment(date_start_arrival).format("HH:mm")}
+              </div>
+              <div className="train__city">
+                {props.data.arrival.from.city.name}
+              </div>
+              <div className="train__station">
+                {props.data.arrival.from.railway_station_name} вокзал
+              </div>
             </div>
-            <div className="train__city">
-              {props.data.departure.from.city.name}
+            <div className="train__arrow">
+              <div className="arrow_time">{period_hours} : {period_minutes}</div>
+              <img src="assets/train_cards/orange_arrow.svg" alt="arrow" />
             </div>
-            <div className="train__station">
-              {props.data.departure.from.railway_station_name} вокзал
+            <div className="train__end">
+              <div className="train__time">
+                {moment(date_end_arrival).format("HH:mm")}
+              </div>
+              <div className="train__city">
+                {props.data.arrival.to.city.name}
+              </div>
+              <div className="train__station">
+                {props.data.arrival.to.railway_station_name} вокзал
+              </div>
             </div>
           </div>
-          <div className="train__arrow">
-            <div className="arrow_time">{moment(period).format("HH:mm")}</div>
-            <img src="assets/train_cards/orange_arrow.svg" alt="arrow" />
-          </div>
-          <div className="train__end">
-            <div className="train__time">{moment(date_to).format("HH:mm")}</div>
-            <div className="train__city">
-              {props.data.departure.to.city.name}
-            </div>
-            <div className="train__station">
-              {props.data.departure.to.railway_station_name} вокзал
-            </div>
-          </div>
-        </div>
+        )}
       </div>
       <div className="ticket_right">
         <div className="ticket_right__seats">

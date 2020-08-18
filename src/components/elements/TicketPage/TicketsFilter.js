@@ -196,7 +196,7 @@ const TicketFilter = (props) => {
   };
 
   let date_start = info.date_start !== "" ? new Date(info.date_start) : "";
-  let date_end = info.date_end !== "" ? new Date(info.date_end) : "";
+  let date_end_arrival = info.date_end_arrival !== "" ? new Date(info.date_end_arrival) : "";
 
   return (
     <div className="ticket_filter">
@@ -210,7 +210,7 @@ const TicketFilter = (props) => {
           closeOnScroll={(e) => e.target === document}
           selectsStart
           startDate={date_start}
-          endDate={date_end}
+          endDate={date_end_arrival}
           maxDate={new Date("2018-12-31")}
           dateFormat="dd.MM.yyyy"
         />
@@ -219,12 +219,12 @@ const TicketFilter = (props) => {
         <DatePicker
           locale={ru}
           placeholderText="ДД.ММ.ГГГГ"
-          selected={date_end}
-          onChange={(date) => changeItem("date_end", date)}
+          selected={date_end_arrival}
+          onChange={(date) => changeItem("date_end_arrival", date)}
           closeOnScroll={(e) => e.target === document}
           selectsEnd
           startDate={date_start}
-          endDate={date_end}
+          endDate={date_end_arrival}
           minDate={date_start}
           dateFormat="dd.MM.yyyy"
         />

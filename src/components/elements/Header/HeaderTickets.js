@@ -37,8 +37,8 @@ const HeaderTickets = (props) => {
       : ""
   );
   const [endDate, setEndDate] = useState(
-    storageArray !== null && storageArray.date_end !== ''
-      ? moment.utc(storageArray.date_end, "YYYY-MM-DD")._d
+    storageArray !== null && storageArray.date_end_arrival !== ''
+      ? moment.utc(storageArray.date_end_arrival, "YYYY-MM-DD")._d
       : ""
   );
 
@@ -85,7 +85,7 @@ const HeaderTickets = (props) => {
           : ""
       );
       addItem(
-        "date_end",
+        "date_end_arrival",
         endDate !== ""
           ? moment.utc(endDate).add(1, "day").format("YYYY-MM-DD")
           : ""

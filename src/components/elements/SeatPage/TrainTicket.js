@@ -29,19 +29,15 @@ const ServicesButtons = (props) => {
 };
 
 const TrainTicket = ({ result, anotherTrainClickHandler }) => {
-  // console.log(result);
-  const start_date = moment
-    .unix(result.departure.from.datetime)
-    .utc()
-    .format("HH:mm");
-  const end_date = moment
-    .unix(result.departure.to.datetime)
-    .utc()
-    .format("HH:mm");
+  const start_date = moment.unix(result.departure.from.datetime).utc().format();
+  const end_date = moment.unix(result.departure.to.datetime).utc().format();
 
-  const diff = moment(result.departure.to.datetime).diff(
-    moment(result.departure.from.datetime)
+  const period_ms = moment.duration(
+    moment(end_date).diff(moment(start_date), "milliseconds", true),
+    "milliseconds"
   );
+  const period_hours = Math.floor(period_ms.asHours());
+  const period_minutes = Math.floor(period_ms.asMinutes()) - period_hours * 60;
 
   const have_classes = [
     {
@@ -155,12 +151,12 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
 
       default:
         break;
-    };
+    }
   };
-  
+
   const nextPageClickHandler = () => {
-    console.log('next page');
-  }
+    console.log("next page");
+  };
 
   return (
     <div className="ticket_info_block ticket_cards">
@@ -192,7 +188,9 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
           </div>
           <div className="train_there">
             <div className="train_start">
-              <div className="train__time">{start_date}</div>
+              <div className="train__time">
+                {moment(start_date).format("HH:mm")}
+              </div>
               <div className="train__city">
                 {result.departure.from.city.name}
               </div>
@@ -204,7 +202,9 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
               <img src="assets/train_cards/orange_arrow.svg" alt="arrow" />
             </div>
             <div className="train__end">
-              <div className="train__time">{end_date}</div>
+              <div className="train__time">
+                {moment(end_date).format("HH:mm")}
+              </div>
               <div className="train__city">{result.departure.to.city.name}</div>
               <div className="train__station">
                 {result.departure.to.railway_station_name} вокзал
@@ -213,7 +213,9 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
           </div>
           <div className="info_time">
             <img src="assets/clock.png" alt="clock" />
-            <p>{moment.unix(diff).utc().format("kk часов mm минут")}</p>
+            <p>
+              {period_hours} часов {period_minutes} минут
+            </p>
           </div>
         </div>
         <div className="ticket_count">

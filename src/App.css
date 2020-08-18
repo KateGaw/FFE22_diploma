@@ -778,7 +778,7 @@ h3 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 25%;
+    width: 21%;
     padding: 25px;
 }
 
@@ -1006,11 +1006,11 @@ h3 {
 }
 
 .info_train {
-    padding: 0 20px;
+    padding: 0 18px;
 }
 
 .ticket_top-info .train_there {
-    padding: 0 35px;
+    padding: 0 30px;
 }
 
 .info_train .train_number {
@@ -1030,7 +1030,7 @@ h3 {
 .info_time {
     display: flex;
     align-items: center;
-    width: 120px;
+    width: 145px;
 }
 
 .info_time p {

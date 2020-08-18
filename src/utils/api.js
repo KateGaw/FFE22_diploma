@@ -34,8 +34,8 @@ export default {
             `&date_start=${moment.utc(info.date_start).format("YYYY-MM-DD")}` :
             "",
             d =
-            info.date_end !== "" ?
-            `&date_end=${moment.utc(info.date_end).format("YYYY-MM-DD")}` :
+            info.date_end_arrival !== "" ?
+            `&date_end_arrival=${moment.utc(info.date_end_arrival).format("YYYY-MM-DD")}` :
             "",
             e = `&start_departure_hour_from=${info.start_departure_hour_from}`,
             f = `&start_departure_hour_to=${info.start_departure_hour_to}`,

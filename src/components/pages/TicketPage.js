@@ -13,19 +13,12 @@ import { getItemsArray } from "../../utils/localStorage";
 const TicketPage = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [results, setResults] = useState([]);
-
   const [info, setInfo] = useState(getItemsArray());
-  // console.log(info);
 
   // Получаем карточки поездов
   useEffect(() => {
-    console.log('search!!!');
     api.getRoutes(info, setResults, setIsLoading);
   }, [info]);
-
-  // useEffect(() => {
-  //     // setInfo(getItemsArray());
-  // });
 
   return isLoading ? (
     <Preloader />
