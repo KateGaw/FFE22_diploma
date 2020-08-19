@@ -32,25 +32,27 @@ const HeaderTickets = (props) => {
   );
 
   const [startDate, setStartDate] = useState(
-    storageArray !== null && storageArray.date_start !== ''
+    storageArray !== null && storageArray.date_start !== ""
       ? moment.utc(storageArray.date_start, "YYYY-MM-DD")._d
       : ""
   );
   const [endDate, setEndDate] = useState(
-    storageArray !== null && storageArray.date_end_arrival !== ''
+    storageArray !== null && storageArray.date_end_arrival !== ""
       ? moment.utc(storageArray.date_end_arrival, "YYYY-MM-DD")._d
       : ""
   );
 
+  const [errorMessage, setErrorMessage] = useState(null);
+
   // Получаем списки городов в зависимости от набранного слова
   useEffect(() => {
     if (nameFrom !== "") {
-      api.getCityNames(nameFrom, setCityNamesFrom);
+      api.getCityNames(nameFrom, setCityNamesFrom, setErrorMessage);
     } else {
       setCityNamesFrom([]);
     }
     if (nameIn !== "") {
-      api.getCityNames(nameIn, setCityNamesIn);
+      api.getCityNames(nameIn, setCityNamesIn, setErrorMessage);
     } else {
       setCityNamesIn([]);
     }
@@ -73,9 +75,15 @@ const HeaderTickets = (props) => {
     setNameIn(from);
   };
 
+  const [nameError, setNameError] = useState(false);
   // кнопка "найти билеты"
   const findClickHandler = () => {
-    if (nameFrom !== "" && nameIn !== "") {
+    if (
+      (nameFrom !== "" && nameIn !== "") ||
+      cityNamesFrom[0] !== undefined ||
+      cityNamesIn[0] !== undefined
+    ) {
+      setNameError(false);
       addItem("name_from", nameFrom);
       addItem("name_in", nameIn);
       addItem(
@@ -116,78 +124,108 @@ const HeaderTickets = (props) => {
         window.location.reload();
       }
       props.history.push(routePaths.TicketPage);
+    } else {
+      setNameError(true);
     }
   };
 
   return (
     <div className="header_tickets">
-      <div>
-        <h2 className="direction">Направление</h2>
-        <div className="autocomplete_city_names">
-          <Autocomplete
-            inputProps={{ placeholder: "Откуда" }}
-            getItemValue={(item) => item.name}
-            items={cityNamesFrom}
-            renderItem={(item) => <div key={item.id}>{item.name}</div>}
-            value={nameFrom}
-            onChange={(event) => setNameFrom(event.target.value)}
-            onSelect={onSelectFromHandler}
-          />
+      {errorMessage === null ? (
+        <>
+          <div>
+            <h2 className="direction">Направление</h2>
+            <div
+              className={
+                !nameError
+                  ? "autocomplete_city_names"
+                  : "autocomplete_city_names error_autocomplete"
+              }
+            >
+              <Autocomplete
+                inputProps={{ placeholder: "Откуда" }}
+                getItemValue={(item) => item.name}
+                items={cityNamesFrom}
+                renderItem={(item) => <div key={item.id}>{item.name}</div>}
+                value={nameFrom}
+                onChange={(event) => {
+                  setNameFrom(event.target.value);
+                  setNameError(false);
+                }}
+                onSelect={onSelectFromHandler}
+                autoHighlight={true}
+              />
 
-          <span
-            role="img"
-            aria-label="reverse"
-            className="changeCity"
-            onClick={reverseClickHandler}
+              <span
+                role="img"
+                aria-label="reverse"
+                className="changeCity"
+                onClick={reverseClickHandler}
+              >
+                🔄
+              </span>
+
+              <Autocomplete
+                inputProps={{ placeholder: "Куда" }}
+                getItemValue={(item) => item.name}
+                items={cityNamesIn}
+                renderItem={(item) => <div key={item.id}>{item.name}</div>}
+                value={nameIn}
+                onChange={(event) => {
+                  setNameIn(event.target.value);
+                  setNameError(false);
+                }}
+                onSelect={onSelectInHandler}
+                autoHighlight={true}
+              />
+              {nameError && (
+                <p className="name_error_message">
+                  Пожалуйста, выберите названия городов из списка.
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <h2 className="date">Дата</h2>
+            <div className="datePicker_tickets_date">
+              <DatePicker
+                locale={ru}
+                placeholderText="ДД.ММ.ГГГГ"
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                closeOnScroll={(e) => e.target === document}
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+                maxDate={new Date("2018-12-31")}
+                dateFormat="dd.MM.yyyy"
+              />
+              <DatePicker
+                locale={ru}
+                placeholderText="ДД.ММ.ГГГГ"
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+                closeOnScroll={(e) => e.target === document}
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
+                dateFormat="dd.MM.yyyy"
+              />
+            </div>
+          </div>
+
+          <button
+            className="findTickets button_orange"
+            onClick={findClickHandler}
           >
-            🔄
-          </span>
-
-          <Autocomplete
-            inputProps={{ placeholder: "Куда" }}
-            getItemValue={(item) => item.name}
-            items={cityNamesIn}
-            renderItem={(item) => <div key={item.id}>{item.name}</div>}
-            value={nameIn}
-            onChange={(event) => setNameIn(event.target.value)}
-            onSelect={onSelectInHandler}
-          />
-        </div>
-      </div>
-
-      <div>
-        <h2 className="date">Дата</h2>
-        <div className="datePicker_tickets_date">
-          <DatePicker
-            locale={ru}
-            placeholderText="ДД.ММ.ГГГГ"
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            closeOnScroll={(e) => e.target === document}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-            maxDate={new Date("2018-12-31")}
-            dateFormat="dd.MM.yyyy"
-          />
-          <DatePicker
-            locale={ru}
-            placeholderText="ДД.ММ.ГГГГ"
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            closeOnScroll={(e) => e.target === document}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-            dateFormat="dd.MM.yyyy"
-          />
-        </div>
-      </div>
-
-      <button className="findTickets button_orange" onClick={findClickHandler}>
-        Найти билеты
-      </button>
+            Найти билеты
+          </button>
+        </>
+      ) : (
+        <div className="header_error_message">{errorMessage}</div>
+      )}
     </div>
   );
 };

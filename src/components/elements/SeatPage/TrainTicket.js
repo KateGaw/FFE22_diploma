@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import api from "../../../utils/api";
+// import api from "../../../utils/api";
 import { MoneyFormat } from "../MoneyFormat";
+// import Preloader from '../Preloader';
 
 import {
   have_first_class,
@@ -29,8 +30,8 @@ const ServicesButtons = (props) => {
   );
 };
 
-const TrainTicket = ({ result, anotherTrainClickHandler }) => {
-  const [seatsInfo, setSeatsInfo] = useState([]);
+const TrainTicket = ({ result, anotherTrainClickHandler, seatsInfo }) => {
+  const [output, setOutput] = useState(null);
   // время отбытия
   const start_date = moment.unix(result.departure.from.datetime).utc().format();
 
@@ -167,10 +168,15 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
     setShowClass(event.target.id);
   };
 
-  // Получаем данные по местам и вагонам в выбранном поезде
-  useEffect(() => {
-    api.getRoutesSeats(result.departure._id, setSeatsInfo);
-  }, [result]);
+  // // Получаем данные по местам и вагонам в выбранном поезде
+  // useEffect(() => {
+  //   api.getRoutesSeats(
+  //     result.departure._id,
+  //     setSeatsInfo,
+  //     setErrorMessage,
+  //     setIsLoading
+  //   );
+  // }, [result]);
 
   const [choosenTypeInfo, setChoosenTypeInfo] = useState(null); //массив данных по выбранному классу
   useEffect(() => {
@@ -219,8 +225,8 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
 
   // на следующую страницу
   const nextPageClickHandler = () => {
-    console.log(result);
-    const output = {
+    // console.log(result);
+    setOutput({
       choosen_ticket: {
         departure: result.departure ? result.departure : null,
         arrival: result.arrival ? result.arrival : null,
@@ -235,9 +241,12 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
         linens: services.linens === "choosen" ? true : false,
         food: services.food === "choosen" ? true : false,
       },
-      total_price: "",
-    };
-    console.log("next page");
+      total_price: totalPrice,
+    });
+
+    if (totalPrice !== 0 && output !== null) {
+      console.log(output);
+    }
   };
 
   return (
@@ -307,7 +316,10 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
               <select
                 defaultValue={"0"}
                 onChange={(event) =>
-                  setPassengers({ ...passengers, adult: event.target.value })
+                  setPassengers({
+                    ...passengers,
+                    adult: event.target.value,
+                  })
                 }
               >
                 <option value="0">Взрослых - 0</option>
@@ -323,7 +335,10 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
               <select
                 defaultValue={"0"}
                 onChange={(event) =>
-                  setPassengers({ ...passengers, child: event.target.value })
+                  setPassengers({
+                    ...passengers,
+                    child: event.target.value,
+                  })
                 }
               >
                 <option value="0">Детских - 0</option>

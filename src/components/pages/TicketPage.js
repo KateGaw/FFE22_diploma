@@ -14,10 +14,11 @@ const TicketPage = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [info, setInfo] = useState(getItemsArray());
+  const [errorMessage, setErrorMessage] = useState(null);
 
   // Получаем карточки поездов
   useEffect(() => {
-    api.getRoutes(info, setResults, setIsLoading);
+    api.getRoutes(info, setResults, setIsLoading, setErrorMessage);
   }, [info]);
 
   return isLoading ? (
@@ -26,12 +27,15 @@ const TicketPage = (props) => {
     <>
       <ProgressBar />
       <div className="tickets_main">
-      <div>
+        <div>
           <TicketsFilter setInfoPage={setInfo} />
           <LastTickets />
         </div>
-        <TicketsList info={info} setInfo={setInfo} results={results} />
-        <div className="ticket_last-tickets"></div>
+        {errorMessage === null ? (
+          <TicketsList info={info} setInfo={setInfo} results={results} />
+        ) : (
+          <div className='ticket_error_message'>{errorMessage}</div>
+        )}
       </div>
     </>
   );

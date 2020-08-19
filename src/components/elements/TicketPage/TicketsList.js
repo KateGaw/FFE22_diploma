@@ -28,7 +28,6 @@ const TicketsList = ({ info, setInfo, results, setStep }) => {
     });
   };
 
-
   return results.total_count > 0 ? (
     <div className="ticket_cards">
       <div className="tickets_top_filters">
@@ -75,7 +74,10 @@ const TicketsList = ({ info, setInfo, results, setStep }) => {
       )}
     </div>
   ) : (
-    <div>NotFound</div>
+    <div className="ticket_error_message">
+      По выбранным критериям нет подходящих билетов. Попробуйте изменить
+      параметры или убрать часть фильтров.
+    </div>
   );
 };
 

@@ -2,9 +2,12 @@ import React from "react";
 
 const ErrorPage = () => {
   return (
-    <section className="top-sales">
+    <section className="error_page">
       <h2 className="text-center">Страница не найдена</h2>
-      <p>Извините, такая страница не найдена!</p>
+      <div>
+        404
+        <p>Извините, такая страница не найдена!</p>
+      </div>
     </section>
   );
 };

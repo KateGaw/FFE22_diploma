@@ -2,15 +2,15 @@ import axios from "axios";
 import moment from "moment";
 
 export default {
-  getCityNames: (name, setCityNames) => {
+  getCityNames: (name, setCityNames, setErrorMessage) => {
     return axios
       .get(`/routes/cities?name=${name}`)
       .then((response) => {
-        // console.log(response);
         setCityNames(response.data);
       })
       .catch((error) => {
         console.log(error);
+        setErrorMessage('Что то пошло не так. Пожалуйста, попробуйте повторить запрос позже.');
       });
   },
 
@@ -20,12 +20,12 @@ export default {
       .then((response) => {
         setTickets(response.data);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        setTickets([]);
       });
   },
 
-  getRoutes: (info, setResults, setIsLoading) => {
+  getRoutes: (info, setResults, setIsLoading, setErrorMessage) => {
     // console.log(info);
     let a = `from_city_id=${info.from_city_id}`,
       b = `&to_city_id=${info.to_city_id}`,
@@ -88,18 +88,22 @@ export default {
       .catch((error) => {
         console.log(error);
         setIsLoading(false);
+        setErrorMessage('Что то пошло не так. Пожалуйста, попробуйте повторить запрос позже.');
       });
   },
 
-  getRoutesSeats: (id, setSeatsInfo) => {
+  getRoutesSeats: (id, setSeatsInfo, setErrorMessage, setIsLoading) => {
     return axios
       .get(`/routes/${id}/seats`)
       .then((response) => {
         // console.log(response);
         setSeatsInfo(response.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setErrorMessage('Что то пошло не так. Пожалуйста, попробуйте повторить запрос позже.');
+        setIsLoading(false);
       });
   },
 
