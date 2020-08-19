@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import moment from "moment";
+import api from "../../../utils/api";
+import Preloader from "../Preloader";
 import { MoneyFormat } from "../MoneyFormat";
-import {timeHandler} from './timeHandler';
+import { timeHandler } from "./timeHandler";
 
 import {
   have_first_class,
@@ -29,8 +31,22 @@ const ServicesButtons = (props) => {
   );
 };
 
-const TrainTicket = ({ result, anotherTrainClickHandler, seatsInfo }) => {
+const TrainTicket = ({ result, anotherTrainClickHandler }) => {
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [seatsInfo, setSeatsInfo] = useState([]);
   const [output, setOutput] = useState(null);
+
+  // Получаем данные по местам и вагонам в выбранном поезде
+  useEffect(() => {
+    api.getRoutesSeats(
+      result.departure._id,
+      setSeatsInfo,
+      setErrorMessage,
+      setIsLoading
+    );
+  }, [result]);
+
   // время отбытия
   const start_date = moment.unix(result.departure.from.datetime).utc().format();
 
@@ -233,248 +249,268 @@ const TrainTicket = ({ result, anotherTrainClickHandler, seatsInfo }) => {
     }
   };
 
-  return (
+  return isLoading ? (
+    <Preloader />
+  ) : (
     <div className="ticket_info_block ticket_cards">
-      <h2>Выбор мест</h2>
-      <div className="train_ticket">
-        <div className="ticket_top-buttons">
-          <img src="assets/button_to.png" alt="button" />
-          <button className="chooseOther" onClick={anotherTrainClickHandler}>
-            Выбрать другой поезд
-          </button>
-        </div>
-        <div className="ticket_top-info">
-          <img
-            src="assets/train_cards/train_orange.png"
-            alt="train_icon"
-            className="train_icon"
-          />
-          <div className="info_train">
-            <div className="train_number">{result.departure.duration}</div>
-            <div className="train_start_city">
-              {result.departure.train.name}
-              <img src="assets/train_cards/gray_arrow.svg" alt="arrow" />
-            </div>
-            <div className="train_path from">
-              {result.departure.from.city.name}
-              <img src="assets/train_cards/dark_arrow.svg" alt="arrow" />
-            </div>
-            <div className="train_path to">{result.departure.to.city.name}</div>
-          </div>
-          <div className="train_there">
-            <div className="train_start">
-              <div className="train__time">
-                {moment(start_date).format("HH:mm")}
-              </div>
-              <div className="train__city">
-                {result.departure.from.city.name}
-              </div>
-              <div className="train__station">
-                {result.departure.from.railway_station_name} вокзал
-              </div>
-            </div>
-            <div className="train__arrow">
-              <img src="assets/train_cards/orange_arrow.svg" alt="arrow" />
-            </div>
-            <div className="train__end">
-              <div className="train__time">
-                {moment(end_date).format("HH:mm")}
-              </div>
-              <div className="train__city">{result.departure.to.city.name}</div>
-              <div className="train__station">
-                {result.departure.to.railway_station_name} вокзал
-              </div>
-            </div>
-          </div>
-          <div className="info_time">
-            <img src="assets/clock.png" alt="clock" />
-            <p>{time}</p>
-          </div>
-        </div>
-        <div className="ticket_count">
-          <h4>Количество билетов</h4>
-          <div className="ticket_count-blocks">
-            <div className="ticket_count-block">
-              <select
-                defaultValue={"0"}
-                onChange={(event) =>
-                  setPassengers({
-                    ...passengers,
-                    adult: event.target.value,
-                  })
-                }
+      {errorMessage === null ? (
+        <>
+          <h2>Выбор мест</h2>
+          <div className="train_ticket">
+            <div className="ticket_top-buttons">
+              <img src="assets/button_to.png" alt="button" />
+              <button
+                className="chooseOther"
+                onClick={anotherTrainClickHandler}
               >
-                <option value="0">Взрослых - 0</option>
-                <option value="1">Взрослых - 1</option>
-                <option value="2">Взрослых - 2</option>
-                <option value="3">Взрослых - 3</option>
-                <option value="4">Взрослых - 4</option>
-                <option value="5">Взрослых - 5</option>
-              </select>
-              <p>Можно добавить еще 3 пассажиров</p>
+                Выбрать другой поезд
+              </button>
             </div>
-            <div className="ticket_count-block">
-              <select
-                defaultValue={"0"}
-                onChange={(event) =>
-                  setPassengers({
-                    ...passengers,
-                    child: event.target.value,
-                  })
-                }
-              >
-                <option value="0">Детских - 0</option>
-                <option value="1">Детских - 1</option>
-                <option value="2">Детских - 2</option>
-                <option value="3">Детских - 3</option>
-                <option value="4">Детских - 4</option>
-                <option value="5">Детских - 5</option>
-              </select>
-              <p>
-                Можно добавить еще 3 детей до 10 лет.Свое место в вагоне, как у
-                взрослых, но дешевле в среднем на 50-65%
-              </p>
-            </div>
-            <div className="ticket_count-block">
-              <select
-                defaultValue={"0"}
-                onChange={(event) =>
-                  setPassengers({
-                    ...passengers,
-                    child_no_place: event.target.value,
-                  })
-                }
-              >
-                <option value="0">Детских «без места» - 0</option>
-                <option value="1">Детских «без места» - 1</option>
-                <option value="2">Детских «без места» - 2</option>
-                <option value="3">Детских «без места» - 3</option>
-                <option value="4">Детских «без места» - 4</option>
-                <option value="5">Детских «без места» - 5</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div className="ticket_type">
-          <h4>Тип вагона</h4>
-          <div className="ticekt_type-blocks">
-            {have_classes.map((item) => {
-              if (item.value) {
-                return (
-                  <div
-                    className={
-                      item.alt === showClass
-                        ? "type_block active"
-                        : "type_block"
-                    }
-                    key={item.id}
-                  >
-                    <div>{item.image}</div>
-                    <p
-                      className="type_block-text"
-                      onClick={classChooseClickHandler}
-                      id={item.alt}
-                    >
-                      {item.name}
-                    </p>
+            <div className="ticket_top-info">
+              <img
+                src="assets/train_cards/train_orange.png"
+                alt="train_icon"
+                className="train_icon"
+              />
+              <div className="info_train">
+                <div className="train_number">{result.departure.duration}</div>
+                <div className="train_start_city">
+                  {result.departure.train.name}
+                  <img src="assets/train_cards/gray_arrow.svg" alt="arrow" />
+                </div>
+                <div className="train_path from">
+                  {result.departure.from.city.name}
+                  <img src="assets/train_cards/dark_arrow.svg" alt="arrow" />
+                </div>
+                <div className="train_path to">
+                  {result.departure.to.city.name}
+                </div>
+              </div>
+              <div className="train_there">
+                <div className="train_start">
+                  <div className="train__time">
+                    {moment(start_date).format("HH:mm")}
                   </div>
-                );
-              }
-            })}
-          </div>
-        </div>
-        <div className="ticket_footer">
-          <div className="ticket_footer-head">
-            <div>
-              <p>Вагоны</p>
-              <p className="active">07</p>
-              <p className="non-active">09</p>
-            </div>
-            <p>Нумерация вагонов начинается с головы поезда</p>
-          </div>
-          <div className="ticket_footer-main">
-            <div className="chosen_block">
-              <p>07</p>
-              <p>вагон</p>
-            </div>
-
-            {choosenTypeInfo !== null && (
-              <table className="seats_and_cost">
-                <tbody>
-                  <tr>
-                    <th className="head h_place">
-                      Места
-                      <p className="place_total">
-                        {choosenTypeInfo.coach.available_seats}
-                      </p>
-                    </th>
-                    <th className="head h_cost">Стоимость</th>
-                  </tr>
-                  {seats.map(
-                    (item) =>
-                      choosenTypeInfo.coach[item.price] !== 0 && (
-                        <tr key={item.id}>
-                          <th className="seat">
-                            {item.name}
-                            <p className="place_count">{item.counter}</p>
-                          </th>
-                          <th className="place_count t_price">
-                            <MoneyFormat
-                              price={choosenTypeInfo.coach[item.price]}
-                            />
-                          </th>
-                        </tr>
-                      )
-                  )}
-                </tbody>
-              </table>
-            )}
-
-            <div className="services">
-              <p>Обслуживание ФПК</p>
-              <div className="services_icons">
-                <ServicesButtons
-                  id="conditioner"
-                  class={services.conditioner}
-                  click={serviceClickHandler}
-                  data={conditioner}
-                />
-                <ServicesButtons
-                  id="wifi"
-                  class={services.wifi}
-                  click={serviceClickHandler}
-                  data={wifi}
-                />
-                <ServicesButtons
-                  id="linens"
-                  class={services.linens}
-                  click={serviceClickHandler}
-                  data={linens}
-                />
-                <ServicesButtons
-                  id="food"
-                  class={services.food}
-                  click={serviceClickHandler}
-                  data={food}
-                />
+                  <div className="train__city">
+                    {result.departure.from.city.name}
+                  </div>
+                  <div className="train__station">
+                    {result.departure.from.railway_station_name} вокзал
+                  </div>
+                </div>
+                <div className="train__arrow">
+                  <img src="assets/train_cards/orange_arrow.svg" alt="arrow" />
+                </div>
+                <div className="train__end">
+                  <div className="train__time">
+                    {moment(end_date).format("HH:mm")}
+                  </div>
+                  <div className="train__city">
+                    {result.departure.to.city.name}
+                  </div>
+                  <div className="train__station">
+                    {result.departure.to.railway_station_name} вокзал
+                  </div>
+                </div>
+              </div>
+              <div className="info_time">
+                <img src="assets/clock.png" alt="clock" />
+                <p>{time}</p>
               </div>
             </div>
-            <p className="image_p">11 человек выбирают места в этом поезде</p>
-            <div className="train_picture">
-              <img src="assets/train_picture.png" alt="train_picture" />
+            <div className="ticket_count">
+              <h4>Количество билетов</h4>
+              <div className="ticket_count-blocks">
+                <div className="ticket_count-block">
+                  <select
+                    defaultValue={"0"}
+                    onChange={(event) =>
+                      setPassengers({
+                        ...passengers,
+                        adult: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="0">Взрослых - 0</option>
+                    <option value="1">Взрослых - 1</option>
+                    <option value="2">Взрослых - 2</option>
+                    <option value="3">Взрослых - 3</option>
+                    <option value="4">Взрослых - 4</option>
+                    <option value="5">Взрослых - 5</option>
+                  </select>
+                  <p>Можно добавить еще 3 пассажиров</p>
+                </div>
+                <div className="ticket_count-block">
+                  <select
+                    defaultValue={"0"}
+                    onChange={(event) =>
+                      setPassengers({
+                        ...passengers,
+                        child: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="0">Детских - 0</option>
+                    <option value="1">Детских - 1</option>
+                    <option value="2">Детских - 2</option>
+                    <option value="3">Детских - 3</option>
+                    <option value="4">Детских - 4</option>
+                    <option value="5">Детских - 5</option>
+                  </select>
+                  <p>
+                    Можно добавить еще 3 детей до 10 лет.Свое место в вагоне,
+                    как у взрослых, но дешевле в среднем на 50-65%
+                  </p>
+                </div>
+                <div className="ticket_count-block">
+                  <select
+                    defaultValue={"0"}
+                    onChange={(event) =>
+                      setPassengers({
+                        ...passengers,
+                        child_no_place: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="0">Детских «без места» - 0</option>
+                    <option value="1">Детских «без места» - 1</option>
+                    <option value="2">Детских «без места» - 2</option>
+                    <option value="3">Детских «без места» - 3</option>
+                    <option value="4">Детских «без места» - 4</option>
+                    <option value="5">Детских «без места» - 5</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            {totalPrice > 0 && (
-              <MoneyFormat classList="total_price_info" price={totalPrice} />
-            )}
+            <div className="ticket_type">
+              <h4>Тип вагона</h4>
+              <div className="ticekt_type-blocks">
+                {have_classes.map((item) => {
+                  if (item.value) {
+                    return (
+                      <div
+                        className={
+                          item.alt === showClass
+                            ? "type_block active"
+                            : "type_block"
+                        }
+                        key={item.id}
+                      >
+                        <div>{item.image}</div>
+                        <p
+                          className="type_block-text"
+                          onClick={classChooseClickHandler}
+                          id={item.alt}
+                        >
+                          {item.name}
+                        </p>
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            </div>
+            <div className="ticket_footer">
+              <div className="ticket_footer-head">
+                <div>
+                  <p>Вагоны</p>
+                  <p className="active">07</p>
+                  <p className="non-active">09</p>
+                </div>
+                <p>Нумерация вагонов начинается с головы поезда</p>
+              </div>
+              <div className="ticket_footer-main">
+                <div className="chosen_block">
+                  <p>07</p>
+                  <p>вагон</p>
+                </div>
+
+                {choosenTypeInfo !== null && (
+                  <table className="seats_and_cost">
+                    <tbody>
+                      <tr>
+                        <th className="head h_place">
+                          Места
+                          <p className="place_total">
+                            {choosenTypeInfo.coach.available_seats}
+                          </p>
+                        </th>
+                        <th className="head h_cost">Стоимость</th>
+                      </tr>
+                      {seats.map(
+                        (item) =>
+                          choosenTypeInfo.coach[item.price] !== 0 && (
+                            <tr key={item.id}>
+                              <th className="seat">
+                                {item.name}
+                                <p className="place_count">{item.counter}</p>
+                              </th>
+                              <th className="place_count t_price">
+                                <MoneyFormat
+                                  price={choosenTypeInfo.coach[item.price]}
+                                />
+                              </th>
+                            </tr>
+                          )
+                      )}
+                    </tbody>
+                  </table>
+                )}
+
+                <div className="services">
+                  <p>Обслуживание ФПК</p>
+                  <div className="services_icons">
+                    <ServicesButtons
+                      id="conditioner"
+                      class={services.conditioner}
+                      click={serviceClickHandler}
+                      data={conditioner}
+                    />
+                    <ServicesButtons
+                      id="wifi"
+                      class={services.wifi}
+                      click={serviceClickHandler}
+                      data={wifi}
+                    />
+                    <ServicesButtons
+                      id="linens"
+                      class={services.linens}
+                      click={serviceClickHandler}
+                      data={linens}
+                    />
+                    <ServicesButtons
+                      id="food"
+                      class={services.food}
+                      click={serviceClickHandler}
+                      data={food}
+                    />
+                  </div>
+                </div>
+                <p className="image_p">
+                  11 человек выбирают места в этом поезде
+                </p>
+                <div className="train_picture">
+                  <img src="assets/train_picture.png" alt="train_picture" />
+                </div>
+                {totalPrice > 0 && (
+                  <MoneyFormat
+                    classList="total_price_info"
+                    price={totalPrice}
+                  />
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <button
-        className="button_orange passengers_next_btn"
-        onClick={nextPageClickHandler}
-      >
-        Далее
-      </button>
+          <button
+            className="button_orange passengers_next_btn"
+            onClick={nextPageClickHandler}
+          >
+            Далее
+          </button>
+        </>
+      ) : (
+        <div className="ticket_error_message">{errorMessage}</div>
+      )}
     </div>
   );
 };
