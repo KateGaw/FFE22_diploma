@@ -1,4 +1,5 @@
 import React from "react";
+import { MoneyFormat } from "../MoneyFormat";
 
 const PassengerBlock = (props) => {
   const input = [
@@ -56,7 +57,7 @@ const PassengerBlock = (props) => {
         {input.map((item, index) => (
           <div key={index} className="confirm__passenger_card">
             <div className="confirm__passenger_card-left">
-              <img src="assets/person_icon.png" alt='person'/>
+              <img src="assets/person_icon.png" alt="person" />
               {item.passenger_type === "adult" ? "Взрослый" : "Детский"}
             </div>
             <div className="confirm__passenger_card-right">
@@ -82,10 +83,11 @@ const PassengerBlock = (props) => {
           </div>
         ))}
         <div className="confirm_passengers_price">
-          <div className="price">
-            Всего {input_total_price}
-            <img src="assets/train_cards/price.svg" alt="price" />
-          </div>
+          <MoneyFormat
+            text="Всего"
+            classList="price"
+            price={input_total_price}
+          />
           <button
             className="confirm_ticket_button"
             onClick={changeClickHandler}

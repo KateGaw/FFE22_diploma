@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../utils/api";
 import { express, wifi, food } from "../consts/consts";
+import { MoneyFormat } from "./MoneyFormat";
 
 const LastTickets = () => {
   const [tickets, setTickets] = useState([]);
@@ -35,10 +36,11 @@ const LastTickets = () => {
                     {item.departure.have_wifi && wifi}
                     {food}
                   </div>
-                  <div className="card_bottom-right">
-                    от <p>{item.departure.min_price}</p>
-                    <img src="assets/train_cards/price.svg" alt="price" />
-                  </div>
+                  <MoneyFormat
+                    classList="card_bottom-right"
+                    text="от"
+                    price={item.departure.min_price}
+                  />
                 </div>
               </div>
             )

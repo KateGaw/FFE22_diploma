@@ -1,6 +1,7 @@
 import React from "react";
 import { star } from "../consts/consts";
 import { clearStorage } from "../../utils/localStorage";
+import { MoneyFormat } from "../elements/MoneyFormat";
 
 const SuccessPage = () => {
   const orderName = "285АА";
@@ -19,10 +20,11 @@ const SuccessPage = () => {
       <div className="success_main__block">
         <div className="block_header">
           <p>№ Заказа {orderName}</p>
-          <div className="block_header__right">
-            сумма <p>{totalPrice}</p>
-            <img src="assets/train_cards/price.svg" alt="price" />
-          </div>
+          <MoneyFormat
+            classList={"block_header__right"}
+            text={"сумма"}
+            price={totalPrice}
+          />
         </div>
 
         <div className="block_actions">

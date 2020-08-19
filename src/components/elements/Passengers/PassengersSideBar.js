@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { MoneyFormat } from "../MoneyFormat";
 
 const DirectionTimes = ({ data }) => {
   const [expandSrc, setExpandSrc] = useState(
@@ -111,8 +112,7 @@ const DirectionTimes = ({ data }) => {
                 {data.adults} {adult}
               </td>
               <td className="train_number_td">
-                {data.adults_price}
-                <img src="assets/train_cards/price.svg" alt="price" />
+                <MoneyFormat price={data.adults_price} />
               </td>
             </tr>
             <tr>
@@ -120,8 +120,7 @@ const DirectionTimes = ({ data }) => {
                 {data.childs} {child}
               </td>
               <td className="train_number_td">
-                {data.child_price}
-                <img src="assets/train_cards/price.svg" alt="price" />
+                <MoneyFormat price={data.child_price} />
               </td>
             </tr>
           </tbody>
@@ -175,7 +174,7 @@ const PassengersSideBar = (props) => {
     childs: 5,
     child_price: 1920,
   };
-  const total_ptice = 7760;
+  const total_price = 7760;
   return (
     <div className="ticket_filter passengers_sidebar">
       <div className="filter_block">
@@ -186,11 +185,7 @@ const PassengersSideBar = (props) => {
       <DirectionTimes data={passengers} />
       <div className="passengers_sidebar__bottom filter_block">
         <h3>Итог</h3>
-
-        <div className="total_price">
-          {total_ptice}
-          <img src="assets/train_cards/price.svg" alt="price" />
-        </div>
+        <MoneyFormat classList="total_price" price={total_price} />
       </div>
     </div>
   );

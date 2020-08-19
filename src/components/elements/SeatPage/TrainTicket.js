@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import api from "../../../utils/api";
+import { MoneyFormat } from "../MoneyFormat";
 
 import {
   have_first_class,
@@ -43,6 +44,13 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
   );
   const period_hours = Math.floor(period_ms.asHours());
   const period_minutes = Math.floor(period_ms.asMinutes()) - period_hours * 60;
+
+  // количество пассажиров
+  const [passengers, setPassengers] = useState({
+    adult: 0,
+    child: 0,
+    child_no_place: 0,
+  });
 
   // верхние, средние и нижние места и цены на них
   const seats = [
@@ -179,8 +187,56 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
     } // eslint-disable-next-line
   }, [seatsInfo, showClass]);
 
+  // расчеты финальной стоимости
+  const [totalPrice, setTotalPrice] = useState(0);
+  useEffect(() => {
+    if (choosenTypeInfo !== null) {
+      const place_price = choosenTypeInfo.coach.price
+        ? choosenTypeInfo.coach.price
+        : choosenTypeInfo.coach.top_price;
+      const adult_passengers = passengers.adult;
+      const child_passengers = passengers.child;
+      let services_price = 0;
+
+      if (services.wifi === "choosen") {
+        services_price += choosenTypeInfo.coach.wifi_price;
+      }
+      if (services.conditioner === "choosen") {
+        services_price += choosenTypeInfo.coach.conditioner_price;
+      }
+      if (
+        services.linens === "choosen" &&
+        !choosenTypeInfo.coach.is_linens_included
+      ) {
+        services_price += choosenTypeInfo.coach.linens_price;
+      }
+
+      const adult_final_price = adult_passengers * place_price;
+      const child_final_price = (child_passengers * place_price) / 2;
+      setTotalPrice(services_price + adult_final_price + child_final_price);
+    }
+  }, [totalPrice, services, showClass, passengers, choosenTypeInfo]);
+
   // на следующую страницу
   const nextPageClickHandler = () => {
+    console.log(result);
+    const output = {
+      choosen_ticket: {
+        departure: result.departure ? result.departure : null,
+        arrival: result.arrival ? result.arrival : null,
+      },
+      adult_passengers: passengers.adult,
+      child_passengers: passengers.child,
+      child_no_place: passengers.child_no_place,
+      class: showClass,
+      services: {
+        wifi: services.wifi === "choosen" ? true : false,
+        conditioner: services.conditioner === "choosen" ? true : false,
+        linens: services.linens === "choosen" ? true : false,
+        food: services.food === "choosen" ? true : false,
+      },
+      total_price: "",
+    };
     console.log("next page");
   };
 
@@ -248,7 +304,12 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
           <h4>Количество билетов</h4>
           <div className="ticket_count-blocks">
             <div className="ticket_count-block">
-              <select defaultValue={"0"}>
+              <select
+                defaultValue={"0"}
+                onChange={(event) =>
+                  setPassengers({ ...passengers, adult: event.target.value })
+                }
+              >
                 <option value="0">Взрослых - 0</option>
                 <option value="1">Взрослых - 1</option>
                 <option value="2">Взрослых - 2</option>
@@ -259,7 +320,12 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
               <p>Можно добавить еще 3 пассажиров</p>
             </div>
             <div className="ticket_count-block">
-              <select defaultValue={"0"}>
+              <select
+                defaultValue={"0"}
+                onChange={(event) =>
+                  setPassengers({ ...passengers, child: event.target.value })
+                }
+              >
                 <option value="0">Детских - 0</option>
                 <option value="1">Детских - 1</option>
                 <option value="2">Детских - 2</option>
@@ -273,7 +339,15 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
               </p>
             </div>
             <div className="ticket_count-block">
-              <select defaultValue={"0"}>
+              <select
+                defaultValue={"0"}
+                onChange={(event) =>
+                  setPassengers({
+                    ...passengers,
+                    child_no_place: event.target.value,
+                  })
+                }
+              >
                 <option value="0">Детских «без места» - 0</option>
                 <option value="1">Детских «без места» - 1</option>
                 <option value="2">Детских «без места» - 2</option>
@@ -348,10 +422,8 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
                             <p className="place_count">{item.counter}</p>
                           </th>
                           <th className="place_count t_price">
-                            {choosenTypeInfo.coach[item.price]}
-                            <img
-                              src="assets/train_cards/price.svg"
-                              alt="price"
+                            <MoneyFormat
+                              price={choosenTypeInfo.coach[item.price]}
                             />
                           </th>
                         </tr>
@@ -394,6 +466,9 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
             <div className="train_picture">
               <img src="assets/train_picture.png" alt="train_picture" />
             </div>
+            {totalPrice > 0 && (
+              <MoneyFormat classList="total_price_info" price={totalPrice} />
+            )}
           </div>
         </div>
       </div>

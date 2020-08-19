@@ -51,6 +51,19 @@ p {
     margin: 0;
 }
 
+.price_div {
+    display: flex;
+    align-items: baseline;
+}
+
+.price_div p {
+    margin-right: 5px;
+}
+
+.price_div img {
+    margin-left: 5px;
+}
+
 
 /* MAIN HEADER */
 
@@ -723,10 +736,9 @@ h3 {
     text-transform: initial;
 }
 
-.card_bottom-right {
-    display: flex;
-    align-items: baseline;
+.card_bottom-right p {
     color: #928f94;
+    font-size: 16px;
 }
 
 .card_bottom-left {
@@ -742,11 +754,11 @@ h3 {
     fill: #928f94;
 }
 
-.card_bottom-right p {
+.card_bottom-right {
     font-size: 28px;
     line-height: 39px;
     color: #ffa800;
-    margin: 0 5px;
+    margin-left: 5px;
 }
 
 
@@ -794,7 +806,6 @@ h3 {
     align-items: flex-end;
     justify-content: space-around;
     border-left: 1px dashed #e5e5e5;
-    padding: 10px;
 }
 
 .train_number {
@@ -868,18 +879,21 @@ h3 {
 
 .seat_price {
     display: flex;
-    align-items: baseline;
     height: 35px;
-    width: 90px;
+    width: 100px;
     justify-content: space-around;
 }
 
 .seat_price p {
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.seat_price div {
     font-weight: bold;
     font-size: 21px;
     line-height: 28px;
     color: #2d2b2f;
-    margin: 0;
 }
 
 .chooseSeat {
@@ -1172,7 +1186,7 @@ h3 {
 
 .seats_and_cost {
     width: 35%;
-    margin: 31px 62px;
+    margin: 31px 52px;
 }
 
 .seats_and_cost tr {
@@ -1212,11 +1226,7 @@ h3 {
 }
 
 .t_price {
-    margin-right: 5%
-}
-
-.place_count img {
-    margin-left: 7px;
+    margin-right: 4%;
 }
 
 .seats div,
@@ -1303,6 +1313,14 @@ h3 {
     width: 782px;
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+.total_price_info {
+    font-size: 24px;
+    color: #ffa800;
+    font-weight: bold;
+    margin-left: 88%;
+    margin-top: 20px;
 }
 
 
@@ -1393,10 +1411,11 @@ h3 {
     text-align: right;
 }
 
-.train_number_td img {
+
+/* .train_number_td img {
     margin-left: 5px;
     margin-bottom: 4px;
-}
+} */
 
 .passengers_sidebar__bottom {
     display: flex;
@@ -1736,7 +1755,7 @@ input[type="number"] {
     margin-bottom: 10px;
 }
 
-.price img {
+.price div {
     margin-left: 5px;
 }
 
@@ -1806,8 +1825,12 @@ input[type="number"] {
     align-items: baseline;
 }
 
-.block_header__right p {
+.block_header__right div {
     padding: 0 10px;
+}
+
+.block_header__right img {
+    width: 14px;
 }
 
 .block_actions {

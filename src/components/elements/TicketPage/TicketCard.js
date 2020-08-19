@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 
 import { addItem } from "../../../utils/localStorage";
 import { express, wifi, food } from "../../consts/consts";
+import { MoneyFormat } from "../MoneyFormat";
 
 const TicketCard = (props) => {
   const date_from = moment
@@ -84,7 +85,9 @@ const TicketCard = (props) => {
             </div>
           </div>
           <div className="train__arrow">
-            <div className="arrow_time">{period_hours} : {period_minutes}</div>
+            <div className="arrow_time">
+              {period_hours} : {period_minutes}
+            </div>
             <img src="assets/train_cards/orange_arrow.svg" alt="arrow" />
           </div>
           <div className="train__end">
@@ -112,7 +115,9 @@ const TicketCard = (props) => {
               </div>
             </div>
             <div className="train__arrow">
-              <div className="arrow_time">{period_hours} : {period_minutes}</div>
+              <div className="arrow_time">
+                {period_hours} : {period_minutes}
+              </div>
               <img src="assets/train_cards/orange_arrow.svg" alt="arrow" />
             </div>
             <div className="train__end">
@@ -140,9 +145,7 @@ const TicketCard = (props) => {
                       <td className="seat_type">{item.name}</td>
                       <td className="seat_quantity">{item.quantity}</td>
                       <td className="seat_price">
-                        от &nbsp; <p>{item.price}</p>
-                        &nbsp;
-                        <img src="assets/train_cards/price.svg" alt="price" />
+                        <MoneyFormat text="от" price={item.price} />
                       </td>
                     </tr>
                   )
