@@ -1084,7 +1084,8 @@ h3 {
 }
 
 .info_time p {
-    margin: 0 10px;
+    margin: 0 5px;
+    white-space: pre-line;
 }
 
 .ticket_count {

@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-// import api from "../../../utils/api";
 import { MoneyFormat } from "../MoneyFormat";
-// import Preloader from '../Preloader';
+import {timeHandler} from './timeHandler';
 
 import {
   have_first_class,
@@ -39,12 +38,7 @@ const TrainTicket = ({ result, anotherTrainClickHandler, seatsInfo }) => {
   const end_date = moment.unix(result.departure.to.datetime).utc().format();
 
   //часов в дороге
-  const period_ms = moment.duration(
-    moment(end_date).diff(moment(start_date), "milliseconds", true),
-    "milliseconds"
-  );
-  const period_hours = Math.floor(period_ms.asHours());
-  const period_minutes = Math.floor(period_ms.asMinutes()) - period_hours * 60;
+  const time = timeHandler(start_date, end_date);
 
   // количество пассажиров
   const [passengers, setPassengers] = useState({
@@ -167,16 +161,6 @@ const TrainTicket = ({ result, anotherTrainClickHandler, seatsInfo }) => {
   const classChooseClickHandler = (event) => {
     setShowClass(event.target.id);
   };
-
-  // // Получаем данные по местам и вагонам в выбранном поезде
-  // useEffect(() => {
-  //   api.getRoutesSeats(
-  //     result.departure._id,
-  //     setSeatsInfo,
-  //     setErrorMessage,
-  //     setIsLoading
-  //   );
-  // }, [result]);
 
   const [choosenTypeInfo, setChoosenTypeInfo] = useState(null); //массив данных по выбранному классу
   useEffect(() => {
@@ -304,9 +288,7 @@ const TrainTicket = ({ result, anotherTrainClickHandler, seatsInfo }) => {
           </div>
           <div className="info_time">
             <img src="assets/clock.png" alt="clock" />
-            <p>
-              {period_hours} часов {period_minutes} минут
-            </p>
+            <p>{time}</p>
           </div>
         </div>
         <div className="ticket_count">
