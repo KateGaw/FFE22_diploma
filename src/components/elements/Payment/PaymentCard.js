@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
+import { addItem } from "../../../utils/localStorage";
+import { routePaths } from "../../../routePaths";
 
 const phoneValidation = (phone) => {
   const phoneRegExp = /^((\+7)[ \-] ?)?((\(\d{3}\))|(\d{3}))?([ \-])?(\d{3}[ \-]?\d{2}[ \-]?\d{2})$/;
@@ -44,7 +46,7 @@ const PassengerCard = (props) => {
   const [email, setEmail] = useState("");
   const [paymentVariant, setPaymentVariant] = useState({
     online: false,
-    offline: true,
+    cash: true,
   });
   const [onlinePaymentVars, setOnlinePaymentVars] = useState({
     card: false,
@@ -64,12 +66,12 @@ const PassengerCard = (props) => {
     if (event.target.name === "online") {
       setPaymentVariant({
         online: paymentVariant.online ? false : true,
-        offline: false,
+        cash: false,
       });
     } else {
       setPaymentVariant({
         online: false,
-        offline: paymentVariant.offline ? false : true,
+        cash: paymentVariant.cash ? false : true,
       });
     }
   };
@@ -115,18 +117,17 @@ const PassengerCard = (props) => {
       paymentOutput.payment_type = "online";
       paymentOutput.online_type = online_var;
     } else {
-      paymentOutput.payment_type = "offline";
+      paymentOutput.payment_type = "cash";
     }
 
-    if (Object.values(fieldError).includes(true)) {
+    if (Object.values(validation).indexOf(true) === -1) {
       paymentOutput.name = personName.name;
       paymentOutput.surname = personName.surname;
       paymentOutput.middle_name = personName.middle_name;
       paymentOutput.phone = phone;
       paymentOutput.email = email;
-      console.log(paymentOutput); //send in storage && -> next page!
-    } else {
-      console.log("Error!");
+      addItem("payment_info", JSON.stringify(paymentOutput));
+      props.history.push(routePaths.ConfirmPage);
     }
   };
 
@@ -298,9 +299,9 @@ const PassengerCard = (props) => {
         <div className="passenger_card__main-person">
           <label className="payment">
             <input
-              name="offline"
+              name="cash"
               type="checkbox"
-              checked={paymentVariant.offline}
+              checked={paymentVariant.cash}
               onChange={paymentChooser}
             />
             <p>Наличными</p>

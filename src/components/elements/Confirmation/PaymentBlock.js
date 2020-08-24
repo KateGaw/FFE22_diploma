@@ -1,15 +1,6 @@
 import React from "react";
 
 const PaymentBlock = (props) => {
-  const input = {
-    payment_type: "online",
-    online_type: "paypal",
-  };
-
-  const changeClickHandler = () => {
-    console.log("go to payment page!");
-  };
-
   return (
     <div className="passenger_card confirm_card">
       <div className="passenger_card__header">
@@ -18,12 +9,12 @@ const PaymentBlock = (props) => {
         </div>
       </div>
       <div className="confirm__payment">
-        {input.payment_type === "online" ? (
-          <p>Онлайн, {input.online_type}</p>
+        {props.data.payment_type === "online" ? (
+          <p>Онлайн, {props.data.online_type}</p>
         ) : (
           <p>Наличными</p>
         )}
-        <button className="confirm_ticket_button" onClick={changeClickHandler}>
+        <button className="confirm_ticket_button" onClick={props.button}>
           Изменить
         </button>
       </div>

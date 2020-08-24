@@ -1357,12 +1357,19 @@ h3 {
     font-size: 24px;
     color: #ffa800;
     font-weight: bold;
-    margin-left: 88%;
+    margin-left: 86%;
     margin-top: 20px;
 }
 
 
 /* PASSENGERS */
+
+.error_div {
+    color: rgb(255, 61, 0);
+    float: right;
+    margin: 50px 0;
+    padding: 15px;
+}
 
 
 /* PASSENGERS_SIDEBAR */
@@ -1449,12 +1456,6 @@ h3 {
     text-align: right;
 }
 
-
-/* .train_number_td img {
-    margin-left: 5px;
-    margin-bottom: 4px;
-} */
-
 .passengers_sidebar__bottom {
     display: flex;
     justify-content: space-between;
@@ -1479,6 +1480,7 @@ h3 {
 
 .passenger_card {
     margin-right: 50px;
+    margin-bottom: 30px;
     display: block;
     width: 830px;
     height: fit-content;

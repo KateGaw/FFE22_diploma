@@ -12,8 +12,15 @@ import TrainTicket from "../elements/SeatPage/TrainTicket";
 const TicketPage = (props) => {
   const [info, setInfo] = useState(getItemsArray());
   const result = JSON.parse(info.ticket_data);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+
   const anotherTrain = () => {
     props.history.push(routePaths.TicketPage);
+  };
+
+  // на следующую страницу
+  const nextPageClickHandler = () => {
+    props.history.push(routePaths.PassengersPage);
   };
 
   return (
@@ -24,7 +31,29 @@ const TicketPage = (props) => {
           <TicketsFilter setInfoPage={setInfo} />
           <LastTickets />
         </div>
-        <TrainTicket result={result} anotherTrainClickHandler={anotherTrain} />
+        <div>
+          <TrainTicket
+            id="departure"
+            result={result.departure}
+            anotherTrainClickHandler={anotherTrain}
+            disabled={setButtonDisabled}
+          />
+          {result.arrival && (
+            <TrainTicket
+              id="arrival"
+              result={result.arrival}
+              anotherTrainClickHandler={anotherTrain}
+              disabled={setButtonDisabled}
+            />
+          )}
+          <button
+            className="button_orange passengers_next_btn"
+            onClick={nextPageClickHandler}
+            disabled={buttonDisabled}
+          >
+            Далее
+          </button>
+        </div>
       </div>
     </>
   );

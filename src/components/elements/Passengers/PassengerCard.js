@@ -10,22 +10,24 @@ import {
 import inputsValidation from "./inputsValidation";
 
 const PassengerCard = (props) => {
-  const [showCard, setShowCard] = useState(true); //get from props!
+  const [showCard, setShowCard] = useState(props.id > 0 ? false : true);
   const [mobility, setMobility] = useState(false);
+
+  // информация из формы
   const [output, setOutput] = useState({
     //form sends from props and set there?
-    id: 1, //get from props!
-    passenger_type: "adult",
+    id: props.id,
+    passenger_type: props.type,
     surname: "",
     name: "",
     middle_name: "",
     gender: "male",
     birth_date: "",
     mobility: false,
-    document_type: "passport",
+    document_type: props.type === "adult" ? "passport" : "certificate",
     passport_series: "",
     passport_number: "",
-    sertificate_number: "",
+    certificate_number: "",
   });
 
   const [checkFields, setCheckFields] = useState(false);
@@ -34,6 +36,7 @@ const PassengerCard = (props) => {
   const [messageType, setMessageType] = useState();
 
   const outputText = [];
+  // верны или нет поля формы
   const [result, setResult] = useState({
     surname: true,
     name: true,
@@ -41,15 +44,17 @@ const PassengerCard = (props) => {
     birth_date: true,
     passport_series: true,
     passport_number: true,
-    sertificate_number: true,
+    certificate_number: true,
   });
 
+  // отправляем форму на проверку
   const submitClickHandler = (event) => {
     event.preventDefault();
     setCheckFields(true);
     setResult(inputsValidation(output));
   };
 
+  // выводим результаты проверки формы, если все ок, отправляем в PassengersPage
   useEffect(() => {
     if (checkFields) {
       const str = "Все поля должны быть заполнены!";
@@ -76,7 +81,7 @@ const PassengerCard = (props) => {
                 `Номер паспорта указана некорректно. Пример: 123456`
               );
             }
-            if (item === "sertificate_number") {
+            if (item === "certificate_number") {
               outputText.push(
                 `Номер свидетельства о рождении указан некорректно. Пример: VIII-ЫП-123456`
               );
@@ -93,11 +98,13 @@ const PassengerCard = (props) => {
 
       if (outputText[0] === "Готово!") {
         setMessageType(true);
+        props.setData(output);
       }
       setTextMessage(outputText);
     } // eslint-disable-next-line
   }, [result, checkFields]);
 
+  // при переключении кнопки "ограниченная подвижность"
   const mobilityToggle = () => {
     setMobility(mobility ? false : true);
     setOutput({ ...output, mobility: mobility ? false : true });
@@ -107,10 +114,13 @@ const PassengerCard = (props) => {
     <div className="passenger_card">
       <div className="passenger_card__header">
         <div className="passenger_card__header-left">
-          <p onClick={() => setShowCard(showCard ? false : true)} className="toggleImg">
+          <p
+            onClick={() => setShowCard(showCard ? false : true)}
+            className="toggleImg"
+          >
             {showCard ? hideBlock : showBlock}
           </p>
-          <div className="passenger_title">Пассажир 1</div>
+          <div className="passenger_title">Пассажир {props.id + 1}</div>
         </div>
         <p className="closeButton">{closeButton}</p>
       </div>
@@ -118,15 +128,15 @@ const PassengerCard = (props) => {
         <form className="passenger_form" onSubmit={submitClickHandler}>
           <div className="passenger_card__main-person">
             <select
-              defaultValue={"0"}
+              defaultValue={props.type}
               className="passenger_type"
               onChange={(event) =>
                 setOutput({ ...output, passenger_type: event.target.value })
               }
             >
-              <option value="0">Взрослый</option>
-              <option value="1">Детский</option>
-              <option value="2">Детских «без места»</option>
+              <option value="adult">Взрослый</option>
+              <option value="child">Детский</option>
+              <option value="child_no_place">Детский «без места»</option>
             </select>
             <div className="person_fullname">
               <label className="label_gray">
@@ -299,11 +309,11 @@ const PassengerCard = (props) => {
                     onChange={(event) =>
                       setOutput({
                         ...output,
-                        sertificate_number: event.target.value,
+                        certificate_number: event.target.value,
                       })
                     }
                     className={
-                      result.sertificate_number === true
+                      result.certificate_number === true
                         ? "label_output"
                         : "label_output error_output"
                     }

@@ -40,21 +40,19 @@ const inputsValidation = (array) => {
     birth_date: true,
     passport_series: true,
     passport_number: true,
-    sertificate_number: true,
+    certificate_number: true,
   };
 
   for (let item in array) {
     if (array[item] === "") {
       if (
-        array[item] === "" &&
-        array.document_type === "sertificate" &&
+        array.document_type === "certificate" &&
         (item === "passport_series" || item === "passport_number")
       ) {
         result[item] = true;
       } else if (
-        array[item] === "" &&
         array.document_type === "passport" &&
-        item === "sertificate_number"
+        item === "certificate_number"
       ) {
         result[item] = true;
       } else {
@@ -64,6 +62,7 @@ const inputsValidation = (array) => {
       if (item === "birth_date" && !dateValidation(array[item])) {
         result[item] = false;
       }
+
       if (
         array.document_type === "passport" &&
         item === "passport_series" &&
@@ -71,6 +70,7 @@ const inputsValidation = (array) => {
       ) {
         result[item] = false;
       }
+
       if (
         array.document_type === "passport" &&
         item === "passport_number" &&
@@ -78,9 +78,10 @@ const inputsValidation = (array) => {
       ) {
         result[item] = false;
       }
+
       if (
-        array.document_type === "sertificate" &&
-        item === "sertificate_number" &&
+        array.document_type === "certificate" &&
+        item === "certificate_number" &&
         !certificateValidation(array[item])
       ) {
         result[item] = false;

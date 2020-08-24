@@ -3,7 +3,6 @@ import TicketCard from "./TicketCard";
 import Pagination from "./Pagination";
 
 const TicketsList = ({ info, setInfo, results, setStep }) => {
-  // console.log(info);
   const sortValues = [
     { id: "date", value: "дате" },
     { id: "price_min", value: "цене" },

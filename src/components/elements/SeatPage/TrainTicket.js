@@ -6,6 +6,7 @@ import api from "../../../utils/api";
 import Preloader from "../Preloader";
 import { MoneyFormat } from "../MoneyFormat";
 import { timeHandler } from "./timeHandler";
+import { addItem } from "../../../utils/localStorage";
 
 import {
   have_first_class,
@@ -31,27 +32,34 @@ const ServicesButtons = (props) => {
   );
 };
 
-const TrainTicket = ({ result, anotherTrainClickHandler }) => {
+// выбираем свободные места в поезде (первые свободные по количеству выбранных мест)
+const placesChooser = (counter, places) => {
+  const output = [];
+  places.map((item) => {
+    if (item.available === true && output.length < counter) {
+      output.push(item.index);
+    }
+  });
+  return output;
+};
+
+const TrainTicket = ({ id, result, anotherTrainClickHandler, disabled }) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [seatsInfo, setSeatsInfo] = useState([]);
   const [output, setOutput] = useState(null);
+  const [choosenSeats, setChoosenSeats] = useState(null);
 
   // Получаем данные по местам и вагонам в выбранном поезде
   useEffect(() => {
-    api.getRoutesSeats(
-      result.departure._id,
-      setSeatsInfo,
-      setErrorMessage,
-      setIsLoading
-    );
+    api.getRoutesSeats(result._id, setSeatsInfo, setErrorMessage, setIsLoading);
   }, [result]);
 
   // время отбытия
-  const start_date = moment.unix(result.departure.from.datetime).utc().format();
+  const start_date = moment.unix(result.from.datetime).utc().format();
 
   //время прибытия
-  const end_date = moment.unix(result.departure.to.datetime).utc().format();
+  const end_date = moment.unix(result.to.datetime).utc().format();
 
   //часов в дороге
   const time = timeHandler(start_date, end_date);
@@ -62,6 +70,14 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
     child: 0,
     child_no_place: 0,
   });
+
+  // выбор количества пассажирских мест
+  const passengersChangeHandler = (event) => {
+    setPassengers({
+      ...passengers,
+      [event.target.id]: parseInt(event.target.value),
+    });
+  };
 
   // верхние, средние и нижние места и цены на них
   const seats = [
@@ -87,8 +103,8 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
 
   // услуги
   const [services, setServices] = useState({
-    conditioner: result.departure.have_air_conditioning ? "able" : "unable",
-    wifi: result.departure.have_wifi ? "able" : "unable",
+    conditioner: result.have_air_conditioning ? "able" : "unable",
+    wifi: result.have_wifi ? "able" : "unable",
     linens: "able",
     food: "able",
   });
@@ -136,39 +152,39 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
     {
       id: "have_first_class",
       name: "Люкс",
-      value: result.departure.have_first_class,
+      value: result.have_first_class,
       alt: "first",
       image: have_first_class,
     },
     {
       id: "have_second_class",
       name: "Купе",
-      value: result.departure.have_second_class,
+      value: result.have_second_class,
       alt: "second",
       image: have_second_class,
     },
     {
       id: "have_third_class",
       name: "Плацкарт",
-      value: result.departure.have_third_class,
+      value: result.have_third_class,
       alt: "third",
       image: have_third_class,
     },
     {
       id: "have_fourth_class",
       name: "Сидячий",
-      value: result.departure.have_fourth_class,
+      value: result.have_fourth_class,
       alt: "fourth",
       image: have_fourth_class,
     },
   ];
   // какой класс отобразить на странице
   const [showClass, setShowClass] = useState(
-    result.departure.have_first_class
+    result.have_first_class
       ? "first"
-      : result.departure.have_second_class
+      : result.have_second_class
       ? "second"
-      : result.departure.have_third_class
+      : result.have_third_class
       ? "third"
       : "fourth"
   );
@@ -178,7 +194,8 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
     setShowClass(event.target.id);
   };
 
-  const [choosenTypeInfo, setChoosenTypeInfo] = useState(null); //массив данных по выбранному классу
+  // массив данных по выбранному классу
+  const [choosenTypeInfo, setChoosenTypeInfo] = useState(null);
   useEffect(() => {
     if (seatsInfo.length > 0) {
       seatsInfo.map((item) => {
@@ -190,8 +207,13 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
           });
         }
       });
+
+      const counter = passengers.adult + passengers.child;
+      if (counter !== 0) {
+        setChoosenSeats(placesChooser(counter, seatsInfo[0].seats));
+      }
     } // eslint-disable-next-line
-  }, [seatsInfo, showClass]);
+  }, [seatsInfo, showClass, passengers]);
 
   // расчеты финальной стоимости
   const [totalPrice, setTotalPrice] = useState(0);
@@ -218,36 +240,37 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
       }
 
       const adult_final_price = adult_passengers * place_price;
-      const child_final_price = (child_passengers * place_price) / 2;
+      const child_final_price = Math.ceil((child_passengers * place_price) / 2);
       setTotalPrice(services_price + adult_final_price + child_final_price);
-    }
+
+      setOutput({
+        block_id: seatsInfo[0].coach._id,
+        adult_passengers: passengers.adult,
+        adult_price: adult_final_price,
+        child_passengers: passengers.child,
+        child_price: child_final_price,
+        child_no_place: passengers.child_no_place,
+        class: showClass,
+        total_price: totalPrice,
+        seats: choosenSeats,
+      });
+    } // eslint-disable-next-line
   }, [totalPrice, services, showClass, passengers, choosenTypeInfo]);
 
-  // на следующую страницу
-  const nextPageClickHandler = () => {
-    // console.log(result);
-    setOutput({
-      choosen_ticket: {
-        departure: result.departure ? result.departure : null,
-        arrival: result.arrival ? result.arrival : null,
-      },
-      adult_passengers: passengers.adult,
-      child_passengers: passengers.child,
-      child_no_place: passengers.child_no_place,
-      class: showClass,
-      services: {
-        wifi: services.wifi === "choosen" ? true : false,
-        conditioner: services.conditioner === "choosen" ? true : false,
-        linens: services.linens === "choosen" ? true : false,
-        food: services.food === "choosen" ? true : false,
-      },
-      total_price: totalPrice,
-    });
-
-    if (totalPrice !== 0 && output !== null) {
-      console.log(output);
+  // добавляем данные в storage и делаем кнопку Далее
+  useEffect(() => {
+    if (
+      output !== null &&
+      output.adult_passengers !== 0 &&
+      output.total_price !== 0
+    ) {
+      id === "departure"
+        ? addItem("seats_departure", JSON.stringify(output))
+        : addItem("seats_arrival", JSON.stringify(output));
+      disabled(false);
     }
-  };
+    // eslint-disable-next-line
+  }, [output]);
 
   return isLoading ? (
     <Preloader />
@@ -273,29 +296,25 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
                 className="train_icon"
               />
               <div className="info_train">
-                <div className="train_number">{result.departure.duration}</div>
+                <div className="train_number">{result.duration}</div>
                 <div className="train_start_city">
-                  {result.departure.train.name}
+                  {result.train.name}
                   <img src="assets/train_cards/gray_arrow.svg" alt="arrow" />
                 </div>
                 <div className="train_path from">
-                  {result.departure.from.city.name}
+                  {result.from.city.name}
                   <img src="assets/train_cards/dark_arrow.svg" alt="arrow" />
                 </div>
-                <div className="train_path to">
-                  {result.departure.to.city.name}
-                </div>
+                <div className="train_path to">{result.to.city.name}</div>
               </div>
               <div className="train_there">
                 <div className="train_start">
                   <div className="train__time">
                     {moment(start_date).format("HH:mm")}
                   </div>
-                  <div className="train__city">
-                    {result.departure.from.city.name}
-                  </div>
+                  <div className="train__city">{result.from.city.name}</div>
                   <div className="train__station">
-                    {result.departure.from.railway_station_name} вокзал
+                    {result.from.railway_station_name} вокзал
                   </div>
                 </div>
                 <div className="train__arrow">
@@ -305,11 +324,9 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
                   <div className="train__time">
                     {moment(end_date).format("HH:mm")}
                   </div>
-                  <div className="train__city">
-                    {result.departure.to.city.name}
-                  </div>
+                  <div className="train__city">{result.to.city.name}</div>
                   <div className="train__station">
-                    {result.departure.to.railway_station_name} вокзал
+                    {result.to.railway_station_name} вокзал
                   </div>
                 </div>
               </div>
@@ -323,13 +340,9 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
               <div className="ticket_count-blocks">
                 <div className="ticket_count-block">
                   <select
+                    id="adult"
                     defaultValue={"0"}
-                    onChange={(event) =>
-                      setPassengers({
-                        ...passengers,
-                        adult: event.target.value,
-                      })
-                    }
+                    onChange={passengersChangeHandler}
                   >
                     <option value="0">Взрослых - 0</option>
                     <option value="1">Взрослых - 1</option>
@@ -342,13 +355,9 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
                 </div>
                 <div className="ticket_count-block">
                   <select
+                    id="child"
                     defaultValue={"0"}
-                    onChange={(event) =>
-                      setPassengers({
-                        ...passengers,
-                        child: event.target.value,
-                      })
-                    }
+                    onChange={passengersChangeHandler}
                   >
                     <option value="0">Детских - 0</option>
                     <option value="1">Детских - 1</option>
@@ -364,13 +373,9 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
                 </div>
                 <div className="ticket_count-block">
                   <select
+                    id="child_no_place"
                     defaultValue={"0"}
-                    onChange={(event) =>
-                      setPassengers({
-                        ...passengers,
-                        child_no_place: event.target.value,
-                      })
-                    }
+                    onChange={passengersChangeHandler}
                   >
                     <option value="0">Детских «без места» - 0</option>
                     <option value="1">Детских «без места» - 1</option>
@@ -501,12 +506,6 @@ const TrainTicket = ({ result, anotherTrainClickHandler }) => {
               </div>
             </div>
           </div>
-          <button
-            className="button_orange passengers_next_btn"
-            onClick={nextPageClickHandler}
-          >
-            Далее
-          </button>
         </>
       ) : (
         <div className="ticket_error_message">{errorMessage}</div>

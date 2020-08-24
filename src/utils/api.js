@@ -10,7 +10,9 @@ export default {
       })
       .catch((error) => {
         console.log(error);
-        setErrorMessage('Что то пошло не так. Пожалуйста, попробуйте повторить запрос позже.');
+        setErrorMessage(
+          "Что то пошло не так. Пожалуйста, попробуйте повторить запрос позже."
+        );
       });
   },
 
@@ -88,7 +90,9 @@ export default {
       .catch((error) => {
         console.log(error);
         setIsLoading(false);
-        setErrorMessage('Что то пошло не так. Пожалуйста, попробуйте повторить запрос позже.');
+        setErrorMessage(
+          "Что то пошло не так. Пожалуйста, попробуйте повторить запрос позже."
+        );
       });
   },
 
@@ -102,7 +106,9 @@ export default {
       })
       .catch((error) => {
         console.log(error);
-        setErrorMessage('Что то пошло не так. Пожалуйста, попробуйте повторить запрос позже.');
+        setErrorMessage(
+          "Что то пошло не так. Пожалуйста, попробуйте повторить запрос позже."
+        );
         setIsLoading(false);
       });
   },
@@ -116,6 +122,19 @@ export default {
         setLoader(false);
       })
       .catch((error) => {
+        console.log(error);
+      });
+  },
+
+  setTicket: (data, setResponseStatus) => {
+    return axios
+      .post(`/order`, data)
+      .then((response) => {
+        console.log(response);
+        setResponseStatus(response.data.status);
+      })
+      .catch((error) => {
+        setResponseStatus(false);
         console.log(error);
       });
   },
