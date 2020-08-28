@@ -1,4 +1,4 @@
-/* eslint-disable array-callback-return */
+/* eslint-disable array-callback-return, react-hooks/exhaustive-deps */
 
 import React, { useState, useEffect } from "react";
 import moment from "moment";

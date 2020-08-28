@@ -1,3 +1,5 @@
+/*eslint-disable array-callback-return, react-hooks/exhaustive-deps*/
+
 import React, { useState, useEffect } from "react";
 import "./style.css";
 
@@ -68,7 +70,7 @@ const FourthClass = (props) => {
     { i: 16, left: 89.1, display: true },
   ];
 
-  console.log('first', props.data);
+  console.log("first", props.data);
   props.data.map((item) => {
     if (blocks[item.index]) {
       blocks[item.index].available = item.available;

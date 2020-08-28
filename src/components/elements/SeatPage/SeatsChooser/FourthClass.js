@@ -1,3 +1,5 @@
+/*eslint-disable array-callback-return, react-hooks/exhaustive-deps*/
+
 import React, { useState, useEffect } from "react";
 import "./style.css";
 
