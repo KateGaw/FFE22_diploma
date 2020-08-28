@@ -70,22 +70,21 @@ const FourthClass = (props) => {
     { i: 16, left: 89.1, display: true },
   ];
 
-  console.log("first", props.data);
   props.data.map((item) => {
     if (blocks[item.index]) {
       blocks[item.index].available = item.available;
     }
   });
 
-  // if (props.data.length < 18) {
-  //   blocks.map((item) => {
-  //     if (item.i >= props.data.length + 1) {
-  //       item.display = "none";
-  //     } else {
-  //       item.display = "block";
-  //     }
-  //   });
-  // }
+  if (props.data.length < 18) {
+    blocks.map((item) => {
+      if (item.i >= props.data.length + 1) {
+        item.display = "none";
+      } else {
+        item.display = "block";
+      }
+    });
+  }
 
   return (
     <div className="main_block first">

@@ -126,14 +126,16 @@ const DirectionTimes = ({ id, _name, name, arrow, data }) => {
                 <MoneyFormat price={data.adult_price} />
               </td>
             </tr>
-            <tr>
-              <td>
-                {data.child_passengers} {child}
-              </td>
-              <td className="train_number_td">
-                <MoneyFormat price={data.child_price} />
-              </td>
-            </tr>
+            {data.child_passengers !== 0 && (
+              <tr>
+                <td>
+                  {data.child_passengers} {child}
+                </td>
+                <td className="train_number_td">
+                  <MoneyFormat price={data.child_price} />
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

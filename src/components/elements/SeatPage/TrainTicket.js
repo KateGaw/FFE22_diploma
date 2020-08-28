@@ -242,15 +242,17 @@ const TrainTicket = ({ id, result, anotherTrainClickHandler, disabled }) => {
       let price = [];
       if (choosenSeats !== null) {
         for (let i = 0; i < choosenSeats.length; i++) {
-          if (choosenSeats[i] % 2 === 0) {
-            price.push(choosenTypeInfo.coach.top_price);
+          if (showClass !== "first") {
+            if (choosenSeats[i] % 2 === 0) {
+              price.push(choosenTypeInfo.coach.top_price);
+            } else {
+              price.push(choosenTypeInfo.coach.bottom_price);
+            }
           } else {
-            price.push(choosenTypeInfo.coach.bottom_price);
+            price.push(choosenTypeInfo.coach.price);
           }
         }
       }
-
-      console.log(choosenTypeInfo);
 
       let adult_final_price = 0,
         child_final_price = 0;
@@ -258,7 +260,7 @@ const TrainTicket = ({ id, result, anotherTrainClickHandler, disabled }) => {
         if (index + 1 <= passengers.adult) {
           adult_final_price += item;
         } else {
-          child_final_price += item;
+          child_final_price += item / 2;
         }
       });
 
@@ -472,30 +474,41 @@ const TrainTicket = ({ id, result, anotherTrainClickHandler, disabled }) => {
                           <th className="head h_place">
                             Места
                             <p className="place_total">
-                              {choosenTypeInfo.coach.available_seats}
+                              {seatsCounter[0] + seatsCounter[1]}
                             </p>
                           </th>
                           <th className="head h_cost">Стоимость</th>
                         </tr>
-                        {seats.map(
-                          (item) =>
-                            choosenTypeInfo.coach[item.price] !== 0 && (
-                              <tr key={item.id}>
-                                <th className="seat">
-                                  {item.name}
-                                  <p className="place_count">
-                                    {item.id === 1
-                                      ? seatsCounter[0]
-                                      : seatsCounter[1]}
-                                  </p>
-                                </th>
-                                <th className="place_count t_price">
-                                  <MoneyFormat
-                                    price={choosenTypeInfo.coach[item.price]}
-                                  />
-                                </th>
-                              </tr>
-                            )
+                        {showClass === "first" ? (
+                          <tr>
+                            <th className="seat"></th>
+                            <th className="place_count t_price">
+                              <MoneyFormat
+                                price={choosenTypeInfo.coach.price}
+                              />
+                            </th>
+                          </tr>
+                        ) : (
+                          seats.map(
+                            (item) =>
+                              choosenTypeInfo.coach[item.price] !== 0 && (
+                                <tr key={item.id}>
+                                  <th className="seat">
+                                    {item.name}
+                                    <p className="place_count">
+                                      {item.id === 1
+                                        ? seatsCounter[0]
+                                        : seatsCounter[1]}
+                                    </p>
+                                  </th>
+                                  <th className="place_count t_price">
+                                    <MoneyFormat
+                                      price={choosenTypeInfo.coach[item.price]}
+                                    />
+                                  </th>
+                                </tr>
+                              )
+                          )
                         )}
                       </tbody>
                     </table>
@@ -563,7 +576,7 @@ const TrainTicket = ({ id, result, anotherTrainClickHandler, disabled }) => {
                   </div>
                 </>
               ) : (
-                <Preloader/>
+                <Preloader />
               )}
             </div>
           </div>

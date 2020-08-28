@@ -40,6 +40,7 @@ const SwitchButton = (props) => {
       width={70}
       className="react_switch"
       id={props.id}
+      disabled={props.disabled}
     />
   );
 };
@@ -150,12 +151,36 @@ const TicketFilter = (props) => {
   const [info, setInfo] = useState(getItemsArray());
 
   const switch_filters = [
-    { id: "have_second_class", name: "Купе", value: info.have_second_class === 'true' ? true : false },
-    { id: "have_third_class", name: "Плацкарт", value: info.have_third_class === 'true' ? true : false },
-    { id: "have_fourth_class", name: "Сидячий", value: info.have_fourth_class === 'true' ? true : false },
-    { id: "have_first_class", name: "Люкс", value: info.have_first_class === 'true' ? true : false },
-    { id: "have_wifi", name: "Wi-Fi", value: info.have_wifi === 'true' ? true : false },
-    { id: "have_express", name: "Экспресс", value: info.have_express === 'true' ? true : false },
+    {
+      id: "have_second_class",
+      name: "Купе",
+      value: info.have_second_class === "true" ? true : false,
+    },
+    {
+      id: "have_third_class",
+      name: "Плацкарт",
+      value: info.have_third_class === "true" ? true : false,
+    },
+    {
+      id: "have_fourth_class",
+      name: "Сидячий",
+      value: info.have_fourth_class === "true" ? true : false,
+    },
+    {
+      id: "have_first_class",
+      name: "Люкс",
+      value: info.have_first_class === "true" ? true : false,
+    },
+    {
+      id: "have_wifi",
+      name: "Wi-Fi",
+      value: info.have_wifi === "true" ? true : false,
+    },
+    {
+      id: "have_express",
+      name: "Экспресс",
+      value: info.have_express === "true" ? true : false,
+    },
   ];
 
   const setSwitchValue = (id, value) => {
@@ -196,7 +221,8 @@ const TicketFilter = (props) => {
   };
 
   let date_start = info.date_start !== "" ? new Date(info.date_start) : "";
-  let date_end_arrival = info.date_end_arrival !== "" ? new Date(info.date_end_arrival) : "";
+  let date_end_arrival =
+    info.date_end_arrival !== "" ? new Date(info.date_end_arrival) : "";
 
   return (
     <div className="ticket_filter">
@@ -213,6 +239,7 @@ const TicketFilter = (props) => {
           endDate={date_end_arrival}
           maxDate={new Date("2018-12-31")}
           dateFormat="dd.MM.yyyy"
+          disabled={props.disabled}
         />
 
         <h4 className="date_h4">Дата возвращения</h4>
@@ -227,6 +254,7 @@ const TicketFilter = (props) => {
           endDate={date_end_arrival}
           minDate={date_start}
           dateFormat="dd.MM.yyyy"
+          disabled={props.disabled}
         />
       </div>
       <div className="ticket_filter__filters filter_block">
@@ -241,6 +269,7 @@ const TicketFilter = (props) => {
               value={item.value}
               output={setSwitchValue}
               switch_filters={switch_filters}
+              disabled={props.disabled}
             />
           </div>
         ))}
@@ -257,8 +286,10 @@ const TicketFilter = (props) => {
           max={7000}
           current={[info.price_from, info.price_to]}
           changeCurrent={(item) => {
-            changeItem("price_from", item[0]);
-            changeItem("price_to", item[1]);
+            if (!props.disabled) {
+              changeItem("price_from", item[0]);
+              changeItem("price_to", item[1]);
+            }
           }}
           step={100}
         />
@@ -277,13 +308,17 @@ const TicketFilter = (props) => {
           info.start_departure_hour_to,
         ]}
         setDepartureTime={(item) => {
-          changeItem("start_departure_hour_from", item[0]);
-          changeItem("start_departure_hour_to", item[1]);
+          if (!props.disabled) {
+            changeItem("start_departure_hour_from", item[0]);
+            changeItem("start_departure_hour_to", item[1]);
+          }
         }}
         arrivalTime={[info.start_arrival_hour_from, info.start_arrival_hour_to]}
         setArrivalTime={(item) => {
-          changeItem("start_arrival_hour_from", item[0]);
-          changeItem("start_arrival_hour_to", item[1]);
+          if (!props.disabled) {
+            changeItem("start_arrival_hour_from", item[0]);
+            changeItem("start_arrival_hour_to", item[1]);
+          }
         }}
       />
 
@@ -295,13 +330,17 @@ const TicketFilter = (props) => {
           info.end_departure_hour_to,
         ]}
         setDepartureTime={(item) => {
-          changeItem("end_departure_hour_from", item[0]);
-          changeItem("end_departure_hour_to", item[1]);
+          if (!props.disabled) {
+            changeItem("end_departure_hour_from", item[0]);
+            changeItem("end_departure_hour_to", item[1]);
+          }
         }}
         arrivalTime={[info.end_arrival_hour_from, info.end_arrival_hour_to]}
         setArrivalTime={(item) => {
-          changeItem("end_arrival_hour_from", item[0]);
-          changeItem("end_arrival_hour_to", item[1]);
+          if (!props.disabled) {
+            changeItem("end_arrival_hour_from", item[0]);
+            changeItem("end_arrival_hour_to", item[1]);
+          }
         }}
       />
     </div>

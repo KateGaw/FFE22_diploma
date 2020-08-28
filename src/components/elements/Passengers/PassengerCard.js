@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import {
-  closeButton,
   showBlock,
   hideBlock,
   errorMessageButton,
@@ -122,7 +121,6 @@ const PassengerCard = (props) => {
           </p>
           <div className="passenger_title">Пассажир {props.id + 1}</div>
         </div>
-        <p className="closeButton">{closeButton}</p>
       </div>
       <div className={showCard ? "" : "hidden"}>
         <form className="passenger_form" onSubmit={submitClickHandler}>

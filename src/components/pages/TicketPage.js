@@ -28,7 +28,7 @@ const TicketPage = (props) => {
       <ProgressBar />
       <div className="tickets_main">
         <div>
-          <TicketsFilter setInfoPage={setInfo} />
+          <TicketsFilter setInfoPage={setInfo} disabled={false} />
           <LastTickets />
         </div>
         {errorMessage === null ? (

@@ -94,7 +94,6 @@ const FourthClass = (props) => {
     { i: 32, left: 89.1, display: true },
   ];
 
-  console.log("second", props.data);
   props.data.map((item) => {
     if (blocks[item.index]) {
       blocks[item.index].available = item.available;
