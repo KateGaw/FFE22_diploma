@@ -8,6 +8,11 @@ import { MoneyFormat } from "../MoneyFormat";
 import { timeHandler } from "./timeHandler";
 import { addItem } from "../../../utils/localStorage";
 
+import FourthClass from "./SeatsChooser/FourthClass";
+import ThirdClass from "./SeatsChooser/ThirdClass";
+import SecondClass from "./SeatsChooser/SecondClass";
+import FirstClass from "./SeatsChooser/FirstClass";
+
 import {
   have_first_class,
   have_second_class,
@@ -32,15 +37,19 @@ const ServicesButtons = (props) => {
   );
 };
 
-// выбираем свободные места в поезде (первые свободные по количеству выбранных мест)
-const placesChooser = (counter, places) => {
-  const output = [];
-  places.map((item) => {
-    if (item.available === true && output.length < counter) {
-      output.push(item.index);
+const seatsCount = (array, showClass) => {
+  let top = 0,
+    bottom = 0;
+  array.map((item) => {
+    if (item.available === true) {
+      if (item.index % 2 === 0) {
+        top += 1;
+      } else {
+        bottom += 1;
+      }
     }
   });
-  return output;
+  return [top, bottom];
 };
 
 const TrainTicket = ({ id, result, anotherTrainClickHandler, disabled }) => {
@@ -84,19 +93,11 @@ const TrainTicket = ({ id, result, anotherTrainClickHandler, disabled }) => {
     {
       id: 1,
       name: "Верхние",
-      counter: 3,
       price: "top_price",
     },
     {
       id: 2,
-      name: "Боковые",
-      counter: 5,
-      price: "side_price",
-    },
-    {
-      id: 3,
       name: "Нижние",
-      counter: 7,
       price: "bottom_price",
     },
   ];
@@ -196,35 +197,70 @@ const TrainTicket = ({ id, result, anotherTrainClickHandler, disabled }) => {
 
   // массив данных по выбранному классу
   const [choosenTypeInfo, setChoosenTypeInfo] = useState(null);
+  const [choosenClassSeatsInfo, setChoosenClassSeatsInfo] = useState(null);
   useEffect(() => {
     if (seatsInfo.length > 0) {
       seatsInfo.map((item) => {
         if (item.coach.class_type === showClass) {
           setChoosenTypeInfo(item);
+          setChoosenClassSeatsInfo(item.seats);
           setServices({
             ...services,
             linens: item.coach.is_linens_included ? "non-active" : "able",
           });
         }
       });
-
-      const counter = passengers.adult + passengers.child;
-      if (counter !== 0) {
-        setChoosenSeats(placesChooser(counter, seatsInfo[0].seats));
-      }
     } // eslint-disable-next-line
   }, [seatsInfo, showClass, passengers]);
+
+  // Считаем свободные места
+  const [seatsCounter, setSeatsCounter] = useState([0, 0]);
+  useEffect(() => {
+    if (choosenClassSeatsInfo !== null) {
+      setSeatsCounter(seatsCount(choosenClassSeatsInfo, showClass));
+    }
+  }, [choosenClassSeatsInfo]);
+
+  // меняем число выбранных взрослых, если выбрано больше мест
+  useEffect(() => {
+    if (choosenSeats !== null) {
+      const all = passengers.adult + passengers.child;
+      if (choosenSeats.length > all) {
+        setPassengers({
+          ...passengers,
+          adult: parseInt(choosenSeats.length - passengers.child),
+        });
+      }
+    }
+  }, [choosenSeats]);
 
   // расчеты финальной стоимости
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
     if (choosenTypeInfo !== null) {
-      const place_price = choosenTypeInfo.coach.price
-        ? choosenTypeInfo.coach.price
-        : choosenTypeInfo.coach.top_price;
-      const adult_passengers = passengers.adult;
-      const child_passengers = passengers.child;
       let services_price = 0;
+      let price = [];
+      if (choosenSeats !== null) {
+        for (let i = 0; i < choosenSeats.length; i++) {
+          if (choosenSeats[i] % 2 === 0) {
+            price.push(choosenTypeInfo.coach.top_price);
+          } else {
+            price.push(choosenTypeInfo.coach.bottom_price);
+          }
+        }
+      }
+
+      console.log(choosenTypeInfo);
+
+      let adult_final_price = 0,
+        child_final_price = 0;
+      price.map((item, index) => {
+        if (index + 1 <= passengers.adult) {
+          adult_final_price += item;
+        } else {
+          child_final_price += item;
+        }
+      });
 
       if (services.wifi === "choosen") {
         services_price += choosenTypeInfo.coach.wifi_price;
@@ -239,8 +275,6 @@ const TrainTicket = ({ id, result, anotherTrainClickHandler, disabled }) => {
         services_price += choosenTypeInfo.coach.linens_price;
       }
 
-      const adult_final_price = adult_passengers * place_price;
-      const child_final_price = Math.ceil((child_passengers * place_price) / 2);
       setTotalPrice(services_price + adult_final_price + child_final_price);
 
       setOutput({
@@ -341,7 +375,8 @@ const TrainTicket = ({ id, result, anotherTrainClickHandler, disabled }) => {
                 <div className="ticket_count-block">
                   <select
                     id="adult"
-                    defaultValue={"0"}
+                    // defaultValue={passengers.adult}
+                    value={passengers.adult}
                     onChange={passengersChangeHandler}
                   >
                     <option value="0">Взрослых - 0</option>
@@ -416,94 +451,120 @@ const TrainTicket = ({ id, result, anotherTrainClickHandler, disabled }) => {
               </div>
             </div>
             <div className="ticket_footer">
-              <div className="ticket_footer-head">
-                <div>
-                  <p>Вагоны</p>
-                  <p className="active">07</p>
-                  <p className="non-active">09</p>
-                </div>
-                <p>Нумерация вагонов начинается с головы поезда</p>
-              </div>
-              <div className="ticket_footer-main">
-                <div className="chosen_block">
-                  <p>07</p>
-                  <p>вагон</p>
-                </div>
-
-                {choosenTypeInfo !== null && (
-                  <table className="seats_and_cost">
-                    <tbody>
-                      <tr>
-                        <th className="head h_place">
-                          Места
-                          <p className="place_total">
-                            {choosenTypeInfo.coach.available_seats}
-                          </p>
-                        </th>
-                        <th className="head h_cost">Стоимость</th>
-                      </tr>
-                      {seats.map(
-                        (item) =>
-                          choosenTypeInfo.coach[item.price] !== 0 && (
-                            <tr key={item.id}>
-                              <th className="seat">
-                                {item.name}
-                                <p className="place_count">{item.counter}</p>
-                              </th>
-                              <th className="place_count t_price">
-                                <MoneyFormat
-                                  price={choosenTypeInfo.coach[item.price]}
-                                />
-                              </th>
-                            </tr>
-                          )
-                      )}
-                    </tbody>
-                  </table>
-                )}
-
-                <div className="services">
-                  <p>Обслуживание ФПК</p>
-                  <div className="services_icons">
-                    <ServicesButtons
-                      id="conditioner"
-                      class={services.conditioner}
-                      click={serviceClickHandler}
-                      data={conditioner}
-                    />
-                    <ServicesButtons
-                      id="wifi"
-                      class={services.wifi}
-                      click={serviceClickHandler}
-                      data={wifi}
-                    />
-                    <ServicesButtons
-                      id="linens"
-                      class={services.linens}
-                      click={serviceClickHandler}
-                      data={linens}
-                    />
-                    <ServicesButtons
-                      id="food"
-                      class={services.food}
-                      click={serviceClickHandler}
-                      data={food}
-                    />
+              {choosenClassSeatsInfo !== null && choosenTypeInfo !== null ? (
+                <>
+                  <div className="ticket_footer-head">
+                    <div>
+                      <p>Вагоны</p>
+                      <p className="active">07</p>
+                      <p className="non-active">09</p>
+                    </div>
+                    <p>Нумерация вагонов начинается с головы поезда</p>
                   </div>
-                </div>
-                <p className="image_p">
-                  11 человек выбирают места в этом поезде
-                </p>
-                <div className="train_picture">
-                  <img src="assets/train_picture.png" alt="train_picture" />
-                </div>
-                {totalPrice > 0 && (
-                  <MoneyFormat
-                    classList="total_price_info"
-                    price={totalPrice}
-                  />
-                )}
-              </div>
+                  <div className="ticket_footer-main">
+                    <div className="chosen_block">
+                      <p>07</p>
+                      <p>вагон</p>
+                    </div>
+                    <table className="seats_and_cost">
+                      <tbody>
+                        <tr>
+                          <th className="head h_place">
+                            Места
+                            <p className="place_total">
+                              {choosenTypeInfo.coach.available_seats}
+                            </p>
+                          </th>
+                          <th className="head h_cost">Стоимость</th>
+                        </tr>
+                        {seats.map(
+                          (item) =>
+                            choosenTypeInfo.coach[item.price] !== 0 && (
+                              <tr key={item.id}>
+                                <th className="seat">
+                                  {item.name}
+                                  <p className="place_count">
+                                    {item.id === 1
+                                      ? seatsCounter[0]
+                                      : seatsCounter[1]}
+                                  </p>
+                                </th>
+                                <th className="place_count t_price">
+                                  <MoneyFormat
+                                    price={choosenTypeInfo.coach[item.price]}
+                                  />
+                                </th>
+                              </tr>
+                            )
+                        )}
+                      </tbody>
+                    </table>
+                    <div className="services">
+                      <p>Обслуживание ФПК</p>
+                      <div className="services_icons">
+                        <ServicesButtons
+                          id="conditioner"
+                          class={services.conditioner}
+                          click={serviceClickHandler}
+                          data={conditioner}
+                        />
+                        <ServicesButtons
+                          id="wifi"
+                          class={services.wifi}
+                          click={serviceClickHandler}
+                          data={wifi}
+                        />
+                        <ServicesButtons
+                          id="linens"
+                          class={services.linens}
+                          click={serviceClickHandler}
+                          data={linens}
+                        />
+                        <ServicesButtons
+                          id="food"
+                          class={services.food}
+                          click={serviceClickHandler}
+                          data={food}
+                        />
+                      </div>
+                    </div>
+                    <p className="image_p">
+                      11 человек выбирают места в этом поезде
+                    </p>
+                    <div className="train_picture">
+                      {showClass === "first" ? (
+                        <FirstClass
+                          data={choosenClassSeatsInfo}
+                          setSeats={setChoosenSeats}
+                        />
+                      ) : showClass === "second" ? (
+                        <SecondClass
+                          data={choosenClassSeatsInfo}
+                          setSeats={setChoosenSeats}
+                        />
+                      ) : showClass === "second" ? (
+                        <ThirdClass
+                          data={choosenClassSeatsInfo}
+                          setSeats={setChoosenSeats}
+                        />
+                      ) : (
+                        <FourthClass
+                          data={choosenClassSeatsInfo}
+                          setSeats={setChoosenSeats}
+                        />
+                      )}
+                    </div>
+                    {totalPrice > 0 && (
+                      <MoneyFormat
+                        classList="total_price_info"
+                        price={totalPrice}
+                      />
+                    )}
+                  </div>
+                </>
+              ) : (
+                <Preloader/>
+              )}
             </div>
           </div>
         </>

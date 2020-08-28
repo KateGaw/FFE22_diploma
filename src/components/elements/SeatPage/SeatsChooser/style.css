@@ -1,0 +1,128 @@
+/* ALL */
+
+.main_block {
+    position: relative;
+    background-repeat: no-repeat;
+}
+
+.top_block,
+.bottom_block {
+    cursor: pointer;
+}
+
+.top_block:hover,
+.bottom_block:hover {
+    border: 1px solid black;
+}
+
+.top_block {
+    background-color: #f2f2f2;
+    text-align: center;
+}
+
+.bottom_block {
+    background-color: #f2f2f2;
+    width: 36px;
+    height: 21px;
+    text-align: center;
+}
+
+.unable {
+    background-color: #cccccc;
+    color: white;
+    cursor: auto;
+}
+
+.unable:hover {
+    border: none;
+}
+
+.active_block {
+    border: 2px solid #ffa800;
+}
+
+.main_block p {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.block_number {
+    position: absolute;
+    left: 34px;
+    background-color: #333333cc;
+    height: 21px;
+    width: 28px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+/* FOURTH CLASS */
+
+.fourth {
+    width: 790px;
+    height: 127px;
+    background-image: url(./trains/fourth_class.png);
+    background-size: contain;
+}
+
+.fourth .top_block {
+    width: 26px;
+    height: 26px;
+}
+
+
+/* THIRD CLASS */
+
+.third {
+    width: 789px;
+    height: 165px;
+    background-image: url(./trains/third_class.png);
+    background-size: 100% 95%;
+}
+
+.third .top_block {
+    width: 22px;
+    height: 17px;
+}
+
+.third .bottom_block {
+    width: 22px;
+    height: 17px;
+}
+
+.third p {
+    font-size: 13px;
+}
+
+
+/* SECOND CLASS */
+
+.second {
+    width: 790px;
+    height: 125px;
+    background-image: url(./trains/second_class.png);
+    background-size: 100% 100%;
+}
+
+.second .top_block {
+    width: 22px;
+    height: 25px;
+}
+
+
+/* FIRST CLASS */
+
+.first {
+    width: 790px;
+    height: 125px;
+    background-image: url(./trains/first_class.png);
+    background-size: 100% 100%;
+}
+
+.first .top_block {
+    width: 22px;
+    height: 50px;
+    padding: 26px 0 0;
+}
