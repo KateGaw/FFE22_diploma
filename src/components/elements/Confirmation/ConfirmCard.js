@@ -1,6 +1,6 @@
-/* eslint-disable array-callback-return */
+/* eslint-disable array-callback-return, react-hooks/exhaustive-deps */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { routePaths } from "../../../routePaths";
 import { getItemsArray } from "../../../utils/localStorage";
@@ -20,6 +20,7 @@ const ConfirmCard = (props) => {
   const total_price = seats_departure.total_price;
 
   const [responseStatus, setResponseStatus] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const changeTicketClickHandler = () => {
     props.history.push(routePaths.TicketPage);
@@ -72,6 +73,7 @@ const ConfirmCard = (props) => {
   const route_direction_id = ticket_data.departure._id;
 
   const confirmClickHandler = () => {
+    setErrorMessage(null);
     const output = JSON.stringify({
       user: user,
       departure: {
@@ -80,40 +82,56 @@ const ConfirmCard = (props) => {
       },
     });
     api.setTicket(output, setResponseStatus);
+  };
+
+  useEffect(() => {
     if (responseStatus === true) {
       props.history.push(routePaths.SuccessPage);
+    } else if (responseStatus === false) {
+      setErrorMessage(
+        "Произошла ошибка подключения, пожалуйста, попробуйте оформить билет позднее."
+      );
     }
-  };
+  }, [responseStatus]);
 
   return (
     <div className="confirm_main_block">
-      <div className="passenger_card confirm_card">
-        <div className="passenger_card__header">
-          <div className="passenger_card__header-left">
-            <div className="passenger_title">Поезд</div>
+      {errorMessage === null ? (
+        <>
+          <div className="passenger_card confirm_card">
+            <div className="passenger_card__header">
+              <div className="passenger_card__header-left">
+                <div className="passenger_title">Поезд</div>
+              </div>
+            </div>
+            <div className="confirm_ticket">
+              <TicketCard
+                data={ticket_data}
+                button={true}
+                click={changeTicketClickHandler}
+              />
+            </div>
           </div>
-        </div>
-        <div className="confirm_ticket">
-          <TicketCard
-            data={ticket_data}
-            button={true}
-            click={changeTicketClickHandler}
-          />
-        </div>
-      </div>
 
-      <PassengerBlock
-        data={personal_data}
-        total_price={total_price}
-        button={changePersonalInfoClickHandler}
-      />
-      <PaymentBlock data={payment_data} button={changePaymentClickHandler} />
-      <button
-        className="button_orange confirm_button"
-        onClick={confirmClickHandler}
-      >
-        подтвердить
-      </button>
+          <PassengerBlock
+            data={personal_data}
+            total_price={total_price}
+            button={changePersonalInfoClickHandler}
+          />
+          <PaymentBlock
+            data={payment_data}
+            button={changePaymentClickHandler}
+          />
+          <button
+            className="button_orange confirm_button"
+            onClick={confirmClickHandler}
+          >
+            подтвердить
+          </button>
+        </>
+      ) : (
+        <div className="ticket_error_message">{errorMessage}</div>
+      )}
     </div>
   );
 };
