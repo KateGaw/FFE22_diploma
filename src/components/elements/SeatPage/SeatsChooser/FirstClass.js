@@ -6,7 +6,6 @@ import "./style.css";
 const Block = ({ i, left, items, setItems, display, able }) => {
   const style = {
     position: "absolute",
-    display: display,
     top: "25px",
     left: `${left}%`,
   };
@@ -52,22 +51,22 @@ const FourthClass = (props) => {
   }, [selectedItems]);
 
   const blocks = [
-    { i: 1, left: 14.5, display: true },
-    { i: 2, left: 21, display: true },
-    { i: 3, left: 24.3, display: true },
-    { i: 4, left: 30.6, display: true },
-    { i: 5, left: 33.9, display: true },
-    { i: 6, left: 40.5, display: true },
-    { i: 7, left: 43.6, display: true },
-    { i: 8, left: 50.2, display: true },
-    { i: 9, left: 53.4, display: true },
-    { i: 10, left: 60, display: true },
-    { i: 11, left: 63.1, display: true },
-    { i: 12, left: 69.6, display: true },
-    { i: 13, left: 72.8, display: true },
-    { i: 14, left: 79.3, display: true },
-    { i: 15, left: 82.5, display: true },
-    { i: 16, left: 89.1, display: true },
+    { i: 1, left: 14.5 },
+    { i: 2, left: 21 },
+    { i: 3, left: 24.3 },
+    { i: 4, left: 30.6 },
+    { i: 5, left: 33.9 },
+    { i: 6, left: 40.5 },
+    { i: 7, left: 43.6 },
+    { i: 8, left: 50.2 },
+    { i: 9, left: 53.4 },
+    { i: 10, left: 60 },
+    { i: 11, left: 63.1 },
+    { i: 12, left: 69.6 },
+    { i: 13, left: 72.8 },
+    { i: 14, left: 79.3 },
+    { i: 15, left: 82.5 },
+    { i: 16, left: 89.1 },
   ];
 
   props.data.map((item) => {
@@ -79,9 +78,7 @@ const FourthClass = (props) => {
   if (props.data.length < 18) {
     blocks.map((item) => {
       if (item.i >= props.data.length + 1) {
-        item.display = "none";
-      } else {
-        item.display = "block";
+        item.available = false;
       }
     });
   }
@@ -94,7 +91,6 @@ const FourthClass = (props) => {
           key={item.i}
           i={item.i}
           left={item.left}
-          display={item.display}
           able={item.available}
           items={selectedItems}
           setItems={setSelectedItems}
