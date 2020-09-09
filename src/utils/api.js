@@ -28,18 +28,19 @@ export default {
   },
 
   getRoutes: (info, setResults, setIsLoading, setErrorMessage) => {
-    // console.log(info);
     let a = `from_city_id=${info.from_city_id}`,
       b = `&to_city_id=${info.to_city_id}`,
       c =
         info.date_start !== ""
-          ? `&date_start=${moment.utc(info.date_start).format("YYYY-MM-DD")}`
+          ? `&date_start=${moment(new Date(info.date_start)).format(
+              "YYYY-MM-DD"
+            )}`
           : "",
       d =
         info.date_end_arrival !== ""
-          ? `&date_end_arrival=${moment
-              .utc(info.date_end_arrival)
-              .format("YYYY-MM-DD")}`
+          ? `&date_end_arrival=${moment(new Date(info.date_end_arrival)).format(
+              "YYYY-MM-DD"
+            )}`
           : "",
       e = `&start_departure_hour_from=${info.start_departure_hour_from}`,
       f = `&start_departure_hour_to=${info.start_departure_hour_to}`,
@@ -83,12 +84,10 @@ export default {
         `/routes?${a}${b}${c}${d}${e}${f}${g}${h}${i}${j}${k}${l}${m}${n}${o}${p}${q}${r}${s}${t}${u}${v}${w}`
       )
       .then((response) => {
-        // console.log(response);
         setResults(response.data);
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log(error);
         setIsLoading(false);
         setErrorMessage(
           "Что то пошло не так. Пожалуйста, попробуйте повторить запрос позже."

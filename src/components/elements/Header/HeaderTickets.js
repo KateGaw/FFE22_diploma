@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import moment from "moment";
-import "moment/locale/ru";
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru";
@@ -33,12 +30,12 @@ const HeaderTickets = (props) => {
 
   const [startDate, setStartDate] = useState(
     storageArray !== null && storageArray.date_start !== ""
-      ? moment.utc(storageArray.date_start, "YYYY-MM-DD")._d
+      ? new Date(storageArray.date_start)
       : ""
   );
   const [endDate, setEndDate] = useState(
     storageArray !== null && storageArray.date_end_arrival !== ""
-      ? moment.utc(storageArray.date_end_arrival, "YYYY-MM-DD")._d
+      ? new Date(storageArray.date_end_arrival)
       : ""
   );
 
@@ -86,18 +83,8 @@ const HeaderTickets = (props) => {
       setNameError(false);
       addItem("name_from", nameFrom);
       addItem("name_in", nameIn);
-      addItem(
-        "date_start",
-        startDate !== ""
-          ? moment.utc(startDate).add(1, "day").format("YYYY-MM-DD")
-          : ""
-      );
-      addItem(
-        "date_end_arrival",
-        endDate !== ""
-          ? moment.utc(endDate).add(1, "day").format("YYYY-MM-DD")
-          : ""
-      );
+      addItem("date_start", startDate !== "" ? startDate : "");
+      addItem("date_end_arrival", endDate !== "" ? endDate : "");
       addItem("from_city_id", cityNamesFrom[0]._id);
       addItem("to_city_id", cityNamesIn[0]._id);
       addItem("start_departure_hour_from", 0);
@@ -146,7 +133,7 @@ const HeaderTickets = (props) => {
                 inputProps={{ placeholder: "Откуда" }}
                 getItemValue={(item) => item.name}
                 items={cityNamesFrom}
-                renderItem={(item) => <div key={item.id}>{item.name}</div>}
+                renderItem={(item) => <div key={item._id}>{item.name}</div>}
                 value={nameFrom}
                 onChange={(event) => {
                   setNameFrom(event.target.value);
@@ -169,7 +156,7 @@ const HeaderTickets = (props) => {
                 inputProps={{ placeholder: "Куда" }}
                 getItemValue={(item) => item.name}
                 items={cityNamesIn}
-                renderItem={(item) => <div key={item.id}>{item.name}</div>}
+                renderItem={(item) => <div key={item._id}>{item.name}</div>}
                 value={nameIn}
                 onChange={(event) => {
                   setNameIn(event.target.value);
@@ -193,11 +180,12 @@ const HeaderTickets = (props) => {
                 locale={ru}
                 placeholderText="ДД.ММ.ГГГГ"
                 selected={startDate}
-                onChange={(date) => setStartDate(date)}
+                onChange={(date) => date !== null && setStartDate(date)}
                 closeOnScroll={(e) => e.target === document}
                 selectsStart
                 startDate={startDate}
                 endDate={endDate}
+                minDate={new Date("2018-09-01")}
                 maxDate={new Date("2018-12-31")}
                 dateFormat="dd.MM.yyyy"
               />
@@ -205,7 +193,9 @@ const HeaderTickets = (props) => {
                 locale={ru}
                 placeholderText="ДД.ММ.ГГГГ"
                 selected={endDate}
-                onChange={(date) => setEndDate(date)}
+                onChange={(date) => {
+                  date !== null && setEndDate(date);
+                }}
                 closeOnScroll={(e) => e.target === document}
                 selectsEnd
                 startDate={startDate}

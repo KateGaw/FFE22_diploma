@@ -45,6 +45,12 @@ const SwitchButton = (props) => {
   );
 };
 
+const Segment = styled.div`
+  background: ${(props) => (props.index === 1 ? "#FFA800" : "#3E3C41")};
+  height: 100%;
+  border-radius: 8px;
+`;
+
 const RangeSlider = (props) => {
   const values = props.current;
 
@@ -55,11 +61,6 @@ const RangeSlider = (props) => {
     values,
     onChange: props.changeCurrent,
   });
-  const Segment = styled("div")`
-    background: ${(props) => (props.index === 1 ? "#FFA800" : "#3E3C41")};
-    height: 100%;
-    border-radius: 8px;
-  `;
 
   return (
     <>
@@ -232,7 +233,7 @@ const TicketFilter = (props) => {
           locale={ru}
           placeholderText="ДД.ММ.ГГГГ"
           selected={date_start}
-          onChange={(date) => changeItem("date_start", date)}
+          onChange={(date) => date !== null && changeItem("date_start", date)}
           closeOnScroll={(e) => e.target === document}
           selectsStart
           startDate={date_start}
@@ -247,7 +248,9 @@ const TicketFilter = (props) => {
           locale={ru}
           placeholderText="ДД.ММ.ГГГГ"
           selected={date_end_arrival}
-          onChange={(date) => changeItem("date_end_arrival", date)}
+          onChange={(date) =>
+            date !== null && changeItem("date_end_arrival", date)
+          }
           closeOnScroll={(e) => e.target === document}
           selectsEnd
           startDate={date_start}
